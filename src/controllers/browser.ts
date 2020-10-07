@@ -16,6 +16,7 @@ export async function initClient(sessionId?: string, config?:ConfigObject, custo
   if(config?.useStealth) puppeteer.use(require('puppeteer-extra-plugin-stealth')());
   browser = await initBrowser(sessionId,config);
   const waPage = await getWAPage(browser);
+
   if (config?.proxyServerCredentials) {
     await waPage.authenticate(config.proxyServerCredentials);
   }

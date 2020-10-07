@@ -1,5 +1,4 @@
 node_modules
-dist
 session
 newsession
 
@@ -18,4 +17,3 @@ demo/buttons.js
 
 **.ignore.ts
 **.node-persist**
-.vscode/launch.json
