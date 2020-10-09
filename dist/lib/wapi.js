@@ -1479,18 +1479,14 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
     return await Store.Chat.find(chatid).then(async (chat) => {
         var mediaBlob = window.WAPI.base64ImageToFile(imgBase64, filename);
         return await window.WAPI.procFiles(chat,mediaBlob).then(async mc => {
-            var media = mc.models[0];
-            if(ptt) media.mediaPrep._mediaData.type = 'ptt';
-            await media.sendToChat(chat, { caption,...extras });
-            return waitForKey ? await new Promise(async (resolve,reject) => {
-                const cb = msg=>{
-                    if(media.attributes.file.size === msg.size) resolve(msg.id._serialized);
-                    Store.Msg.off('change:clientUrl',cb);
-                };
-                Store.Msg.on('change:clientUrl',cb);
-            }) : true
+          var media = mc.models[0];
+          if(ptt) media.mediaPrep._mediaData.type = 'ptt';
+          return await media.sendToChat(chat, { caption,...extras }).then(_ => {
+            return chat.lastReceivedKey._serialized;
+          });
         });
-    });
+      }
+    )
 }
 
 /**
