@@ -839,7 +839,7 @@ var Client = (function () {
                                 return 'ERROR: not a valid chat';
                             }
                             else {
-                                WAPI.sendImage(file, to, filename, caption, quotedMsgId, waitForId, ptt);
+                                return WAPI.sendImage(file, to, filename, caption, quotedMsgId, waitForId, ptt);
                             }
                         }, { to: to, file: file, filename: filename, caption: caption, quotedMsgId: quotedMsgId, waitForId: waitForId, ptt: ptt })];
                     case 4:

@@ -985,7 +985,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
         if (!WAPI.getChat(to)) {
           return 'ERROR: not a valid chat';
         } else {
-          WAPI.sendImage(file, to, filename, caption, quotedMsgId, waitForId, ptt);
+          return WAPI.sendImage(file, to, filename, caption, quotedMsgId, waitForId, ptt);
         }
       },
       { to, file, filename, caption, quotedMsgId, waitForId, ptt }
