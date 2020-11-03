@@ -259,6 +259,7 @@ declare module WAPI {
   const simulateTyping: (to: string, on: boolean) => Promise<boolean>;
   const archiveChat: (id: string, archive: boolean) => Promise<boolean>;
   const isConnected: () => Boolean;
+  const kill: () => Boolean;
   const loadEarlierMessages: (contactId: string) => Promise<Message []>;
   const loadAllEarlierMessages: (contactId: string) => any;
   const getUnreadMessages: (
