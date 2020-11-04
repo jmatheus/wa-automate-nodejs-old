@@ -362,8 +362,34 @@ var Client = (function () {
     };
     Client.prototype.onMessage = function (fn) {
         return __awaiter(this, void 0, void 0, function () {
+            var funcName, set, exists;
+            var _this = this;
             return __generator(this, function (_a) {
-                return [2, this.registerListener(SimpleListener.Message, fn)];
+                switch (_a.label) {
+                    case 0:
+                        funcName = SimpleListener.Message;
+                        this._listeners[funcName] = fn;
+                        set = function () { return _this.pup(function (_a) {
+                            var funcName = _a.funcName;
+                            WAPI.waitNewMessages(false, function (data) {
+                                data.forEach(function (message) {
+                                    window[funcName](message);
+                                });
+                            });
+                        }, { funcName: funcName }); };
+                        return [4, this.pup(function (_a) {
+                                var funcName = _a.funcName;
+                                return window[funcName] ? true : false;
+                            }, { funcName: funcName })];
+                    case 1:
+                        exists = _a.sent();
+                        if (!exists) return [3, 3];
+                        return [4, set()];
+                    case 2: return [2, _a.sent()];
+                    case 3:
+                        this._page.exposeFunction(funcName, function (message) { return fn(message); }).then(set).catch(function (e) { return set; });
+                        return [2];
+                }
             });
         });
     };
