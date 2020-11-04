@@ -65,13 +65,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.integrityCheck = exports.checkWAPIHash = void 0;
 var path = __importStar(require("path"));
-var axios_1 = __importDefault(require("axios"));
 var uniq = require('lodash.uniq');
 var fs = require('fs');
 var pkg = require('../../package.json');
@@ -93,7 +89,7 @@ function checkWAPIHash() {
 exports.checkWAPIHash = checkWAPIHash;
 function integrityCheck(waPage, notifier, spinner, debugInfo) {
     return __awaiter(this, void 0, void 0, function () {
-        var waitForIdle, wapi, methods, check, BROKEN_METHODS, unconditionalInject, report;
+        var waitForIdle, wapi, methods, check, BROKEN_METHODS, unconditionalInject, axios, report;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -125,7 +121,7 @@ function integrityCheck(waPage, notifier, spinner, debugInfo) {
                     return [4, check()];
                 case 2:
                     BROKEN_METHODS = _a.sent();
-                    if (!(BROKEN_METHODS.length > 0)) return [3, 12];
+                    if (!(BROKEN_METHODS.length > 0)) return [3, 13];
                     spinner.info('Broken methods detected. Attempting repair.');
                     return [4, new Promise(function (resolve) { return setTimeout(resolve, 2500); })];
                 case 3:
@@ -140,29 +136,32 @@ function integrityCheck(waPage, notifier, spinner, debugInfo) {
                     return [4, check()];
                 case 6:
                     BROKEN_METHODS = _a.sent();
-                    if (!(BROKEN_METHODS.length > 0)) return [3, 10];
+                    if (!(BROKEN_METHODS.length > 0)) return [3, 11];
                     spinner.info('Unable to repair. Reporting broken methods.');
-                    if (!notifier.update) return [3, 7];
+                    if (!(notifier === null || notifier === void 0 ? void 0 : notifier.update)) return [3, 7];
                     spinner.fail("!!!BROKEN METHODS DETECTED!!!\n\n Please update to the latest version: " + notifier.update.latest);
-                    return [3, 9];
-                case 7: return [4, axios_1.default.post(pkg.brokenMethodReportUrl, __assign(__assign({}, debugInfo), { BROKEN_METHODS: BROKEN_METHODS })).catch(function (e) { return false; })];
+                    return [3, 10];
+                case 7: return [4, Promise.resolve().then(function () { return __importStar(require('axios')); })];
                 case 8:
+                    axios = (_a.sent()).default;
+                    return [4, axios.post(pkg.brokenMethodReportUrl, __assign(__assign({}, debugInfo), { BROKEN_METHODS: BROKEN_METHODS })).catch(function (e) { return false; })];
+                case 9:
                     report = _a.sent();
                     if (report === null || report === void 0 ? void 0 : report.data) {
                         spinner.fail("Unable to repair broken methods. Sometimes this happens the first time after a new WA version, please try again. An issue has been created, add more detail if required: " + (report === null || report === void 0 ? void 0 : report.data));
                     }
                     else
                         spinner.fail("Unable to repair broken methods. Sometimes this happens the first time after a new WA version, please try again. Please check the issues in the repo for updates: https://github.com/open-wa/wa-automate-nodejs/issues");
-                    _a.label = 9;
-                case 9: return [3, 11];
-                case 10:
+                    _a.label = 10;
+                case 10: return [3, 12];
+                case 11:
                     spinner.info('Session repaired.');
-                    _a.label = 11;
-                case 11: return [3, 13];
-                case 12:
+                    _a.label = 12;
+                case 12: return [3, 14];
+                case 13:
                     spinner.info('Passed Integrity Test');
-                    _a.label = 13;
-                case 13: return [2, true];
+                    _a.label = 14;
+                case 14: return [2, true];
             }
         });
     });

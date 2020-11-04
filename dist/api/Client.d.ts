@@ -16,6 +16,7 @@ export declare enum namespace {
 export declare enum SimpleListener {
     Message = "onMessage",
     AnyMessage = "onAnyMessage",
+    MessageDeleted = "onMessageDeleted",
     Ack = "onAck",
     AddedToGroup = "onAddedToGroup",
     Battery = "onBattery",
@@ -52,6 +53,7 @@ export declare class Client {
         bypassCSP?: boolean;
         chromiumArgs?: string[];
         skipBrokenMethodsCheck?: boolean;
+        skipUpdateCheck?: boolean;
         sessionId?: string;
         licenseKey?: string | string[];
         customUserAgent?: string;
@@ -79,12 +81,18 @@ export declare class Client {
         qrFormat?: import("./model").QRFormat;
         hostNotificationLang?: import("./model").NotificationLanguage;
         blockAssets?: boolean;
+        keepUpdated?: boolean;
+        viewport?: {
+            width?: number;
+            height?: number;
+        };
         corsFix?: boolean;
     };
     private pup;
     private registerListener;
     onMessage(fn: (message: Message) => void): Promise<any>;
     onAnyMessage(fn: (message: Message) => void): Promise<any>;
+    onMessageDeleted(fn: (message: Message) => void): Promise<any>;
     onBattery(fn: (battery: number) => void): Promise<any>;
     onPlugged(fn: (plugged: boolean) => void): Promise<any>;
     onStory(fn: (story: any) => void): Promise<any>;
@@ -123,11 +131,12 @@ export declare class Client {
     sendYoutubeLink(to: ChatId, url: string, text?: Content): Promise<string | boolean>;
     sendLinkWithAutoPreview(to: ChatId, url: string, text?: Content): Promise<string | boolean>;
     reply(to: ChatId, content: Content, quotedMsgId: MessageId, sendSeen?: boolean): Promise<string | boolean>;
-    sendFile(to: ChatId, file: DataURL | FilePath, filename: string, caption: Content, quotedMsgId?: MessageId, waitForId?: boolean): Promise<string>;
+    sendFile(to: ChatId, file: DataURL | FilePath, filename: string, caption: Content, quotedMsgId?: MessageId, waitForId?: boolean, ptt?: boolean): Promise<string>;
     sendPtt(to: ChatId, file: DataURL | FilePath, quotedMsgId: MessageId): Promise<string>;
+    sendAudio(to: ChatId, file: DataURL | FilePath, quotedMsgId: MessageId): Promise<string>;
     sendVideoAsGif(to: ChatId, file: DataURL | FilePath, filename: string, caption: Content, quotedMsgId?: MessageId): Promise<string>;
     sendGiphy(to: ChatId, giphyMediaUrl: string, caption: Content): Promise<string>;
-    sendFileFromUrl(to: ChatId, url: string, filename: string, caption: Content, quotedMsgId?: MessageId, requestConfig?: any, waitForId?: boolean): Promise<string>;
+    sendFileFromUrl(to: ChatId, url: string, filename: string, caption: Content, quotedMsgId?: MessageId, requestConfig?: any, waitForId?: boolean, ptt?: boolean): Promise<string>;
     getMe(): Promise<any>;
     getSnapshot(): Promise<string>;
     iAmAdmin(): Promise<string[]>;
@@ -163,6 +172,7 @@ export declare class Client {
     getContact(contactId: ContactId): Promise<Contact>;
     getChatById(contactId: ContactId): Promise<Chat>;
     getMessageById(messageId: MessageId): Promise<Message>;
+    getMyLastMessage(chatId?: ChatId): Promise<Message>;
     getStickerDecryptable(messageId: MessageId): Promise<false | Message>;
     forceStaleMediaUpdate(messageId: MessageId): Promise<false | Message>;
     getChat(contactId: ContactId): Promise<Chat>;
@@ -205,7 +215,7 @@ export declare class Client {
     setGroupEditToAdminsOnly(groupId: GroupChatId, onlyAdmins: boolean): Promise<boolean>;
     setGroupDescription(groupId: GroupChatId, description: string): Promise<boolean>;
     setGroupTitle(groupId: GroupChatId, title: string): Promise<boolean>;
-    getGroupAdmins(groupId: GroupChatId): Promise<Contact[]>;
+    getGroupAdmins(groupId: GroupChatId): Promise<string[]>;
     setChatBackgroundColourHex(hex: string): Promise<boolean>;
     darkMode(activate: boolean): Promise<boolean>;
     getMessageReaders(messageId: MessageId): Promise<Contact[]>;

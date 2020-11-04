@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -38,10 +57,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generatePostmanJson = void 0;
 var fs = require('fs');
-var typescript_parser_1 = require("typescript-parser");
-var parser = new typescript_parser_1.TypescriptParser();
-var change_case_1 = require("change-case");
 var path = require("path"), parseUrl = require("parse-url");
+var noCase;
 var aliasExamples = {
     "ChatId": "00000000000@c.us or 00000000000-111111111@g.us",
     "GroupChatId": "00000000000-111111111@g.us",
@@ -62,10 +79,19 @@ var primatives = [
 exports.generatePostmanJson = function (setup) {
     if (setup === void 0) { setup = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var parsed_1, data, parsed, x, postmanGen, pm, d, postmanWrap, res;
+        var TypescriptParser, parser, parsed_1, data, parsed, x, postmanGen, pm, d, postmanWrap, res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
+                case 0: return [4, Promise.resolve().then(function () { return __importStar(require("typescript-parser")); })];
+                case 1:
+                    TypescriptParser = (_a.sent()).TypescriptParser;
+                    if (!!noCase) return [3, 3];
+                    return [4, Promise.resolve().then(function () { return __importStar(require("change-case")); })];
+                case 2:
+                    noCase = (_a.sent()).noCase;
+                    _a.label = 3;
+                case 3:
+                    parser = new TypescriptParser();
                     if (setup === null || setup === void 0 ? void 0 : setup.apiHost) {
                         if (setup.apiHost.includes(setup.sessionId)) {
                             parsed_1 = parseUrl(setup.apiHost);
@@ -75,7 +101,7 @@ exports.generatePostmanJson = function (setup) {
                     }
                     data = fs.readFileSync(path.resolve(__dirname, '../api/_client_ts'), 'utf8');
                     return [4, parser.parseSource(data)];
-                case 1:
+                case 4:
                     parsed = _a.sent();
                     x = parsed.declarations.find(function (_a) {
                         var name = _a.name;
@@ -132,7 +158,7 @@ var postmanRequestGeneratorGenerator = function (setup) {
                 "" + method.name
             ] : ["" + method.name]
         };
-        var name = change_case_1.noCase(method.name).replace(/\b[a-z]|['_][a-z]|\B[A-Z]/g, function (x) { return x[0] === "'" || x[0] === "_" ? x : String.fromCharCode(x.charCodeAt(0) ^ 32); });
+        var name = noCase(method.name).replace(/\b[a-z]|['_][a-z]|\B[A-Z]/g, function (x) { return x[0] === "'" || x[0] === "_" ? x : String.fromCharCode(x.charCodeAt(0) ^ 32); });
         var request = {
             "auth": {
                 "type": "apikey",

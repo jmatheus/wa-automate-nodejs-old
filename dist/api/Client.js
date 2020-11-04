@@ -93,7 +93,7 @@ var puppeteer_config_1 = require("../config/puppeteer.config");
 var sharp_1 = __importDefault(require("sharp"));
 var model_1 = require("./model");
 var p_queue_1 = __importDefault(require("p-queue"));
-var parseFunction = require('parse-function'), pkg = require('../../package.json'), datauri = require('datauri'), fs = require('fs'), isDataURL = function (s) { return !!s.match(/^data:((?:\w+\/(?:(?!;).)+)?)((?:;[\w\W]*?[^;])*),(.+)$/g); };
+var parseFunction = require('parse-function'), pkg = require('../../package.json'), datauri = require('datauri'), fs = require('fs'), isUrl = require('is-url'), isDataURL = function (s) { return !!s.match(/^data:((?:\w+\/(?:(?!;).)+)?)((?:;[\w\W]*?[^;])*),(.+)$/g); };
 var tree_kill_1 = __importDefault(require("tree-kill"));
 var browser_1 = require("../controllers/browser");
 var auth_1 = require("../controllers/auth");
@@ -119,6 +119,7 @@ var SimpleListener;
 (function (SimpleListener) {
     SimpleListener["Message"] = "onMessage";
     SimpleListener["AnyMessage"] = "onAnyMessage";
+    SimpleListener["MessageDeleted"] = "onMessageDeleted";
     SimpleListener["Ack"] = "onAck";
     SimpleListener["AddedToGroup"] = "onAddedToGroup";
     SimpleListener["Battery"] = "onBattery";
@@ -361,34 +362,8 @@ var Client = (function () {
     };
     Client.prototype.onMessage = function (fn) {
         return __awaiter(this, void 0, void 0, function () {
-            var funcName, set, exists;
-            var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        funcName = SimpleListener.Message;
-                        this._listeners[funcName] = fn;
-                        set = function () { return _this.pup(function (_a) {
-                            var funcName = _a.funcName;
-                            WAPI.waitNewMessages(false, function (data) {
-                                data.forEach(function (message) {
-                                    window[funcName](message);
-                                });
-                            });
-                        }, { funcName: funcName }); };
-                        return [4, this.pup(function (_a) {
-                                var funcName = _a.funcName;
-                                return window[funcName] ? true : false;
-                            }, { funcName: funcName })];
-                    case 1:
-                        exists = _a.sent();
-                        if (!exists) return [3, 3];
-                        return [4, set()];
-                    case 2: return [2, _a.sent()];
-                    case 3:
-                        this._page.exposeFunction(funcName, function (message) { return fn(message); }).then(set).catch(function (e) { return set; });
-                        return [2];
-                }
+                return [2, this.registerListener(SimpleListener.Message, fn)];
             });
         });
     };
@@ -396,6 +371,13 @@ var Client = (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2, this.registerListener(SimpleListener.AnyMessage, fn)];
+            });
+        });
+    };
+    Client.prototype.onMessageDeleted = function (fn) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2, this.registerListener(SimpleListener.MessageDeleted, fn)];
             });
         });
     };
@@ -917,10 +899,10 @@ var Client = (function () {
             });
         });
     };
-    Client.prototype.sendFile = function (to, file, filename, caption, quotedMsgId, waitForId) {
+    Client.prototype.sendFile = function (to, file, filename, caption, quotedMsgId, waitForId, ptt) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.sendImage(to, file, filename, caption, quotedMsgId, waitForId)];
+                return [2, this.sendImage(to, file, filename, caption, quotedMsgId, waitForId, ptt)];
             });
         });
     };
@@ -928,6 +910,13 @@ var Client = (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2, this.sendImage(to, file, 'ptt.ogg', '', quotedMsgId, true, true)];
+            });
+        });
+    };
+    Client.prototype.sendAudio = function (to, file, quotedMsgId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2, this.sendPtt(to, file, quotedMsgId)];
             });
         });
     };
@@ -970,7 +959,7 @@ var Client = (function () {
             });
         });
     };
-    Client.prototype.sendFileFromUrl = function (to, url, filename, caption, quotedMsgId, requestConfig, waitForId) {
+    Client.prototype.sendFileFromUrl = function (to, url, filename, caption, quotedMsgId, requestConfig, waitForId, ptt) {
         if (requestConfig === void 0) { requestConfig = {}; }
         return __awaiter(this, void 0, void 0, function () {
             var base64, error_4;
@@ -981,8 +970,7 @@ var Client = (function () {
                         return [4, getDUrl(url, requestConfig)];
                     case 1:
                         base64 = _a.sent();
-                        console.log("base64", base64.substr(0, 20));
-                        return [4, this.sendFile(to, base64, filename, caption, quotedMsgId, waitForId)];
+                        return [4, this.sendFile(to, base64, filename, caption, quotedMsgId, waitForId, ptt)];
                     case 2: return [2, _a.sent()];
                     case 3:
                         error_4 = _a.sent();
@@ -1397,6 +1385,16 @@ var Client = (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4, this.pup(function (messageId) { return WAPI.getMessageById(messageId); }, messageId)];
+                    case 1: return [2, _a.sent()];
+                }
+            });
+        });
+    };
+    Client.prototype.getMyLastMessage = function (chatId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, this.pup(function (chatId) { return WAPI.getMyLastMessage(chatId); }, chatId)];
                     case 1: return [2, _a.sent()];
                 }
             });

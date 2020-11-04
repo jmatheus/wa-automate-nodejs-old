@@ -50,6 +50,8 @@ var STATE;
     STATE["UNLAUNCHED"] = "UNLAUNCHED";
     STATE["UNPAIRED"] = "UNPAIRED";
     STATE["UNPAIRED_IDLE"] = "UNPAIRED_IDLE";
+    STATE["SYNCING"] = "SYNCING";
+    STATE["DISCONNECTED"] = "DISCONNECTED";
 })(STATE = exports.STATE || (exports.STATE = {}));
 ;
 __exportStar(require("./config"), exports);

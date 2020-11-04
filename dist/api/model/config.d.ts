@@ -48,6 +48,7 @@ export interface ConfigObject {
     bypassCSP?: boolean;
     chromiumArgs?: string[];
     skipBrokenMethodsCheck?: boolean;
+    skipUpdateCheck?: boolean;
     sessionId?: string;
     licenseKey?: string | string[];
     customUserAgent?: string;
@@ -78,6 +79,11 @@ export interface ConfigObject {
     qrFormat?: QRFormat;
     hostNotificationLang?: NotificationLanguage;
     blockAssets?: boolean;
+    keepUpdated?: boolean;
+    viewport?: {
+        width?: number;
+        height?: number;
+    };
     corsFix?: boolean;
     [x: string]: any;
 }

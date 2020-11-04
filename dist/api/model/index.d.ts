@@ -34,6 +34,8 @@ export declare enum STATE {
     TOS_BLOCK = "TOS_BLOCK",
     UNLAUNCHED = "UNLAUNCHED",
     UNPAIRED = "UNPAIRED",
-    UNPAIRED_IDLE = "UNPAIRED_IDLE"
+    UNPAIRED_IDLE = "UNPAIRED_IDLE",
+    SYNCING = "SYNCING",
+    DISCONNECTED = "DISCONNECTED"
 }
 export * from './config';

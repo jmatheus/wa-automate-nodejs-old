@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getConfigFromProcessEnv = exports.getConfigWithCase = void 0;
+exports.getConfigWithCase = void 0;
 var tsj = require("ts-json-schema-generator");
 var change_case_1 = require("change-case");
 var defaultConfig = {
@@ -48,15 +48,4 @@ exports.getConfigWithCase = function (config) {
     });
     var configWithCases = configs.map(function (o) { return (__assign({ env: "WA_" + change_case_1.constantCase(o.key), p: change_case_1.paramCase(o.key) }, o)); });
     return configWithCases;
-};
-exports.getConfigFromProcessEnv = function (json) {
-    var output = {};
-    json.forEach(function (_a) {
-        var env = _a.env, key = _a.key;
-        if (process.env[env])
-            output[key] = process.env[env];
-        if (process.env[env] === 'true' || process.env[env] === 'false')
-            output[key] = Boolean(process.env[env]);
-    });
-    return output;
 };

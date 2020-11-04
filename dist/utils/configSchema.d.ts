@@ -3,4 +3,3 @@ export declare const getConfigWithCase: (config?: {
     tsconfig: string;
     type: string;
 }) => any[];
-export declare const getConfigFromProcessEnv: (json: any) => {};

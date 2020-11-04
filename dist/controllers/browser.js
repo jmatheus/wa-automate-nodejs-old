@@ -76,55 +76,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.injectApi = exports.initClient = void 0;
 var path = __importStar(require("path"));
 var fs = require('fs');
-var ChromeLauncher = require('chrome-launcher');
 var puppeteer = require('puppeteer-extra');
-var devtools = require('puppeteer-extra-plugin-devtools')();
-var StealthPlugin = require('puppeteer-extra-plugin-stealth');
 var puppeteer_config_1 = require("../config/puppeteer.config");
 var events_1 = require("./events");
 var ON_DEATH = require('death');
-var useProxy = require('puppeteer-page-proxy');
-var storage = require('node-persist');
 var browser;
 function initClient(sessionId, config, customUserAgent) {
-    var _a, _b;
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function () {
         var waPage, cacheEnabled, blockCrashLogs, blockAssets, interceptAuthentication, proxyAddr, quickAuthed, authCompleteEv_1, sessionjsonpath, sessionjson, sd, s;
         var _this = this;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        return __generator(this, function (_e) {
+            switch (_e.label) {
                 case 0:
                     if (config === null || config === void 0 ? void 0 : config.useStealth)
-                        puppeteer.use(StealthPlugin());
+                        puppeteer.use(require('puppeteer-extra-plugin-stealth')());
                     return [4, initBrowser(sessionId, config)];
                 case 1:
-                    browser = _c.sent();
+                    browser = _e.sent();
                     return [4, getWAPage(browser)];
                 case 2:
-                    waPage = _c.sent();
+                    waPage = _e.sent();
                     if (!(config === null || config === void 0 ? void 0 : config.proxyServerCredentials)) return [3, 4];
                     return [4, waPage.authenticate(config.proxyServerCredentials)];
                 case 3:
-                    _c.sent();
-                    _c.label = 4;
+                    _e.sent();
+                    _e.label = 4;
                 case 4: return [4, waPage.setUserAgent(customUserAgent || puppeteer_config_1.useragent)];
                 case 5:
-                    _c.sent();
+                    _e.sent();
                     return [4, waPage.setViewport({
-                            width: puppeteer_config_1.width,
-                            height: puppeteer_config_1.height,
+                            width: ((_a = config === null || config === void 0 ? void 0 : config.viewport) === null || _a === void 0 ? void 0 : _a.width) || puppeteer_config_1.width,
+                            height: ((_b = config === null || config === void 0 ? void 0 : config.viewport) === null || _b === void 0 ? void 0 : _b.height) || puppeteer_config_1.height,
                             deviceScaleFactor: 1
                         })];
                 case 6:
-                    _c.sent();
+                    _e.sent();
                     cacheEnabled = (config === null || config === void 0 ? void 0 : config.cacheEnabled) === false ? false : true;
                     blockCrashLogs = (config === null || config === void 0 ? void 0 : config.blockCrashLogs) === false ? false : true;
                     return [4, waPage.setBypassCSP((config === null || config === void 0 ? void 0 : config.bypassCSP) || false)];
                 case 7:
-                    _c.sent();
+                    _e.sent();
                     return [4, waPage.setCacheEnabled(cacheEnabled)];
                 case 8:
-                    _c.sent();
+                    _e.sent();
                     blockAssets = !(config === null || config === void 0 ? void 0 : config.headless) ? false : (config === null || config === void 0 ? void 0 : config.blockAssets) || false;
                     if (blockAssets) {
                         puppeteer.use(require('puppeteer-extra-plugin-block-resources')({
@@ -132,7 +127,7 @@ function initClient(sessionId, config, customUserAgent) {
                         }));
                     }
                     interceptAuthentication = !(config === null || config === void 0 ? void 0 : config.safeMode);
-                    proxyAddr = (config === null || config === void 0 ? void 0 : config.proxyServerCredentials) ? "" + (((_a = config.proxyServerCredentials) === null || _a === void 0 ? void 0 : _a.username) && ((_b = config.proxyServerCredentials) === null || _b === void 0 ? void 0 : _b.password) ? (config.proxyServerCredentials.protocol ||
+                    proxyAddr = (config === null || config === void 0 ? void 0 : config.proxyServerCredentials) ? "" + (((_c = config.proxyServerCredentials) === null || _c === void 0 ? void 0 : _c.username) && ((_d = config.proxyServerCredentials) === null || _d === void 0 ? void 0 : _d.password) ? (config.proxyServerCredentials.protocol ||
                         config.proxyServerCredentials.address.includes('https') ? 'https' :
                         config.proxyServerCredentials.address.includes('http') ? 'http' :
                             config.proxyServerCredentials.address.includes('socks5') ? 'socks5' :
@@ -146,7 +141,7 @@ function initClient(sessionId, config, customUserAgent) {
                     if (!(interceptAuthentication || proxyAddr || blockCrashLogs)) return [3, 10];
                     return [4, waPage.setRequestInterception(true)];
                 case 9:
-                    _c.sent();
+                    _e.sent();
                     authCompleteEv_1 = new events_1.EvEmitter(sessionId, 'AUTH');
                     waPage.on('request', function (request) { return __awaiter(_this, void 0, void 0, function () {
                         return __generator(this, function (_a) {
@@ -166,14 +161,14 @@ function initClient(sessionId, config, customUserAgent) {
                                         request.abort();
                                     }
                                     else if (proxyAddr)
-                                        useProxy(request, proxyAddr);
+                                        require('puppeteer-page-proxy')(request, proxyAddr);
                                     else
                                         request.continue();
                                     return [2];
                             }
                         });
                     }); });
-                    _c.label = 10;
+                    _e.label = 10;
                 case 10:
                     sessionjsonpath = ((config === null || config === void 0 ? void 0 : config.sessionDataPath) && (config === null || config === void 0 ? void 0 : config.sessionDataPath.includes('.data.json'))) ? path.join(path.resolve(process.cwd(), (config === null || config === void 0 ? void 0 : config.sessionDataPath) || '')) : path.join(path.resolve(process.cwd(), (config === null || config === void 0 ? void 0 : config.sessionDataPath) || ''), (sessionId || 'session') + ".data.json");
                     sessionjson = '';
@@ -194,18 +189,18 @@ function initClient(sessionId, config, customUserAgent) {
                             Object.keys(session).forEach(function (key) { return localStorage.setItem(key, session[key]); });
                         }, sessionjson)];
                 case 11:
-                    _c.sent();
-                    _c.label = 12;
+                    _e.sent();
+                    _e.label = 12;
                 case 12:
                     if (!(config === null || config === void 0 ? void 0 : config.proxyServerCredentials)) return [3, 14];
-                    return [4, useProxy(waPage, proxyAddr)];
+                    return [4, require('puppeteer-page-proxy')(waPage, proxyAddr)];
                 case 13:
-                    _c.sent();
+                    _e.sent();
                     console.log("Active proxy: " + config.proxyServerCredentials.address);
-                    _c.label = 14;
+                    _e.label = 14;
                 case 14: return [4, waPage.goto(puppeteer_config_1.puppeteerConfig.WAUrl)];
                 case 15:
-                    _c.sent();
+                    _e.sent();
                     return [2, waPage];
             }
         });
@@ -245,11 +240,12 @@ exports.injectApi = injectApi;
 function initBrowser(sessionId, config) {
     if (config === void 0) { config = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var _savedPath, browserFetcher, browserDownloadSpinner_1, revisionInfo, error_1, args, browser, _a, tunnel;
+        var storage, _savedPath, browserFetcher, browserDownloadSpinner_1, revisionInfo, error_1, args, browser, _a, devtools, tunnel;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     if (!((config === null || config === void 0 ? void 0 : config.useChrome) && !(config === null || config === void 0 ? void 0 : config.executablePath))) return [3, 5];
+                    storage = require('node-persist');
                     return [4, storage.init()];
                 case 1:
                     _b.sent();
@@ -257,7 +253,7 @@ function initBrowser(sessionId, config) {
                 case 2:
                     _savedPath = _b.sent();
                     if (!!_savedPath) return [3, 4];
-                    config.executablePath = ChromeLauncher.Launcher.getInstallations()[0];
+                    config.executablePath = require('chrome-launcher').Launcher.getInstallations()[0];
                     return [4, storage.setItem('executablePath', config.executablePath)];
                 case 3:
                     _b.sent();
@@ -305,6 +301,7 @@ function initBrowser(sessionId, config) {
                 case 13:
                     browser = _a;
                     if (config && config.devtools) {
+                        devtools = require('puppeteer-extra-plugin-devtools')();
                         if (config.devtools.user && config.devtools.pass)
                             devtools.setAuthCredentials(config.devtools.user, config.devtools.pass);
                         try {

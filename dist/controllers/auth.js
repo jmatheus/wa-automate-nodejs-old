@@ -58,16 +58,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.retrieveQR = exports.phoneIsOutOfReach = exports.isInsideChat = exports.needsToScan = exports.isAuthenticated = void 0;
 var qrcode = __importStar(require("qrcode-terminal"));
 var rxjs_1 = require("rxjs");
-var operators_1 = require("rxjs/operators");
+var take_1 = require("rxjs/internal/operators/take");
 var events_1 = require("./events");
 var model_1 = require("../api/model");
-exports.isAuthenticated = function (waPage) { return rxjs_1.merge(exports.needsToScan(waPage), exports.isInsideChat(waPage)).pipe(operators_1.take(1)).toPromise(); };
+exports.isAuthenticated = function (waPage) { return rxjs_1.merge(exports.needsToScan(waPage), exports.isInsideChat(waPage)).pipe(take_1.take(1)).toPromise(); };
 exports.needsToScan = function (waPage) {
-    return rxjs_1.from(waPage
-        .waitForSelector('body > div > div > .landing-wrapper', {
-        timeout: 0
-    })
-        .then(function () { return false; }));
+    return rxjs_1.from(new Promise(function (resolve) { return __awaiter(void 0, void 0, void 0, function () {
+        var ident;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    ident = function () { return waPage.evaluate("((()=>{\n      if(window.localStorage['old-logout-cred']==='null'){\n      if(window.Store && window.Store.State) {window.Store.State.default.state=\"UNPAIRED\";window.Store.State.default.run();} return true;\n      } return false;\n      })());"); };
+                    return [4, Promise.race([
+                            waPage.waitForFunction("window.localStorage['old-logout-cred']=='null'", { timeout: 0, polling: 100 }),
+                            ident()
+                        ])];
+                case 1:
+                    _a.sent();
+                    return [4, ident()];
+                case 2:
+                    _a.sent();
+                    return [4, waPage
+                            .waitForSelector('body > div > div > .landing-wrapper', {
+                            timeout: 0
+                        })];
+                case 3:
+                    _a.sent();
+                    resolve(false);
+                    return [2];
+            }
+        });
+    }); }));
 };
 exports.isInsideChat = function (waPage) {
     return rxjs_1.from(waPage
