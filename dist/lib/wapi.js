@@ -667,12 +667,9 @@ WAPI.iAmAdmin = async function(){
  * Returns an object with all of your host device details
  */
 window.WAPI.getMe = function(){
-    return {...WAPI.quickClean({
-        ...Store.Contact.get(Store.Me.wid).attributes,
-        ...Store.Me.attributes
-    }),
-    me:Store.Me.me};
-}
+  const rawMe = window.Store.Contact.get(window.Store.Conn.wid);
+  return rawMe.all;
+};
 
 window.WAPI.isLoggedIn = function () {
     // Contact always exists when logged in
