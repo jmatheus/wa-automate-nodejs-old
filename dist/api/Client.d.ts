@@ -15,20 +15,14 @@ export declare enum namespace {
 }
 export declare enum SimpleListener {
     Message = "onMessage",
-    AnyMessage = "onAnyMessage",
     MessageDeleted = "onMessageDeleted",
     Ack = "onAck",
-    AddedToGroup = "onAddedToGroup",
     Battery = "onBattery",
     ChatOpened = "onChatOpened",
     IncomingCall = "onIncomingCall",
-    GlobalParicipantsChanged = "onGlobalParicipantsChanged",
     ChatState = "onChatState",
     Plugged = "onPlugged",
-    StateChanged = "onStateChanged",
-    Story = "onStory",
-    RemovedFromGroup = "onRemovedFromGroup",
-    ContactAdded = "onContactAdded"
+    StateChanged = "onStateChanged"
 }
 export declare class Client {
     private _loadedModules;
@@ -91,20 +85,20 @@ export declare class Client {
     private pup;
     private registerListener;
     onMessage(fn: (message: Message) => void): Promise<any>;
-    onAnyMessage(fn: (message: Message) => void): Promise<any>;
+    onAnyMessage(fn: (message: Message) => void): Promise<void>;
     onMessageDeleted(fn: (message: Message) => void): Promise<any>;
     onBattery(fn: (battery: number) => void): Promise<any>;
     onPlugged(fn: (plugged: boolean) => void): Promise<any>;
-    onStory(fn: (story: any) => void): Promise<any>;
+    onStory(fn: (story: any) => void): Promise<void>;
     onStateChanged(fn: (state: string) => void): Promise<any>;
     onIncomingCall(fn: (call: any) => void): Promise<any>;
     onChatState(fn: (chatState: any) => void): Promise<any>;
     onAck(fn: (message: Message) => void): Promise<any>;
-    onGlobalParicipantsChanged(fn: (participantChangedEvent: ParticipantChangedEventModel) => void): Promise<any>;
-    onAddedToGroup(fn: (chat: Chat) => any): Promise<any>;
-    onRemovedFromGroup(fn: (chat: Chat) => any): Promise<any>;
+    onGlobalParicipantsChanged(fn: (participantChangedEvent: ParticipantChangedEventModel) => void): Promise<void>;
+    onAddedToGroup(fn: (chat: Chat) => any): Promise<void>;
+    onRemovedFromGroup(fn: (chat: Chat) => any): Promise<void>;
     onChatOpened(fn: (chat: Chat) => any): Promise<any>;
-    onContactAdded(fn: (chat: Chat) => any): Promise<any>;
+    onContactAdded(fn: (chat: Chat) => any): Promise<void>;
     onParticipantsChanged(groupId: GroupChatId, fn: (participantChangedEvent: ParticipantChangedEventModel) => void, useLegancyMethod?: boolean): Promise<any>;
     onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveLocationChangedEvent) => void): Promise<any>;
     setPresence(available: boolean): Promise<any>;

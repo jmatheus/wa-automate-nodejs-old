@@ -118,20 +118,14 @@ var namespace;
 var SimpleListener;
 (function (SimpleListener) {
     SimpleListener["Message"] = "onMessage";
-    SimpleListener["AnyMessage"] = "onAnyMessage";
     SimpleListener["MessageDeleted"] = "onMessageDeleted";
     SimpleListener["Ack"] = "onAck";
-    SimpleListener["AddedToGroup"] = "onAddedToGroup";
     SimpleListener["Battery"] = "onBattery";
     SimpleListener["ChatOpened"] = "onChatOpened";
     SimpleListener["IncomingCall"] = "onIncomingCall";
-    SimpleListener["GlobalParicipantsChanged"] = "onGlobalParicipantsChanged";
     SimpleListener["ChatState"] = "onChatState";
     SimpleListener["Plugged"] = "onPlugged";
     SimpleListener["StateChanged"] = "onStateChanged";
-    SimpleListener["Story"] = "onStory";
-    SimpleListener["RemovedFromGroup"] = "onRemovedFromGroup";
-    SimpleListener["ContactAdded"] = "onContactAdded";
 })(SimpleListener = exports.SimpleListener || (exports.SimpleListener = {}));
 function getDUrl(url, optionsOverride) {
     if (optionsOverride === void 0) { optionsOverride = {}; }
@@ -260,7 +254,7 @@ var Client = (function () {
     Client.prototype.refresh = function () {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var me, data;
+            var me;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -274,27 +268,16 @@ var Client = (function () {
                         return [4, this._reInjectWapi()];
                     case 3:
                         _b.sent();
-                        if (!((_a = this._createConfig) === null || _a === void 0 ? void 0 : _a.licenseKey)) return [3, 8];
+                        if (!((_a = this._createConfig) === null || _a === void 0 ? void 0 : _a.licenseKey)) return [3, 5];
                         return [4, this.getMe()];
                     case 4:
                         me = (_b.sent()).me;
-                        return [4, axios_1.default.post(pkg.licenseCheckUrl, __assign({ key: this._createConfig.licenseKey, number: me._serialized }, this._sessionInfo))];
-                    case 5:
-                        data = (_b.sent()).data;
-                        if (!data) return [3, 7];
-                        return [4, this._page.evaluate(function (data) { return eval(data); }, data)];
+                        _b.label = 5;
+                    case 5: return [4, this._page.evaluate('Object.freeze(window.WAPI)')];
                     case 6:
                         _b.sent();
-                        console.log('License Valid');
-                        return [3, 8];
-                    case 7:
-                        console.log('Invalid license key');
-                        _b.label = 8;
-                    case 8: return [4, this._page.evaluate('Object.freeze(window.WAPI)')];
-                    case 9:
-                        _b.sent();
                         return [4, this._reRegisterListeners()];
-                    case 10:
+                    case 7:
                         _b.sent();
                         return [2, true];
                 }
@@ -396,7 +379,7 @@ var Client = (function () {
     Client.prototype.onAnyMessage = function (fn) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.registerListener(SimpleListener.AnyMessage, fn)];
+                return [2];
             });
         });
     };
@@ -424,7 +407,7 @@ var Client = (function () {
     Client.prototype.onStory = function (fn) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.registerListener(SimpleListener.Story, fn)];
+                return [2];
             });
         });
     };
@@ -459,21 +442,21 @@ var Client = (function () {
     Client.prototype.onGlobalParicipantsChanged = function (fn) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.registerListener(SimpleListener.GlobalParicipantsChanged, fn)];
+                return [2];
             });
         });
     };
     Client.prototype.onAddedToGroup = function (fn) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.registerListener(SimpleListener.AddedToGroup, fn)];
+                return [2];
             });
         });
     };
     Client.prototype.onRemovedFromGroup = function (fn) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.registerListener(SimpleListener.RemovedFromGroup, fn)];
+                return [2];
             });
         });
     };
@@ -487,7 +470,7 @@ var Client = (function () {
     Client.prototype.onContactAdded = function (fn) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.registerListener(SimpleListener.ChatOpened, fn)];
+                return [2];
             });
         });
     };

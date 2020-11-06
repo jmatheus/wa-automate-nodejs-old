@@ -43,14 +43,14 @@ export enum namespace {
 
 export enum SimpleListener {
   Message = 'onMessage',
-  AnyMessage = 'onAnyMessage',
+  //AnyMessage = 'onAnyMessage',
   MessageDeleted = 'onMessageDeleted',
   Ack = 'onAck',
-  AddedToGroup = 'onAddedToGroup',
+  //AddedToGroup = 'onAddedToGroup',
   Battery = 'onBattery',
   ChatOpened = 'onChatOpened',
   IncomingCall = 'onIncomingCall',
-  GlobalParicipantsChanged = 'onGlobalParicipantsChanged',
+  //GlobalParicipantsChanged = 'onGlobalParicipantsChanged',
   ChatState = 'onChatState',
   // Next two require extra params so not available to use via webhook register
   // LiveLocation = 'onLiveLocation',
@@ -58,9 +58,9 @@ export enum SimpleListener {
   Plugged = 'onPlugged',
   StateChanged = 'onStateChanged',
   //require licences
-  Story = 'onStory',
-  RemovedFromGroup = 'onRemovedFromGroup',
-  ContactAdded = 'onContactAdded',
+  //Story = 'onStory',
+  //RemovedFromGroup = 'onRemovedFromGroup',
+  //ContactAdded = 'onContactAdded',
 }
 
 /**
@@ -434,7 +434,7 @@ export class Client {
    * @fires [[Message]] 
    */
   public async onAnyMessage(fn: (message: Message) => void) {
-    return this.registerListener(SimpleListener.AnyMessage, fn);
+  //return this.registerListener(SimpleListener.AnyMessage, fn);
   }
   /**
    * [REQUIRES AN INSIDERS LICENSE-KEY](https://gumroad.com/l/BTMt?tier=Insiders%20Program)
@@ -487,7 +487,7 @@ export class Client {
    * ```
    */
   public async onStory(fn: (story: any) => void) {
-    return this.registerListener(SimpleListener.Story, fn);
+  //return this.registerListener(SimpleListener.Story, fn);
   }
 
   /**
@@ -548,7 +548,7 @@ export class Client {
    * @returns Observable stream of participantChangedEvent
    */
   public async onGlobalParicipantsChanged(fn: (participantChangedEvent: ParticipantChangedEventModel) => void) {
-    return this.registerListener(SimpleListener.GlobalParicipantsChanged, fn);
+  //return this.registerListener(SimpleListener.GlobalParicipantsChanged, fn);
   }
 
 
@@ -560,7 +560,7 @@ export class Client {
    * @returns Observable stream of Chats
    */
   public async onAddedToGroup(fn: (chat: Chat) => any) {
-    return this.registerListener(SimpleListener.AddedToGroup, fn);
+  //return this.registerListener(SimpleListener.AddedToGroup, fn);
   }
   
 
@@ -574,7 +574,7 @@ export class Client {
    * @returns Observable stream of Chats
    */
   public async onRemovedFromGroup(fn: (chat: Chat) => any) {
-    return this.registerListener(SimpleListener.RemovedFromGroup, fn);
+  //return this.registerListener(SimpleListener.RemovedFromGroup, fn);
   }
 
   /**
@@ -600,7 +600,7 @@ export class Client {
    * @returns Observable stream of contact ids
    */
   public async onContactAdded(fn: (chat: Chat) => any) {
-    return this.registerListener(SimpleListener.ChatOpened, fn);
+  //return this.registerListener(SimpleListener.ChatOpened, fn);
   }
 
   // cOMPLEX LISTENERS
