@@ -667,7 +667,7 @@ WAPI.iAmAdmin = async function(){
  * Returns an object with all of your host device details
  */
 window.WAPI.getMe = function(){
-  window.Store.Contact.get(window.Store.Conn.me).id;
+  return window.Store.Contact.get(window.Store.Conn.wid).id;
 };
 
 window.WAPI.isLoggedIn = function () {
