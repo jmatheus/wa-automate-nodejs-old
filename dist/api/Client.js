@@ -206,6 +206,7 @@ var Client = (function () {
                 });
             }); };
         };
+        console.log("Init Client constructor");
         this._page = page;
         this._createConfig = createConfig || {};
         this._loadedModules = [];

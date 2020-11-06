@@ -293,6 +293,7 @@ export class Client {
    * @param page [Page] [Puppeteer Page]{@link https://pptr.dev/#?product=Puppeteer&version=v2.1.1&show=api-class-page} running WA Web
    */
   constructor(page: Page, createConfig: ConfigObject, sessionInfo: SessionInfo) {
+    console.log("Init Client constructor");
     this._page = page;
     this._createConfig = createConfig || {};
     this._loadedModules = [];
