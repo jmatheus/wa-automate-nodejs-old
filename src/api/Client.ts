@@ -335,11 +335,6 @@ export class Client {
      await this._reInjectWapi();
      if (this._createConfig?.licenseKey) {
       const { me } = await this.getMe();
-      const { data } = await axios.post(pkg.licenseCheckUrl, { key: this._createConfig.licenseKey, number: me._serialized, ...this._sessionInfo });
-      if (data) {
-        await this._page.evaluate(data => eval(data), data);
-        console.log('License Valid');
-      } else console.log('Invalid license key');
     }
     await this._page.evaluate('Object.freeze(window.WAPI)');
     await this._reRegisterListeners();
