@@ -177,14 +177,6 @@ function create(_sessionId, config, customUserAgent) {
                     return [4, waPage.browser().version()];
                 case 8:
                     BROWSER_VERSION = _d.sent();
-                    waPage
-                        .on('console', function (message) { return console.log(message.type().substr(0, 3).toUpperCase() + " " + message.text()); })
-                        .on('pageerror', function (_a) {
-                        var message = _a.message;
-                        return console.log(message);
-                    })
-                        .on('response', function (response) { return console.log(response.status() + " " + response.url()); })
-                        .on('requestfailed', function (request) { return console.log(request.failure().errorText + " " + request.url()); });
                     WA_AUTOMATE_VERSION = "" + pkg.version + ((notifier === null || notifier === void 0 ? void 0 : notifier.update) ? " UPDATE AVAILABLE: " + (notifier === null || notifier === void 0 ? void 0 : notifier.update.latest) : '');
                     return [4, waPage.evaluate(function () { return window.Debug ? window.Debug.VERSION : 'I think you have been TOS_BLOCKed'; })];
                 case 9:

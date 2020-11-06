@@ -125,11 +125,11 @@ export async function create(_sessionId?: string | ConfigObject, config?: Config
 
     const PAGE_UA = await waPage.evaluate('navigator.userAgent');
     const BROWSER_VERSION = await waPage.browser().version();
-    waPage
-    .on('console', message => console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
-    .on('pageerror', ({ message }) => console.log(message))
-    .on('response', response => console.log(`${response.status()} ${response.url()}`))
-    .on('requestfailed', request => console.log(`${request.failure().errorText} ${request.url()}`))
+    //waPage
+    //.on('console', message => console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
+    //.on('pageerror', ({ message }) => console.log(message))
+    //.on('response', response => console.log(`${response.status()} ${response.url()}`))
+    //.on('requestfailed', request => console.log(`${request.failure().errorText} ${request.url()}`))
 
     const WA_AUTOMATE_VERSION = `${pkg.version}${notifier?.update ? ` UPDATE AVAILABLE: ${notifier?.update.latest}` : ''}`;
     //@ts-ignore
