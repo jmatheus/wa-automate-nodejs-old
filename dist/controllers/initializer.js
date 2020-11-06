@@ -86,7 +86,7 @@ var tools_1 = require("../utils/tools");
 var shouldLoop = true, qrDelayTimeout, axios;
 function create(_sessionId, config, customUserAgent) {
     return __awaiter(this, void 0, void 0, function () {
-        var START_TIME, waPage, notifier, sessionId, result, prettyFont, popupaddr, spinner, throwOnError_1, PAGE_UA, BROWSER_VERSION, WA_AUTOMATE_VERSION, WA_VERSION, canInjectEarly, debugInfo, authRace, authenticated, outOfReach, autoRefresh_1, qrLogSkip_1, qrLoop_1, qrSpin, race, result, pre, VALID_SESSION, localStorage_1, _a, _b, sessionjsonpath, sessionData, sdB64, pureWAPI, _c, LAUNCH_TIME_MS, data, client, me, error_1;
+        var START_TIME, waPage, notifier, sessionId, result, prettyFont, popupaddr, spinner, throwOnError_1, PAGE_UA, BROWSER_VERSION, WA_AUTOMATE_VERSION, WA_VERSION, canInjectEarly, debugInfo, authRace, authenticated, outOfReach, autoRefresh_1, qrLogSkip_1, qrLoop_1, qrSpin, race, result, pre, VALID_SESSION, localStorage_1, _a, _b, sessionjsonpath, sessionData, sdB64, pureWAPI, _c, LAUNCH_TIME_MS, data, client, error_1;
         var _this = this;
         return __generator(this, function (_d) {
             switch (_d.label) {
@@ -161,7 +161,7 @@ function create(_sessionId, config, customUserAgent) {
                     spinner = new events_1.Spin(sessionId, 'STARTUP', config === null || config === void 0 ? void 0 : config.disableSpins);
                     _d.label = 5;
                 case 5:
-                    _d.trys.push([5, 44, , 46]);
+                    _d.trys.push([5, 43, , 45]);
                     qrDelayTimeout = undefined;
                     shouldLoop = true;
                     events_1.ev.on('AUTH.**', function (isAuthenticated, sessionId) { return shouldLoop = false; });
@@ -302,7 +302,7 @@ function create(_sessionId, config, customUserAgent) {
                 case 25: return [4, waPage.evaluate(function () { return window.Store && window.Store.Msg ? true : false; })];
                 case 26:
                     VALID_SESSION = _d.sent();
-                    if (!VALID_SESSION) return [3, 40];
+                    if (!VALID_SESSION) return [3, 39];
                     spinner.succeed('Client is ready');
                     _b = (_a = JSON).parse;
                     return [4, waPage.evaluate(function () {
@@ -391,29 +391,26 @@ function create(_sessionId, config, customUserAgent) {
                     _d.label = 38;
                 case 38:
                     client = new Client_1.Client(waPage, config, debugInfo);
-                    return [4, client.getMe()];
-                case 39:
-                    me = (_d.sent()).me;
-                    spinner.succeed("\uD83D\uDE80 @OPEN-WA ready for account " + me.id);
+                    spinner.succeed("\uD83D\uDE80 @OPEN-WA ready");
                     spinner.emit('SUCCESS');
                     return [2, client];
-                case 40:
+                case 39:
                     spinner.fail('The session is invalid. Retrying');
                     return [4, kill(waPage)];
-                case 41:
+                case 40:
                     _d.sent();
                     return [4, create(sessionId, config, customUserAgent)];
-                case 42: return [2, _d.sent()];
-                case 43: return [3, 46];
-                case 44:
+                case 41: return [2, _d.sent()];
+                case 42: return [3, 45];
+                case 43:
                     error_1 = _d.sent();
                     spinner.emit(error_1.message);
                     return [4, kill(waPage)];
-                case 45:
+                case 44:
                     _d.sent();
                     spinner.remove();
                     throw error_1;
-                case 46: return [2];
+                case 45: return [2];
             }
         });
     });

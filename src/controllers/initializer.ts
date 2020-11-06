@@ -270,8 +270,7 @@ export async function create(_sessionId?: string | ConfigObject, config?: Config
         spinner.succeed('Patches Installed')
       }
       const client = new Client(waPage, config, debugInfo);
-      const { me } = await client.getMe();
-      spinner.succeed(`🚀 @OPEN-WA ready for account ${me.id}`);
+      spinner.succeed(`🚀 @OPEN-WA ready`);
       spinner.emit('SUCCESS');
       return client;
     }
