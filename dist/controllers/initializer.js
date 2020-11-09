@@ -136,7 +136,7 @@ function create(_sessionId, config, customUserAgent) {
                     }
                     if (sessionId === '' || (config === null || config === void 0 ? void 0 : config.sessionId))
                         sessionId = (config === null || config === void 0 ? void 0 : config.sessionId) || 'session';
-                    prettyFont = cfonts_1.default.render(('MKZAP PACKAGE'), {
+                    prettyFont = cfonts_1.default.render(('MKZAP|PACKAGE'), {
                         font: '3d',
                         color: 'candy',
                         align: 'center',
