@@ -102,7 +102,7 @@ export async function create(_sessionId?: string | ConfigObject, config?: Config
   });
 
   console.log(config?.disableSpins ? boxen([
-    `@open-wa/wa-automate   `,
+    `MKZAP`,
     `${pkg.description}`, //.replace(' 💬 🤖 ','')
     `Version: ${pkg.version}   `,
     `Check out the latest changes: https://github.com/open-wa/wa-automate-nodejs#latest-changes   `,

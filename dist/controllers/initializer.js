@@ -144,7 +144,7 @@ function create(_sessionId, config, customUserAgent) {
                         lineHeight: 3
                     });
                     console.log((config === null || config === void 0 ? void 0 : config.disableSpins) ? boxen([
-                        "@open-wa/wa-automate   ",
+                        "MKZAP",
                         "" + pkg.description,
                         "Version: " + pkg.version + "   ",
                         "Check out the latest changes: https://github.com/open-wa/wa-automate-nodejs#latest-changes   ",
