@@ -93,7 +93,7 @@ export async function create(_sessionId?: string | ConfigObject, config?: Config
   }
   if(sessionId ===  '' || config?.sessionId) sessionId = config?.sessionId || 'session';
 
-  const prettyFont = CFonts.render(('MKZAP|PACKAGE'), {
+  const prettyFont = CFonts.render(('MKZAP'), {
     font: '3d',
     color: 'candy',
     align: 'center',
