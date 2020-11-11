@@ -148,6 +148,7 @@ window.WAPI._serializeContactObj = (obj) => {
     return Object.assign(window.WAPI._serializeRawObj(obj), {
         id: obj.id._serialized,
         formattedName: obj.formattedName,
+        displayName: obj.displayName,
         isHighLevelVerified: obj.isHighLevelVerified,
         isMe: obj.isMe,
         isMyContact: obj.isMyContact,
