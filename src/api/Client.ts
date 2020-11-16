@@ -130,6 +130,7 @@ declare module WAPI {
   const getSingleProperty: (namespace: string, id: string, property : string) => any;
   const sendMessage: (to: string, content: string) => Promise<string>;
   const sendMessageToID: (id: string, message: string) => any;
+  const sendMessageReturnId: (id: string, message: string) => any;
   const downloadFileWithCredentials: (url: string) => Promise<string>;
   const sendMessageWithMentions: (to: string, content: string) => Promise<string>;
   const tagEveryone: (groupId: string, content: string) => Promise<string>;
@@ -805,7 +806,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
         if (!WAPI.getChat(to)) {
           return WAPI.sendMessageToID(to, content);
         } else {
-          return WAPI.sendMessage(to, content);
+          return WAPI.sendMessageReturnId(to, content);
         }
       },
       { to, content }

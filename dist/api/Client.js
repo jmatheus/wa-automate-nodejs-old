@@ -696,7 +696,7 @@ var Client = (function () {
                                 return WAPI.sendMessageToID(to, content);
                             }
                             else {
-                                return WAPI.sendMessage(to, content);
+                                return WAPI.sendMessageReturnId(to, content);
                             }
                         }, { to: to, content: content })];
                     case 1:
