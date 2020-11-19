@@ -1461,29 +1461,49 @@ window.WAPI.joinGroupViaLink = async function(link){
     return group.id._serialized
 }
 
-window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, quotedMsg, waitForKey, ptt) {
-    if(!chatid.includes('@g')&&!chatid.includes('@c')) return false;
+window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, quotedMsg) {
+    //let extras = {};
+    //if(quotedMsg){
+    //    if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg);
+    //    extras = {
+    //        quotedMsg,
+    //        quotedParticipant: quotedMsg.author || quotedMsg.from,
+    //        quotedStanzaID:quotedMsg.id.id
+    //    };
+    //}
 
-    let extras = {};
-    if(quotedMsg){
-        if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg);
-        extras = {
-            quotedMsg,
-            quotedParticipant: quotedMsg.author || quotedMsg.from,
-            quotedStanzaID:quotedMsg.id.id
-        };
-    }
-    return await Store.Chat.find(chatid).then(async (chat) => {
+    var chat = ch.id ? ch : Store.Chat.get(ch);
+    var chatId = chat.id._serialized;
+    var msgIveSent = chat.msgs.filter(msg => msg.__x_isSentByMe)[0];
+    if(!msgIveSent) return chat.sendMessage(body);
+    var tempMsg = Object.create(msgIveSent);
+    var newId = window.WAPI.getNewMessageId(chatId);
+    var extend = {
+        ack: 0,
+        id: newId,
+        local: !0,
+        self: "out",
+        t: parseInt(new Date().getTime() / 1000),
+        to: new Store.WidFactory.createWid(chatId),
+        isNewMsg: !0,
+        type: "chat",
+        body,
+        quotedMsg:null
+    };
+
+    Object.assign(tempMsg, extend);
+
+    await Store.Chat.find(chatid).then(async (chat) => {
         var mediaBlob = window.WAPI.base64ImageToFile(imgBase64, filename);
         return await window.WAPI.procFiles(chat,mediaBlob).then(async mc => {
           var media = mc.models[0];
           if(ptt) media.mediaPrep._mediaData.type = 'ptt';
-          return await media.sendToChat(chat, { caption,...extras }).then(_ => {
-            return chat.lastReceivedKey._serialized;
-          });
+          return await media.sendToChat(chat, { caption,...extras })
         });
       }
     )
+
+    return newId._serialized;
 }
 
 /**
