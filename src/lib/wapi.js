@@ -833,7 +833,7 @@ window.WAPI.sendMessageToID = async function (id, message) {
   }
 }
 
-window.WAPI.sendMessage = async function (id, message) {
+window.WAPI.sendMessage = async function (to, content) {
   var chat = Store.Chat.get(to);
   if (chat) {
     const newMsgId = await window.WAPI.getNewMessageId(chat.id);
