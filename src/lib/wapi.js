@@ -1595,7 +1595,7 @@ window.WAPI.sendExist = async function(chatId, returnChat = true, Send = true) {
     return scope(chatId, true, 404);
   }
   if (Send) {
-    await window.Store.SendSeen(chat, false);
+    await window.WAPI.sendSeen(chatId);
   }
   if (returnChat) {
     return chat;
