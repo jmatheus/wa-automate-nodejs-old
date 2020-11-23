@@ -836,7 +836,7 @@ var Client = (function () {
         });
     };
     ;
-    Client.prototype.sendImage = function (to, file, filename, caption, quotedMsgId, waitForId, ptt) {
+    Client.prototype.sendImage = function (to, file, filename, caption, type, quotedMsgId, waitForId) {
         return __awaiter(this, void 0, void 0, function () {
             var relativePath, res;
             return __generator(this, function (_a) {
@@ -851,14 +851,14 @@ var Client = (function () {
                         return [3, 3];
                     case 2: throw new Error('Cannot find file. Make sure the file reference is relative or valid DataURL');
                     case 3: return [4, this.pup(function (_a) {
-                            var to = _a.to, file = _a.file, filename = _a.filename, caption = _a.caption, quotedMsgId = _a.quotedMsgId, waitForId = _a.waitForId, ptt = _a.ptt;
+                            var to = _a.to, file = _a.file, filename = _a.filename, caption = _a.caption, quotedMsgId = _a.quotedMsgId, waitForId = _a.waitForId, type = _a.type;
                             if (!WAPI.getChat(to)) {
                                 return 'ERROR: not a valid chat';
                             }
                             else {
-                                return WAPI.sendImage(file, to, filename, caption, quotedMsgId, waitForId, ptt);
+                                return WAPI.sendImage(file, to, filename, caption, type, quotedMsgId, waitForId);
                             }
-                        }, { to: to, file: file, filename: filename, caption: caption, quotedMsgId: quotedMsgId, waitForId: waitForId, ptt: ptt })];
+                        }, { to: to, file: file, filename: filename, caption: caption, quotedMsgId: quotedMsgId, waitForId: waitForId, type: type })];
                     case 4:
                         res = _a.sent();
                         if (ERRORS_ARRAY.includes(res))
@@ -908,17 +908,17 @@ var Client = (function () {
             });
         });
     };
-    Client.prototype.sendFile = function (to, file, filename, caption, quotedMsgId, waitForId, ptt) {
+    Client.prototype.sendFile = function (to, file, filename, caption, type, quotedMsgId, waitForId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.sendImage(to, file, filename, caption, quotedMsgId, waitForId, ptt)];
+                return [2, this.sendImage(to, file, filename, caption, type, quotedMsgId, waitForId)];
             });
         });
     };
     Client.prototype.sendPtt = function (to, file, quotedMsgId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.sendImage(to, file, 'ptt.ogg', '', quotedMsgId, true, true)];
+                return [2, this.sendImage(to, file, 'ptt.ogg', '', 'ptt', quotedMsgId, true)];
             });
         });
     };
@@ -968,7 +968,7 @@ var Client = (function () {
             });
         });
     };
-    Client.prototype.sendFileFromUrl = function (to, url, filename, caption, quotedMsgId, requestConfig, waitForId, ptt) {
+    Client.prototype.sendFileFromUrl = function (to, url, filename, caption, type, quotedMsgId, requestConfig, waitForId) {
         if (requestConfig === void 0) { requestConfig = {}; }
         return __awaiter(this, void 0, void 0, function () {
             var base64, error_4;
@@ -979,7 +979,7 @@ var Client = (function () {
                         return [4, getDUrl(url, requestConfig)];
                     case 1:
                         base64 = _a.sent();
-                        return [4, this.sendFile(to, base64, filename, caption, quotedMsgId, waitForId, ptt)];
+                        return [4, this.sendFile(to, base64, filename, caption, type, quotedMsgId, waitForId)];
                     case 2: return [2, _a.sent()];
                     case 3:
                         error_4 = _a.sent();

@@ -189,9 +189,9 @@ declare module WAPI {
     to: string,
     filename: string,
     caption: string,
+    type: string,
     quotedMsgId?: string,
-    waitForId?: boolean,
-    ptt?: boolean
+    waitForId?: boolean
   ) => Promise<string>;
   const sendMessageWithThumb: (
     thumb: string,
@@ -210,7 +210,8 @@ declare module WAPI {
     base64: string,
     to: string,
     filename: string,
-    caption: string
+    caption: string,
+    type: string
   ) => Promise<string>;
   const sendVideoAsGif: (
     base64: string,
@@ -979,9 +980,9 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     file: DataURL | FilePath,
     filename: string,
     caption: Content,
+    type:string,
     quotedMsgId?: MessageId,
-    waitForId?: boolean,
-    ptt?:boolean
+    waitForId?: boolean
   ) {
     //check if the 'base64' file exists
     if(!isDataURL(file)) {
@@ -993,14 +994,14 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     }
 
     let res = await this.pup(
-      ({ to, file, filename, caption, quotedMsgId, waitForId, ptt}) => {
+      ({ to, file, filename, caption, quotedMsgId, waitForId, type}) => {
         if (!WAPI.getChat(to)) {
           return 'ERROR: not a valid chat';
         } else {
-          return WAPI.sendImage(file, to, filename, caption, quotedMsgId, waitForId, ptt);
+          return WAPI.sendImage(file, to, filename, caption, type, quotedMsgId, waitForId);
         }
       },
-      { to, file, filename, caption, quotedMsgId, waitForId, ptt }
+      { to, file, filename, caption, quotedMsgId, waitForId, type }
     );
     if(ERRORS_ARRAY.includes(res)) console.error(res);
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
@@ -1067,11 +1068,11 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     file: DataURL | FilePath,
     filename: string,
     caption: Content,
+    type:string,
     quotedMsgId?: MessageId,
-    waitForId?: boolean,
-    ptt?:boolean
+    waitForId?: boolean
   ) {
-    return this.sendImage(to, file, filename, caption, quotedMsgId, waitForId, ptt);
+    return this.sendImage(to, file, filename, caption, type, quotedMsgId, waitForId);
   }
 
 
@@ -1087,7 +1088,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     file: DataURL | FilePath,
     quotedMsgId: MessageId,
   ) {
-    return this.sendImage(to, file, 'ptt.ogg', '', quotedMsgId, true, true);
+    return this.sendImage(to, file, 'ptt.ogg', '', 'ptt', quotedMsgId, true);
   }
   
   /**
@@ -1173,14 +1174,14 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     url: string,
     filename: string,
     caption: Content,
+    type:string,
     quotedMsgId?: MessageId,
     requestConfig: any = {},
     waitForId?: boolean,
-    ptt?:boolean
   ) {
     try {
      const base64 = await getDUrl(url, requestConfig);
-      return await this.sendFile(to,base64,filename,caption,quotedMsgId,waitForId,ptt)
+      return await this.sendFile(to,base64,filename,caption,type, quotedMsgId,waitForId)
     } catch(error) {
       console.log('Something went wrong', error);
       throw error;

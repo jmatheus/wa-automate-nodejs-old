@@ -1461,7 +1461,7 @@ window.WAPI.joinGroupViaLink = async function(link){
     return group.id._serialized
 }
 
-window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, quotedMsg, waitForId, ptt) {
+window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, quotedMsg, waitForId, type) {
     //let extras = {};
     //if(quotedMsg){
     //    if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg);
@@ -1474,8 +1474,6 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
 
     var chat = ch.id ? ch : Store.Chat.get(ch);
     var chatId = chat.id._serialized;
-    var msgIveSent = chat.msgs.filter(msg => msg.__x_isSentByMe)[0];
-    if(!msgIveSent) return chat.sendMessage(body);
     var tempMsg = Object.create(msgIveSent);
     var newId = window.WAPI.getNewMessageId(chatId);
     var extend = {
@@ -1486,7 +1484,7 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
         t: parseInt(new Date().getTime() / 1000),
         to: new Store.WidFactory.createWid(chatId),
         isNewMsg: !0,
-        type: "chat",
+        type: type,
         body,
         quotedMsg:null
     };
@@ -1497,7 +1495,7 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
         var mediaBlob = window.WAPI.base64ImageToFile(imgBase64, filename);
         return await window.WAPI.procFiles(chat,mediaBlob).then(async mc => {
           var media = mc.models[0];
-          if(ptt) media.mediaPrep._mediaData.type = 'ptt';
+          if (type != undefined && type != '') media.mediaPrep._mediaData.type = type;
           return await media.sendToChat(chat, { caption,...extras })
         });
       }
