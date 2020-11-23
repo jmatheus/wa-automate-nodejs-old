@@ -1599,7 +1599,7 @@ window.WAPI.sendExist = async function(chatId, returnChat = true, Send = true) {
     let ck = await window.WAPI.checkNumberStatus(chatId);
 
     if (!ck.numberExists) {
-      return scope(chatId, true, ck.status, 'The number does not exist');
+      return WAPI.scope(chatId, true, ck.status, 'The number does not exist');
     }
 
     // Load chat ID for non contact
@@ -1610,7 +1610,7 @@ window.WAPI.sendExist = async function(chatId, returnChat = true, Send = true) {
   }
 
   if (!chat) {
-    return scope(chatId, true, 404);
+    return WAPI.scope(chatId, true, 404);
   }
   if (Send) {
     await window.WAPI.sendSeen(chatId);
@@ -1618,7 +1618,7 @@ window.WAPI.sendExist = async function(chatId, returnChat = true, Send = true) {
   if (returnChat) {
     return chat;
   }
-  return scope(chatId, false, 200);
+  return WAPI.scope(chatId, false, 200);
 }
 
 /**
