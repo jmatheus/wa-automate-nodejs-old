@@ -1474,6 +1474,8 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
 
     var chat = chatid.id ? chatid : Store.Chat.get(chatid);
     var chatId = chat.id._serialized;
+    var msgIveSent = chat.msgs.filter(msg => msg.__x_isSentByMe)[0];
+    if(!msgIveSent) return "ERROR: not a valid chat";
     var tempMsg = Object.create(msgIveSent);
     var newId = window.WAPI.getNewMessageId(chatId);
     var extend = {
