@@ -1472,7 +1472,7 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
     //    };
     //}
 
-    var chat = ch.id ? ch : Store.Chat.get(chatid);
+    var chat = chatid.id ? chatid : Store.Chat.get(chatid);
     var chatId = chat.id._serialized;
     var tempMsg = Object.create(msgIveSent);
     var newId = window.WAPI.getNewMessageId(chatId);
