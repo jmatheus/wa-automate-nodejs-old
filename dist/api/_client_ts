@@ -805,7 +805,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
         if (!WAPI.getChat(to)) {
           return WAPI.sendMessageToID(to, content);
         } else {
-          return WAPI.sendMessageReturnId(to, content);
+          return WAPI.sendMessage(to, content);
         }
       },
       { to, content }

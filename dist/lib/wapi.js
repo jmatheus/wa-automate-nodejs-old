@@ -834,21 +834,44 @@ window.WAPI.sendMessageToID = async function (id, message) {
 }
 
 window.WAPI.sendMessage = async function (id, message) {
-    if(id==='status@broadcast') return 'Not able to send message to broadcast';
-    let chat = WAPI.getChat(id);
+  var chat = Store.Chat.get(to);
+  if (chat) {
+    const newMsgId = await window.WAPI.getNewMessageId(chat.id);
+    const fromwWid = await window.Store.Conn.wid;
+    const message = {
+      id: newMsgId,
+      ack: 0,
+      body: content,
+      from: fromwWid,
+      to: chat.id,
+      local: !0,
+      self: 'out',
+      t: parseInt(new Date().getTime() / 1000),
+      isNewMsg: !0,
+      type: 'chat',
+    };
 
-    if((!chat && !id.includes('g') || chat.msgs.models.length == 0)) {
-        var contact = WAPI.getContact(id)
-        if(!contact || !contact.isMyContact) return 'ERROR: not a contact';
-        await Store.Chat.find(Store.Contact.get(id).id)
-        chat = WAPI.getChat(id);
+    await window.Store.addAndSendMsgToChat(chat, message);
+
+    return newMsgId._serialized;
+  } else {
+    chat = await WAPI.sendExist(to);
+    const message = content;
+    if (!chat.erro) {
+      const result = await chat.sendMessage(message);
+      if (result === 'success' || result === 'OK') {
+        return chat.lastReceivedKey._serialized;
+      } else {
+        const m = { type: 'sendtext', text: message };
+        const To = await WAPI.getchatId(chat.id);
+        const obj = WAPI.scope(To, true, result, null);
+        Object.assign(obj, m);
+        return obj;
+      }
+    } else {
+      return chat;
     }
-
-    if (chat !== undefined) {
-      return await window.Store.SendTextMsgToChat(chat, message).then(_=>chat.lastReceivedKey._serialized);
-    } 
-
-  return 'ERROR: send message';
+  }
 };
 
 
