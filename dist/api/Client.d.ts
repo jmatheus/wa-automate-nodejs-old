@@ -121,7 +121,7 @@ export declare class Client {
     sendLocation(to: ChatId, lat: any, lng: any, loc: string): Promise<string>;
     getGeneratedUserAgent(userA?: string): Promise<string>;
     decryptMedia(message: Message | MessageId): Promise<string | false>;
-    sendImage(to: ChatId, file: DataURL | FilePath, filename: string, caption: Content, type: string, quotedMsgId?: MessageId, waitForId?: boolean): Promise<string>;
+    sendImage(to: ChatId, file: DataURL | FilePath, filename: string, caption: Content, type: string): Promise<string>;
     sendYoutubeLink(to: ChatId, url: string, text?: Content): Promise<string | boolean>;
     sendLinkWithAutoPreview(to: ChatId, url: string, text?: Content): Promise<string | boolean>;
     reply(to: ChatId, content: Content, quotedMsgId: MessageId, sendSeen?: boolean): Promise<string | boolean>;

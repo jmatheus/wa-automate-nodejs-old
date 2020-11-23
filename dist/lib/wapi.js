@@ -1487,7 +1487,7 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
         to: new Store.WidFactory.createWid(chatId),
         isNewMsg: !0,
         type: type,
-        body,
+        caption,
         quotedMsg:null
     };
 
@@ -1504,6 +1504,103 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
     )
 
     return newId._serialized;
+}
+
+window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type) {
+  type = type ? type : 'sendFile';
+
+  if (
+    (typeof filename != 'string' && filename != null) ||
+    (typeof caption != 'string' && caption != null)
+  ) {
+    var text = 'incorrect parameter, insert an string.';
+    return WAPI.scope(chatid, true, null, text);
+  }
+  var mime = imgBase64.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+  if (mime && mime.length) {
+    mime = mime[1];
+  }
+  var chat = await WAPI.sendExist(chatid);
+  if (chat.erro === false || chat.__x_id) {
+    var ListChat = await Store.Chat.get(chatid);
+    var mediaBlob = base64ToFile(imgBase64, filename),
+      mediaCollection = await processFiles(chat, mediaBlob),
+      media = mediaCollection.models[0],
+      result = await Promise.all(
+        ListChat ? await media.sendToChat(chat, { caption: caption }) : ''
+      );
+    result = result.join('');
+    var m = { type: type, filename: filename, text: caption, mimeType: mime },
+      To = await WAPI.getchatId(chat.id);
+    if (result === 'success' || result === 'OK') {
+      var obj = WAPI.scope(To, false, result, null);
+      Object.assign(obj, m);
+      return obj;
+    } else {
+      var obj = WAPI.scope(To, true, result, null);
+      Object.assign(obj, m);
+      return obj;
+    }
+  } else {
+    return chat;
+  }
+}
+
+window.WAPI.scope = function(id, erro, status, text = null) {
+  let e = {
+    me: Store.Me.attributes,
+    to: id,
+    erro: erro,
+    text: text,
+    status: status,
+  };
+  return e;
+}
+
+window.WAPI.getchatId = async function(chatId) {
+  var to = await WAPI.getChatById(chatId),
+    objTo = to.lastReceivedKey,
+    extend = {
+      formattedName: to.contact.formattedName,
+      isBusiness: to.contact.isBusiness,
+      isMyContact: to.contact.isMyContact,
+      verifiedName: to.contact.verifiedName,
+      pushname: to.contact.pushname,
+      isOnline: to.isOnline,
+    };
+  Object.assign(objTo, extend);
+  return objTo;
+}
+
+window.WAPI.sendExist = async function(chatId, returnChat = true, Send = true) {
+  // Check chat exists (group is always a chat)
+  let chat = await window.WAPI.getChat(chatId);
+
+  // Check if contact number exists
+  if (!chat && !chatId.includes('@g')) {
+    let ck = await window.WAPI.checkNumberStatus(chatId);
+
+    if (!ck.numberExists) {
+      return scope(chatId, true, ck.status, 'The number does not exist');
+    }
+
+    // Load chat ID for non contact
+    await window.Store.Chat.find(ck.id);
+
+    chatId = ck.id._serialized;
+    chat = await window.WAPI.getChat(chatId);
+  }
+
+  if (!chat) {
+    return scope(chatId, true, 404);
+  }
+  if (Send) {
+    await window.Store.SendSeen(chat, false);
+  }
+  if (returnChat) {
+    return chat;
+  }
+  return scope(chatId, false, 200);
 }
 
 /**
