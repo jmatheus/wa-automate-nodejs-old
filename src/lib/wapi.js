@@ -13,7 +13,8 @@ if (!window.Store||!window.Store.Msg) {
             let foundCount = 0;
             let neededObjects = [
                 { id: "Store", conditions: (module) => (module.default && module.default.Chat && module.default.Msg) ? module.default : null},
-                { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && (module.default.prototype.processFiles !== undefined||module.default.prototype.processAttachments !== undefined)) ? module.default : null },
+                { id: "MediaCollection", conditions: (module) => (module.default && module.default.toString().indexOf('.chatParticipantCount') > -1) ? module.default : null },
+              //{ id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && (module.default.prototype.processFiles !== undefined||module.default.prototype.processAttachments !== undefined)) ? module.default : null },
                 { id: "MediaProcess", conditions: (module) => (module.BLOB) ? module : null },
                 { id: "Archive", conditions: (module) => (module.setArchive) ? module : null },
                 { id: "Block", conditions: (module) => (module.blockContact && module.unblockContact) ? module : null },
@@ -94,7 +95,6 @@ if (!window.Store||!window.Store.Msg) {
                             return window.Store.SendTextMsgToChat(this, ...arguments);
                         }
 
-                        if(window.Store.MediaCollection) window.Store.MediaCollection.prototype.processFiles = window.Store.MediaCollection.prototype.processFiles || window.Store.MediaCollection.prototype.processAttachments;
                         return window.Store;
                     }
                 }
@@ -1707,7 +1707,8 @@ window.WAPI.procFiles= async function(chat, blobs) {
     if (!Array.isArray(blobs)) {
         blobs = [blobs];
     }
-    var mc = new Store.MediaCollection(chat);
+    const chatParticipantCount = 1;
+    var mc = new Store.MediaCollection({chatParticipantCount: chatParticipantCount});
     await mc.processFiles((Debug.VERSION === '0.4.613')?blobs:blobs.map(blob=>{return{file:blob}}) , chat, 1);
     return mc
 }
