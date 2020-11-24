@@ -1544,6 +1544,7 @@ window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type
     var mediaBlob = WAPI.base64ToFile(imgBase64, filename),
       mediaCollection = await WAPI.procFiles(chat, mediaBlob),
       media = mediaCollection.models[0],
+      media.mediaPrep._mediaData.type = type,
       result = await Promise.all(
         ListChat ? await media.sendToChat(chat, { caption: caption }) : ''
       );
