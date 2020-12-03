@@ -810,7 +810,6 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
       },
       { to, content }
     );
-    if(ERRORS_ARRAY.includes(res)) console.error(res);
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
   }
 
@@ -999,7 +998,6 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
       },
       { to, file, filename, caption, type }
     );
-    if(ERRORS_ARRAY.includes(res)) console.error(res);
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
   }
 

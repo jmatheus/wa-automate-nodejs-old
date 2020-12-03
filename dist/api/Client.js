@@ -701,8 +701,6 @@ var Client = (function () {
                         }, { to: to, content: content })];
                     case 1:
                         res = _a.sent();
-                        if (ERRORS_ARRAY.includes(res))
-                            console.error(res);
                         return [2, (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find(function (e) { return e == res; }) : res)];
                 }
             });
@@ -861,8 +859,6 @@ var Client = (function () {
                         }, { to: to, file: file, filename: filename, caption: caption, type: type })];
                     case 4:
                         res = _a.sent();
-                        if (ERRORS_ARRAY.includes(res))
-                            console.error(res);
                         return [2, (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find(function (e) { return e == res; }) : res)];
                 }
             });
