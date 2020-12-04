@@ -824,16 +824,13 @@ window.WAPI.sendMessageToID = async function (to, content) {
   chat = await WAPI.sendExist(to);
   const message = content;
   if (!chat.erro) {
+    if(chat.id._serialized !== to) { return 'ERROR: not a valid Whatsapp'; }
     const result = await chat.sendMessage(message);
-    if (result === 'success' || result === 'OK') {
-      return chat.lastReceivedKey._serialized;
-    } else {
-      const m = { type: 'sendtext', text: message };
-      const To = await WAPI.getchatId(chat.id);
-      const obj = WAPI.scope(To, true, result, null);
-      Object.assign(obj, m);
-      return obj;
-    }
+    const m = { type: 'sendtext', text: message };
+    const To = await WAPI.getchatId(chat.id);
+    const obj = WAPI.scope(To, true, result, null);
+    Object.assign(obj, m);
+    return obj;
   } else {
     return 'ERROR: not a valid Whatsapp';
   }
@@ -1548,6 +1545,7 @@ window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type
   }
   var chat = await WAPI.sendExist(chatid);
   if (chat.erro === false || chat.__x_id) {
+    if(chat.__x_id._serialized !== chatid) { return 'ERROR: not a valid Whatsapp'; }
     var ListChat = await Store.Chat.get(chatid);
     var mediaBlob = WAPI.base64ToFile(imgBase64, filename),
       mediaCollection = await WAPI.procFiles(chat, mediaBlob),
