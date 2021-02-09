@@ -1164,6 +1164,9 @@ window.WAPI.checkNumberStatus = async function (id) {
 
 window.WAPI.onAnyMessage = callback => window.Store.Msg.on('add', (newMessage) => {
   if (newMessage && newMessage.isNewMsg) {
+    // fix for version > 2.2104.6
+    if (newMessage.clientUrl == null || newMessage.clientUrl == undefined) { newMessage.clientUrl = newMessage.deprecatedMms3Url; }
+    console.log(newMessage.clientUrl, newMessage.deprecatedMms3Url);
     if(!newMessage.clientUrl && (newMessage.mediaKeyTimestamp || newMessage.filehash)){
       const cb = (msg) => {
         if(msg.id._serialized === newMessage.id._serialized && msg.clientUrl) {
