@@ -189,7 +189,8 @@ declare module WAPI {
     to: string,
     filename: string,
     caption: string,
-    type: string
+    type: string,
+    quotedMsgId?: string
   ) => Promise<string>;
   const sendMessageWithThumb: (
     thumb: string,
@@ -209,7 +210,8 @@ declare module WAPI {
     to: string,
     filename: string,
     caption: string,
-    type: string
+    type: string,
+    quotedMsgId?: string
   ) => Promise<string>;
   const sendVideoAsGif: (
     base64: string,
@@ -977,7 +979,8 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     file: DataURL | FilePath,
     filename: string,
     caption: Content,
-    type:string
+    type:string,
+    quotedMsgId: MessageId,
   ) {
     //check if the 'base64' file exists
     if(!isDataURL(file)) {
@@ -989,14 +992,14 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     }
 
     let res = await this.pup(
-      ({ to, file, filename, caption, type}) => {
+      ({ to, file, filename, caption, type, quotedMsgId}) => {
         if (!WAPI.getChat(to)) {
           return 'ERROR: not a valid chat';
         } else {
-          return WAPI.sendFile(file, to, filename, caption, type);
+          return WAPI.sendFile(file, to, filename, caption, type, quotedMsgId);
         }
       },
-      { to, file, filename, caption, type }
+      { to, file, filename, caption, type, quotedMsgId }
     );
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
   }
@@ -1076,7 +1079,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     quotedMsgId?: MessageId,
     waitForId?: boolean
   ) {
-    return this.sendImage(to, file, filename, caption, type);
+    return this.sendImage(to, file, filename, caption, type, quotedMsgId);
   }
 
 
@@ -1092,7 +1095,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     file: DataURL | FilePath,
     quotedMsgId: MessageId,
   ) {
-    return this.sendImage(to, file, 'ptt.ogg', '', 'ptt');
+    return this.sendImage(to, file, 'ptt.ogg', '', 'ptt', quotedMsgId);
   }
   
   /**

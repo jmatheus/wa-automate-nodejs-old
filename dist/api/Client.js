@@ -834,7 +834,7 @@ var Client = (function () {
         });
     };
     ;
-    Client.prototype.sendImage = function (to, file, filename, caption, type) {
+    Client.prototype.sendImage = function (to, file, filename, caption, type, quotedMsgId) {
         return __awaiter(this, void 0, void 0, function () {
             var relativePath, res;
             return __generator(this, function (_a) {
@@ -849,14 +849,14 @@ var Client = (function () {
                         return [3, 3];
                     case 2: throw new Error('Cannot find file. Make sure the file reference is relative or valid DataURL');
                     case 3: return [4, this.pup(function (_a) {
-                            var to = _a.to, file = _a.file, filename = _a.filename, caption = _a.caption, type = _a.type;
+                            var to = _a.to, file = _a.file, filename = _a.filename, caption = _a.caption, type = _a.type, quotedMsgId = _a.quotedMsgId;
                             if (!WAPI.getChat(to)) {
                                 return 'ERROR: not a valid chat';
                             }
                             else {
-                                return WAPI.sendFile(file, to, filename, caption, type);
+                                return WAPI.sendFile(file, to, filename, caption, type, quotedMsgId);
                             }
-                        }, { to: to, file: file, filename: filename, caption: caption, type: type })];
+                        }, { to: to, file: file, filename: filename, caption: caption, type: type, quotedMsgId: quotedMsgId })];
                     case 4:
                         res = _a.sent();
                         return [2, (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find(function (e) { return e == res; }) : res)];
@@ -915,14 +915,14 @@ var Client = (function () {
     Client.prototype.sendFile = function (to, file, filename, caption, type, quotedMsgId, waitForId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.sendImage(to, file, filename, caption, type)];
+                return [2, this.sendImage(to, file, filename, caption, type, quotedMsgId)];
             });
         });
     };
     Client.prototype.sendPtt = function (to, file, quotedMsgId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.sendImage(to, file, 'ptt.ogg', '', 'ptt')];
+                return [2, this.sendImage(to, file, 'ptt.ogg', '', 'ptt', quotedMsgId)];
             });
         });
     };

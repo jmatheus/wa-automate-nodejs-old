@@ -1531,8 +1531,17 @@ window.WAPI.base64ToFile = function(base64, filename) {
   });
 }
 
-window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type) {
+window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type, quotedMsg) {
   type = type ? type : 'sendFile';
+
+  let extras = {};
+  if(quotedMsg) {
+    if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg);
+    extras = {
+      quotedParticipant: quotedMsg.author || quotedMsg.from,
+      quotedStanzaID:quotedMsg.id.id
+    };
+  }
 
   if (
     (typeof filename != 'string' && filename != null) ||
@@ -1556,7 +1565,7 @@ window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type
         ListChat ? await media.sendToChat(chat, { caption: caption }) : ''
       );
     result = result.join('');
-    var m = { type: type, filename: filename, text: caption, mimeType: mime },
+    var m = { type: type, filename: filename, text: caption, mimeType: mime, ...extras },
       To = await WAPI.getchatId(chat.id);
     if (result === 'success' || result === 'OK') {
       var obj = WAPI.scope(To, false, result, null);
