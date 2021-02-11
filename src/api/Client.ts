@@ -1041,10 +1041,20 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
    */
   public async reply(to: ChatId, content: Content, quotedMsgId: MessageId, sendSeen?: boolean) {
     if(sendSeen) await this.sendSeen(to);
-    return await this.pup(
-      ({ to, content, quotedMsgId }) =>WAPI.reply(to, content, quotedMsgId),
-      { to, content, quotedMsgId }
-    ) as Promise<string | boolean>;
+
+    let res = await this.pup(
+      ({ to, content }) => {
+        if (!WAPI.getChat(to)) {
+          return WAPI.sendMessageToID(to, content);
+        } else {
+          return WAPI.reply(to, content, quotedMsgId);
+        }
+      },
+      { to, content }
+    );
+
+    return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
+
   }
 
   /**

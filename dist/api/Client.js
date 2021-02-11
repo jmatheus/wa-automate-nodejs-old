@@ -887,6 +887,7 @@ var Client = (function () {
     };
     Client.prototype.reply = function (to, content, quotedMsgId, sendSeen) {
         return __awaiter(this, void 0, void 0, function () {
+            var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -896,10 +897,17 @@ var Client = (function () {
                         _a.sent();
                         _a.label = 2;
                     case 2: return [4, this.pup(function (_a) {
-                            var to = _a.to, content = _a.content, quotedMsgId = _a.quotedMsgId;
-                            return WAPI.reply(to, content, quotedMsgId);
-                        }, { to: to, content: content, quotedMsgId: quotedMsgId })];
-                    case 3: return [2, _a.sent()];
+                            var to = _a.to, content = _a.content;
+                            if (!WAPI.getChat(to)) {
+                                return WAPI.sendMessageToID(to, content);
+                            }
+                            else {
+                                return WAPI.reply(to, content, quotedMsgId);
+                            }
+                        }, { to: to, content: content })];
+                    case 3:
+                        res = _a.sent();
+                        return [2, (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find(function (e) { return e == res; }) : res)];
                 }
             });
         });

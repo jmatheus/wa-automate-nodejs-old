@@ -124,7 +124,7 @@ export declare class Client {
     sendImage(to: ChatId, file: DataURL | FilePath, filename: string, caption: Content, type: string): Promise<string>;
     sendYoutubeLink(to: ChatId, url: string, text?: Content): Promise<string | boolean>;
     sendLinkWithAutoPreview(to: ChatId, url: string, text?: Content): Promise<string | boolean>;
-    reply(to: ChatId, content: Content, quotedMsgId: MessageId, sendSeen?: boolean): Promise<string | boolean>;
+    reply(to: ChatId, content: Content, quotedMsgId: MessageId, sendSeen?: boolean): Promise<string>;
     sendFile(to: ChatId, file: DataURL | FilePath, filename: string, caption: Content, type: string, quotedMsgId?: MessageId, waitForId?: boolean): Promise<string>;
     sendPtt(to: ChatId, file: DataURL | FilePath, quotedMsgId: MessageId): Promise<string>;
     sendAudio(to: ChatId, file: DataURL | FilePath, quotedMsgId: MessageId): Promise<string>;

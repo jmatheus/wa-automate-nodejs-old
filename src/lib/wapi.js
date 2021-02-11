@@ -1993,6 +1993,7 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
       quotedStanzaID:quotedMsg.id.id
     };
   }
+
   var tempMsg = Object.create(Store.Msg.models.filter(msg => msg.__x_isSentByMe && !msg.quotedMsg)[0]);
   var newId = window.WAPI.getNewMessageId(chatId);
   var extend = {
@@ -2008,10 +2009,10 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
     body,
     ...extras
   };
+
   Object.assign(tempMsg, extend);
   const res = await Promise.all(await Store.addAndSendMsgToChat(chat, tempMsg));
-  if(res[1]!='success') return false;
-  return res[0].id._serialized
+  return newId._serialized;
 };
 
 /**
