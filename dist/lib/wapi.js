@@ -1472,15 +1472,14 @@ window.WAPI.joinGroupViaLink = async function(link){
 }
 
 window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, quotedMsg, waitForId, type) {
-  //let extras = {};
-  //if(quotedMsg){
-  //    if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg);
-  //    extras = {
-  //        quotedMsg,
-  //        quotedParticipant: quotedMsg.author || quotedMsg.from,
-  //        quotedStanzaID:quotedMsg.id.id
-  //    };
-  //}
+  let extras = {};
+  if(quotedMsg) {
+    if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg);
+    extras = {
+      quotedParticipant: quotedMsg.author || quotedMsg.from,
+      quotedStanzaID:quotedMsg.id.id
+    };
+  }
 
   var chat = chatid.id ? chatid : Store.Chat.get(chatid);
   var chatId = chat.id._serialized;
@@ -1498,7 +1497,7 @@ window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, qu
     isNewMsg: !0,
     type: type,
     caption,
-    quotedMsg:null
+    ...extras
   };
 
   Object.assign(tempMsg, extend);
