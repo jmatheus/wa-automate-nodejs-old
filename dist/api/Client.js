@@ -897,7 +897,7 @@ var Client = (function () {
                         _a.sent();
                         _a.label = 2;
                     case 2: return [4, this.pup(function (_a) {
-                            var to = _a.to, content = _a.content;
+                            var to = _a.to, content = _a.content, quotedMsgId = _a.quotedMsgId;
                             if (!WAPI.getChat(to)) {
                                 return WAPI.sendMessageToID(to, content);
                             }

@@ -1043,7 +1043,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     if(sendSeen) await this.sendSeen(to);
 
     let res = await this.pup(
-      ({ to, content }) => {
+      ({ to, content, quotedMsgId }) => {
         if (!WAPI.getChat(to)) {
           return WAPI.sendMessageToID(to, content);
         } else {
