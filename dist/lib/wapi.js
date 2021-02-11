@@ -1538,6 +1538,7 @@ window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type
   if(quotedMsg) {
     if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg);
     extras = {
+      quotedMsg,
       quotedParticipant: quotedMsg.author || quotedMsg.from,
       quotedStanzaID:quotedMsg.id.id
     };
