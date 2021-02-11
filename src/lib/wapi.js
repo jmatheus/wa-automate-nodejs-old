@@ -1562,10 +1562,10 @@ window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type
       mediaCollection = await WAPI.procFiles(chat, mediaBlob),
       media = mediaCollection.models[0],
       result = await Promise.all(
-        ListChat ? await media.sendToChat(chat, { caption: caption }) : ''
+        ListChat ? await media.sendToChat(chat, { caption: caption, ...extras }) : ''
       );
     result = result.join('');
-    var m = { type: type, filename: filename, text: caption, mimeType: mime, ...extras },
+    var m = { type: type, filename: filename, text: caption, mimeType: mime },
       To = await WAPI.getchatId(chat.id);
     if (result === 'success' || result === 'OK') {
       var obj = WAPI.scope(To, false, result, null);
