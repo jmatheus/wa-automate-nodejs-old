@@ -1050,7 +1050,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
           return WAPI.reply(to, content, quotedMsgId);
         }
       },
-      { to, content }
+      { to, content, quotedMsgId }
     );
 
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;

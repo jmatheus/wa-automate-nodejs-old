@@ -904,7 +904,7 @@ var Client = (function () {
                             else {
                                 return WAPI.reply(to, content, quotedMsgId);
                             }
-                        }, { to: to, content: content })];
+                        }, { to: to, content: content, quotedMsgId: quotedMsgId })];
                     case 3:
                         res = _a.sent();
                         return [2, (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find(function (e) { return e == res; }) : res)];
