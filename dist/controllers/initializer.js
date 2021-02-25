@@ -86,7 +86,7 @@ var tools_1 = require("../utils/tools");
 var shouldLoop = true, qrDelayTimeout, axios;
 function create(_sessionId, config, customUserAgent) {
     return __awaiter(this, void 0, void 0, function () {
-        var START_TIME, waPage, notifier, sessionId, result, prettyFont, popupaddr, spinner, throwOnError_1, PAGE_UA, BROWSER_VERSION, WA_AUTOMATE_VERSION, WA_VERSION, canInjectEarly, debugInfo, authRace, authenticated, outOfReach, autoRefresh_1, qrLogSkip_1, qrLoop_1, qrSpin, race, result, pre, VALID_SESSION, localStorage_1, _a, _b, sessionjsonpath, sessionData, sdB64, pureWAPI, _c, LAUNCH_TIME_MS, data, client, error_1;
+        var START_TIME, waPage, notifier, sessionId, result, prettyFont, popupaddr, spinner, throwOnError_1, PAGE_UA, BROWSER_VERSION, WA_AUTOMATE_VERSION, WA_VERSION, canInjectEarly, debugInfo, authRace, authenticated, outOfReach, autoRefresh_1, qrLogSkip_1, qrLoop_1, qrSpin, race, result, pre, VALID_SESSION, localStorage_1, _a, _b, sessionjsonpath, sessionData, sdB64, pureWAPI, _c, LAUNCH_TIME_MS, client, error_1;
         var _this = this;
         return __generator(this, function (_d) {
             switch (_d.label) {
@@ -161,7 +161,7 @@ function create(_sessionId, config, customUserAgent) {
                     spinner = new events_1.Spin(sessionId, 'STARTUP', config === null || config === void 0 ? void 0 : config.disableSpins);
                     _d.label = 5;
                 case 5:
-                    _d.trys.push([5, 43, , 45]);
+                    _d.trys.push([5, 34, , 36]);
                     qrDelayTimeout = undefined;
                     shouldLoop = true;
                     events_1.ev.on('AUTH.**', function (isAuthenticated, sessionId) { return shouldLoop = false; });
@@ -299,10 +299,9 @@ function create(_sessionId, config, customUserAgent) {
                 case 24:
                     _d.sent();
                     _d.label = 25;
-                case 25: return [4, waPage.evaluate(function () { return window.Store ? true : false; })];
+                case 25: return [4, waPage.evaluate(function () { return window.Store && window.Store.Msg ? true : false; })];
                 case 26:
                     VALID_SESSION = _d.sent();
-                    if (!VALID_SESSION) return [3, 39];
                     spinner.succeed('Client is ready');
                     _b = (_a = JSON).parse;
                     return [4, waPage.evaluate(function () {
@@ -374,43 +373,19 @@ function create(_sessionId, config, customUserAgent) {
                     _d.sent();
                     _d.label = 33;
                 case 33:
-                    if (!!(config === null || config === void 0 ? void 0 : config.skipPatches)) return [3, 38];
-                    spinner.info('Installing patches');
-                    if (!!axios) return [3, 35];
-                    return [4, Promise.resolve().then(function () { return __importStar(require('axios')); })];
-                case 34:
-                    axios = _d.sent();
-                    _d.label = 35;
-                case 35: return [4, axios.get(pkg.patches)];
-                case 36:
-                    data = (_d.sent()).data;
-                    return [4, Promise.all(data.map(function (patch) { return waPage.evaluate("" + patch); }))];
-                case 37:
-                    _d.sent();
-                    spinner.succeed('Patches Installed');
-                    _d.label = 38;
-                case 38:
                     client = new Client_1.Client(waPage, config, debugInfo);
                     spinner.succeed("\uD83D\uDE80 @OPEN-WA ready");
                     spinner.emit('SUCCESS');
                     return [2, client];
-                case 39:
-                    spinner.fail('The session is invalid. Retrying');
-                    return [4, kill(waPage)];
-                case 40:
-                    _d.sent();
-                    return [4, create(sessionId, config, customUserAgent)];
-                case 41: return [2, _d.sent()];
-                case 42: return [3, 45];
-                case 43:
+                case 34:
                     error_1 = _d.sent();
                     spinner.emit(error_1.message);
                     return [4, kill(waPage)];
-                case 44:
+                case 35:
                     _d.sent();
                     spinner.remove();
                     throw error_1;
-                case 45: return [2];
+                case 36: return [2];
             }
         });
     });

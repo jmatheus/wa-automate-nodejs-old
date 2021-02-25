@@ -219,8 +219,7 @@ export async function create(_sessionId?: string | ConfigObject, config?: Config
       if(config?.safeMode) await timeout(5000);
     }
     //@ts-ignore
-    const VALID_SESSION = await waPage.evaluate(() => window.Store ? true : false);
-    if (VALID_SESSION) {
+    const VALID_SESSION = await waPage.evaluate(() => window.Store && window.Store.Msg ? true : false);
       spinner.succeed('Client is ready');
       const localStorage = JSON.parse(await waPage.evaluate(() => {
         return JSON.stringify(window.localStorage);
@@ -261,24 +260,10 @@ export async function create(_sessionId?: string | ConfigObject, config?: Config
       if(config?.hostNotificationLang){
         await waPage.evaluate(`window.hostlang="${config.hostNotificationLang}"`)
       }
-      //patch issues with wapi.js
-      if (!config?.skipPatches){
-        spinner.info('Installing patches')
-        if(!axios) axios = await import('axios');
-        const { data } = await axios.get(pkg.patches);
-        await Promise.all(data.map(patch => waPage.evaluate(`${patch}`)))
-        spinner.succeed('Patches Installed')
-      }
       const client = new Client(waPage, config, debugInfo);
       spinner.succeed(`🚀 @OPEN-WA ready`);
       spinner.emit('SUCCESS');
       return client;
-    }
-    else {
-      spinner.fail('The session is invalid. Retrying')
-      await kill(waPage)
-      return await create(sessionId, config, customUserAgent);
-    }
   } catch (error) {
     spinner.emit(error.message);
     await kill(waPage);
