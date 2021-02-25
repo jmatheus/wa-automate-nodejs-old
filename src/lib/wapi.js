@@ -67,11 +67,11 @@ if (!window.Store||!window.Store.Msg) {
       ];
       for (let idx in modules) {
         if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
+          debugger;
           let first = Object.values(modules[idx])[0];
           if ((typeof first === "object") && (first.exports)) {
             for (let idx2 in modules[idx]) {
               let module = modules(idx2);
-              // console.log("TCL: getStore -> module", module ? Object.getOwnPropertyNames(module.default || module).filter(item => typeof (module.default || module)[item] === 'function').length ? module.default || module : "":'')
               if (!module) {
                 continue;
               }
@@ -102,7 +102,7 @@ if (!window.Store||!window.Store.Msg) {
               return window.Store.SendTextMsgToChat(this, ...arguments);
             }
 
-            //if(window.Store.MediaCollection) window.Store.MediaCollection.prototype.processFiles = window.Store.MediaCollection.prototype.processFiles || window.Store.MediaCollection.prototype.processAttachments;
+            if(window.Store.MediaCollection) window.Store.MediaCollection.prototype.processFiles = window.Store.MediaCollection.prototype.processFiles || window.Store.MediaCollection.prototype.processAttachments;
             return window.Store;
           }
         }
