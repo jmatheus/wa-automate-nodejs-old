@@ -37,7 +37,7 @@ if (!window.Store||!window.Store.Msg) {
         { id: "addAndSendMsgToChat", conditions: (module) => (module.addAndSendMsgToChat) ? module.addAndSendMsgToChat : null },
         { id: "sendMsgToChat", conditions: (module) => (module.sendMsgToChat) ? module.sendMsgToChat : null },
         { id: "Catalog", conditions: (module) => (module.Catalog) ? module.Catalog : null },
-        { id: "MsgKey", conditions: (module) => (module.default&&module.default.toString().includes('MsgKey error: obj is null/undefined')) ? module.default : null },
+        //{ id: "MsgKey", conditions: (module) => (module.default&&module.default.toString().includes('MsgKey error: obj is null/undefined')) ? module.default : null },
         { id: "Perfil", conditions: (module) => (module.__esModule === true && module.setPushname && !module.getComposeContents) ? module : null },
         { id: "Parser", conditions: (module) => (module.convertToTextWithoutSpecialEmojis) ? module.default : null },
         { id: "Builders", conditions: (module) => (module.TemplateMessage && module.HydratedFourRowTemplate) ? module : null },
