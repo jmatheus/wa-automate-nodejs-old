@@ -67,7 +67,6 @@ if (!window.Store||!window.Store.Msg) {
       ];
       for (let idx in modules) {
         if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
-          debugger;
           let first = Object.values(modules[idx])[0];
           if ((typeof first === "object") && (first.exports)) {
             for (let idx2 in modules[idx]) {
@@ -115,15 +114,15 @@ if (!window.Store||!window.Store.Msg) {
     } else {
       webpackChunkbuild.push([
         [parasite],
-        {
-
-        },
+        {},
         (o, e, t) => {
           let modules=[];
           for(let idx in o.m) {
             let module = o(idx);
             modules.push(module);
-          } 
+          }
+          window.mmm = modules;
+          window.storis = getStore(modules);
           getStore(modules);
         }
       ]);
