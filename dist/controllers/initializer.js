@@ -299,7 +299,7 @@ function create(_sessionId, config, customUserAgent) {
                 case 24:
                     _d.sent();
                     _d.label = 25;
-                case 25: return [4, waPage.evaluate(function () { return window.Store && window.Store.Msg ? true : false; })];
+                case 25: return [4, waPage.evaluate(function () { return window.Store ? true : false; })];
                 case 26:
                     VALID_SESSION = _d.sent();
                     if (!VALID_SESSION) return [3, 39];

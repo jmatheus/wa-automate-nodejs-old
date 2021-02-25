@@ -219,7 +219,7 @@ export async function create(_sessionId?: string | ConfigObject, config?: Config
       if(config?.safeMode) await timeout(5000);
     }
     //@ts-ignore
-    const VALID_SESSION = await waPage.evaluate(() => window.Store && window.Store.Msg ? true : false);
+    const VALID_SESSION = await waPage.evaluate(() => window.Store ? true : false);
     if (VALID_SESSION) {
       spinner.succeed('Client is ready');
       const localStorage = JSON.parse(await waPage.evaluate(() => {
