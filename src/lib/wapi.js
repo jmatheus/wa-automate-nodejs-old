@@ -65,6 +65,8 @@ if (!window.Store||!window.Store.Msg) {
         { id: "Vcard", conditions: (module) => (module.vcardFromContactModel) ? module : null },
         { id: "Profile", conditions: (module) => (module.sendSetPicture && module.requestDeletePicture) ? module : null},
       ];
+      window.neededObjects = neededObjects;
+      window.neededModuleFound = [];
       for (let idx in modules) {
         if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
           neededObjects.forEach((needObj) => {
@@ -72,6 +74,7 @@ if (!window.Store||!window.Store.Msg) {
               return;
             let neededModule = needObj.conditions(modules[idx]);
             if (neededModule !== null) {
+              window.neededModuleFound.push(needObj.id)
               foundCount++;
               needObj.foundedModule = neededModule;
             }
@@ -84,6 +87,7 @@ if (!window.Store||!window.Store.Msg) {
       }
 
       let neededStore = neededObjects.find((needObj) => needObj.id === "Store");
+      window.storis = neededStore;
       window.Store = neededStore.foundedModule ? neededStore.foundedModule : {};
       neededObjects.splice(neededObjects.indexOf(neededStore), 1);
       neededObjects.forEach((needObj) => {
