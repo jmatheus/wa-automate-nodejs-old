@@ -110,9 +110,25 @@ if (!window.Store||!window.Store.Msg) {
     }
     const parasite = `parasite${Date.now()}`
     // webpackJsonp([], { [parasite]: (x, y, z) => getStore(z) }, [parasite]);
-    if (typeof webpackJsonp === 'function') webpackJsonp([], {[parasite]: (x, y, z) => getStore(z)}, [parasite]); 
-    else webpackJsonp.push([[parasite],{[parasite]: (x, y, z) => getStore(z)},[[parasite]]]);
+    if (typeof webpackJsonp === 'function'){
+      webpackJsonp([], {[parasite]: (x, y, z) => getStore(z)}, [parasite]); 
+    } else {
+      webpackChunkbuild.push([
+        [parasite],
+        {
 
+        },
+        (o, e, t) => {
+          let modules=[];
+          for(let idx in o.m) {
+            let module = o(idx);
+            modules.push(module);
+          } 
+          getStore(modules);
+        }
+      ]);
+    }
+  
   })();
 }
 

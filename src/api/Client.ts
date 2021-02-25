@@ -409,7 +409,6 @@ export class Client {
   public async onMessage(fn: (message: Message) => void) {
   //return this.registerListener(SimpleListener.Message, fn);
   let funcName = SimpleListener.Message;
-  console.log(message);
   this._listeners[funcName] = fn;
    const set = () => this.pup(
      ({funcName}) => {
