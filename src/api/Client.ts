@@ -156,7 +156,7 @@ declare module WAPI {
   const forceStaleMediaUpdate: (mesasgeId: string) => Message | boolean;
   const setMyName: (newName: string) => Promise<boolean>;
   const setMyStatus: (newStatus: string) => void;
-  const setProfilePic: (b64: string, to: string) => Promise<boolean>;
+  const setProfilePic: (b64X96: string, b64X640:string, to: string) => Promise<boolean>;
   const setPresence: (available: boolean) => void;
   const getMessageReaders: (messageId: string) => Contact[];
   const getStatus: (contactId: string) => void;
@@ -2505,22 +2505,17 @@ public async getStatus(contactId: ContactId) {
   /**
    * 
    * Sets the profile pic of the host number.
-   * @param data string data url image string.
+   * @param b64X96 base64 of 96x96 image.
+   * @param b64X640 base64 of 640x640 image.
    * @param to chat id: xxxxx@c.us
    * @returns Promise<boolean> success if true
    */
-  public async setProfilePic(b64: string, to: string){
-    const buff = Buffer.from(
-      b64.replace(/^data:image\/(png|jpe?g|webp);base64,/, ''),
-      'base64'
-    );
-    let _webb64_96 = await this.resizeImg(buff, { width: 96, height: 96 }),
-      _webb64_640 = await this.resizeImg(buff, { width: 640, height: 640 });
-    let obj = { a: _webb64_640, b: _webb64_96 };
+  public async setProfilePic(b64X96: string, b64X640:string, to: string){
     return await this.pup(
-      ({ obj, to }) => WAPI.setProfilePic(obj, to),
+      ({ b64X96, b64X640, to }) => WAPI.setProfilePic(b64X96, b64X640, to),
       {
-        obj,
+        b64X96,
+        b64X640,
         to,
       }
     );

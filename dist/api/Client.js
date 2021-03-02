@@ -2219,28 +2219,19 @@ var Client = (function () {
             });
         });
     };
-    Client.prototype.setProfilePic = function (b64, to) {
+    Client.prototype.setProfilePic = function (b64X96, b64X640, to) {
         return __awaiter(this, void 0, void 0, function () {
-            var buff, _webb64_96, _webb64_640, obj;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        buff = Buffer.from(b64.replace(/^data:image\/(png|jpe?g|webp);base64,/, ''), 'base64');
-                        return [4, this.resizeImg(buff, { width: 96, height: 96 })];
-                    case 1:
-                        _webb64_96 = _a.sent();
-                        return [4, this.resizeImg(buff, { width: 640, height: 640 })];
-                    case 2:
-                        _webb64_640 = _a.sent();
-                        obj = { a: _webb64_640, b: _webb64_96 };
-                        return [4, this.pup(function (_a) {
-                                var obj = _a.obj, to = _a.to;
-                                return WAPI.setProfilePic(obj, to);
-                            }, {
-                                obj: obj,
-                                to: to,
-                            })];
-                    case 3: return [2, _a.sent()];
+                    case 0: return [4, this.pup(function (_a) {
+                            var b64X96 = _a.b64X96, b64X640 = _a.b64X640, to = _a.to;
+                            return WAPI.setProfilePic(b64X96, b64X640, to);
+                        }, {
+                            b64X96: b64X96,
+                            b64X640: b64X640,
+                            to: to,
+                        })];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });

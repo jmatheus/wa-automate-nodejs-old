@@ -233,7 +233,7 @@ export declare class Client {
     downloadProfilePicFromMessage(message: Message): Promise<any>;
     downloadFileWithCredentials(url: string): Promise<any>;
     private resizeImg;
-    setProfilePic(b64: string, to: string): Promise<any>;
+    setProfilePic(b64X96: string, b64X640: string, to: string): Promise<any>;
     middleware: (useSessionIdInPath?: boolean) => (req: any, res: any, next: any) => Promise<any>;
     registerWebhook(event: SimpleListener, url: string, requestConfig?: any, concurrency?: number): Promise<any>;
 }

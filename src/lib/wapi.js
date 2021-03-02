@@ -1668,10 +1668,10 @@ window.WAPI.setMyName = async function (newName) {
  * @param obj - object with two images One Small 96x96 - One Big 640x640
  * @param id - WhatsApp Id to change the Image
  */
-window.WAPI.setProfilePic = async function (obj, id) {
+window.WAPI.setProfilePic = async function (b64X96, b64X640, id) {
+  let obj = { a: b64X640, b: b64X96 };
   if (!id) { id = Store.Me.attributes.wid._serialized; }
-  let base64 = 'data:image/jpeg;base64,';
-  return await Store.Profile.sendSetPicture(id, base64 + obj.b, base64 + obj.a);
+  return await Store.Profile.sendSetPicture(id, obj.b, obj.a);
 }
 
 /** Change the icon for the group chat
