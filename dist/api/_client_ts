@@ -24,6 +24,11 @@ import { bleachMessage, decryptMedia } from '@open-wa/wa-decrypt';
 import * as path from 'path';
 import { CustomProduct } from './model/product';
 
+interface CreateSize {
+  width?: number;
+  height?: number;
+}
+
 const ERRORS_ARRAY = [
   'Not able to send message to broadcast',
   'ERROR: not a contact',
@@ -151,7 +156,7 @@ declare module WAPI {
   const forceStaleMediaUpdate: (mesasgeId: string) => Message | boolean;
   const setMyName: (newName: string) => Promise<boolean>;
   const setMyStatus: (newStatus: string) => void;
-  const setProfilePic: (data: string) => Promise<boolean>;
+  const setProfilePic: (b64: string, to: string) => Promise<boolean>;
   const setPresence: (available: boolean) => void;
   const getMessageReaders: (messageId: string) => Contact[];
   const getStatus: (contactId: string) => void;
@@ -2486,17 +2491,39 @@ public async getStatus(contactId: ContactId) {
     if(!url) throw new Error('Missing URL');
     return await this.pup(({ url }) => WAPI.downloadFileWithCredentials(url),{url});
   }
+
+  private async resizeImg(buff: Buffer, size: CreateSize) {
+    const _ins = await sharp(buff, { failOnError: false })
+        .resize({ width: size.width, height: size.height })
+        .toBuffer(),
+      _w = sharp(_ins, { failOnError: false }).jpeg(),
+      _webb64 = (await _w.toBuffer()).toString('base64');
+    return _webb64;
+  }
   
     
   /**
-   * [REQUIRES AN INSIDERS LICENSE-KEY](https://gumroad.com/l/BTMt?tier=Insiders%20Program)
    * 
    * Sets the profile pic of the host number.
    * @param data string data url image string.
+   * @param to chat id: xxxxx@c.us
    * @returns Promise<boolean> success if true
    */
-  public async setProfilePic(data: DataURL){
-    return await this.pup(({ data }) => WAPI.setProfilePic(data),{data}) as Promise<boolean>;
+  public async setProfilePic(b64: string, to: string){
+    const buff = Buffer.from(
+      b64.replace(/^data:image\/(png|jpe?g|webp);base64,/, ''),
+      'base64'
+    );
+    let _webb64_96 = await this.resizeImg(buff, { width: 96, height: 96 }),
+      _webb64_640 = await this.resizeImg(buff, { width: 640, height: 640 });
+    let obj = { a: _webb64_640, b: _webb64_96 };
+    return await this.pup(
+      ({ obj, to }) => WAPI.setProfilePic(obj, to),
+      {
+        obj,
+        to,
+      }
+    );
   }
 
   /**

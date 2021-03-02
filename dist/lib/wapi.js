@@ -1660,6 +1660,20 @@ window.WAPI.setMyName = async function (newName) {
   return await Store.Perfil.setPushname(newName);
 }
 
+/**
+ * This function sets the profile picture of the number.
+ * 
+ * Receives an Object built with two images
+ * 
+ * @param obj - object with two images One Small 96x96 - One Big 640x640
+ * @param id - WhatsApp Id to change the Image
+ */
+window.WAPI.setProfilePic = async function (obj, id) {
+  if (!id) { id = Store.Me.attributes.wid._serialized; }
+  let base64 = 'data:image/jpeg;base64,';
+  return await Store.Profile.sendSetPicture(id, base64 + obj.b, base64 + obj.a);
+}
+
 /** Change the icon for the group chat
  * @param groupId 123123123123_1312313123@g.us The id of the group
  * @param imgData 'data:image/jpeg;base64,...` The base 64 data uri

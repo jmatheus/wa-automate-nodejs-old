@@ -2201,15 +2201,46 @@ var Client = (function () {
             });
         });
     };
-    Client.prototype.setProfilePic = function (data) {
+    Client.prototype.resizeImg = function (buff, size) {
         return __awaiter(this, void 0, void 0, function () {
+            var _ins, _w, _webb64;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4, this.pup(function (_a) {
-                            var data = _a.data;
-                            return WAPI.setProfilePic(data);
-                        }, { data: data })];
-                    case 1: return [2, _a.sent()];
+                    case 0: return [4, sharp_1.default(buff, { failOnError: false })
+                            .resize({ width: size.width, height: size.height })
+                            .toBuffer()];
+                    case 1:
+                        _ins = _a.sent(), _w = sharp_1.default(_ins, { failOnError: false }).jpeg();
+                        return [4, _w.toBuffer()];
+                    case 2:
+                        _webb64 = (_a.sent()).toString('base64');
+                        return [2, _webb64];
+                }
+            });
+        });
+    };
+    Client.prototype.setProfilePic = function (b64, to) {
+        return __awaiter(this, void 0, void 0, function () {
+            var buff, _webb64_96, _webb64_640, obj;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        buff = Buffer.from(b64.replace(/^data:image\/(png|jpe?g|webp);base64,/, ''), 'base64');
+                        return [4, this.resizeImg(buff, { width: 96, height: 96 })];
+                    case 1:
+                        _webb64_96 = _a.sent();
+                        return [4, this.resizeImg(buff, { width: 640, height: 640 })];
+                    case 2:
+                        _webb64_640 = _a.sent();
+                        obj = { a: _webb64_640, b: _webb64_96 };
+                        return [4, this.pup(function (_a) {
+                                var obj = _a.obj, to = _a.to;
+                                return WAPI.setProfilePic(obj, to);
+                            }, {
+                                obj: obj,
+                                to: to,
+                            })];
+                    case 3: return [2, _a.sent()];
                 }
             });
         });
