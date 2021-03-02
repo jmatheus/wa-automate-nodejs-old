@@ -118,8 +118,6 @@ if (!window.Store||!window.Store.Msg) {
             let module = o(idx);
             modules.push(module);
           }
-          window.mmm = modules;
-          window.storis = getStore(modules);
           getStore(modules);
         }
       ]);
@@ -1659,8 +1657,7 @@ window.WAPI.sendExist = async function(chatId, returnChat = true, Send = true) {
  * @param newName - string the new name to set as profile name
  */
 window.WAPI.setMyName = async function (newName) {
-  if(!Store.Versions.default[12].BinaryProtocol) Store.Versions.default[12].BinaryProtocol=new Store.bp(Store.Me.binVersion);
-  return (await Store.Versions.default[12].setPushname(newName)).status===200;
+  return await Store.Perfil.setPushname(newName);
 }
 
 /** Change the icon for the group chat
