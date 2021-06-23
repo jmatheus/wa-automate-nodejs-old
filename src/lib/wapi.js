@@ -2016,34 +2016,36 @@ window.WAPI.sendVCard = async function (chatId, vcard, contactName, contactNumbe
 
 window.WAPI.reply = async function (chatId, body, quotedMsg) {
   if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg)
-  var chat = Store.Chat.get(chatId);
+  const chat = await WAPI.sendExist(chatId);
   if(!chat) return false;
-  let extras = {};
+  let quotedMsgOptions = {};
   if(quotedMsg) {
-    extras = {
-      quotedParticipant: quotedMsg.author || quotedMsg.from,
-      quotedStanzaID:quotedMsg.id.id
-    };
+    quotedMsgOptions = quotedMsg.msgContextInfo(chat);
   }
 
-  var tempMsg = Object.create(Store.Msg.models.filter(msg => msg.__x_isSentByMe && !msg.quotedMsg)[0]);
-  var fromwWid = await window.Store.Conn.wid;
-  var newId = window.WAPI.getNewMessageId(chatId);
-  var extend = {
+  const newId = window.WAPI.getNewMessageId(chatId);
+  let inChat = await.WAPI.getchatId(chatId).catch(() => {});
+  if(inChat) {
+    chat.lastReceivedKey._serialized = inChat._serialized;
+    chat.lastReceivedKey.id = inChat.id;
+  }
+  const fromwWid = await window.Store.Conn.wid;
+
+  const message = {
     id: newId,
     ack: 0,
-    local: !0,
     body: body,
+    from: fromwWid,
+    to: chat.id,
+    local: !0,
     self: "out",
     t: parseInt(new Date().getTime() / 1000),
-    to: chat.id,
     isNewMsg: !0,
     type: "chat",
-    quotedMsg,
-    ...extras
+    ..quotedMsgOptions,
   };
 
-  const res = await Promise.all(await Store.addAndSendMsgToChat(chat, tempMsg));
+  const res = await Promise.all(await Store.addAndSendMsgToChat(chat, message));
   return newId._serialized;
 };
 
