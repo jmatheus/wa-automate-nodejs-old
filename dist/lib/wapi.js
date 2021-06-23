@@ -2024,7 +2024,7 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
     quotedMsgOptions = quotedMsg.msgContextInfo(chat);
   }
 
-  const newId = WAPI.getNewMessageId(chatId);
+  const newId = await WAPI.getNewMessageId(chatId);
   let inChat = await WAPI.getchatId(chatId).catch(() => {});
   if(inChat) {
     chat.lastReceivedKey._serialized = inChat._serialized;
