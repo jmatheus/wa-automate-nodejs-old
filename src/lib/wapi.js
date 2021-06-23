@@ -2047,7 +2047,7 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
     ..quotedMsgOptions,
   };
 
-  //const res = await Promise.all(await Store.addAndSendMsgToChat(chat, message));
+  await Promise.all(Store.addAndSendMsgToChat(chat, message));
   return newId._serialized;
 };
 
