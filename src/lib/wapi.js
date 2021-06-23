@@ -2019,35 +2019,35 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
   const chat = await window.WAPI.sendExist(chatId);
   let quotedMsgOptions = {};
 
-  if(!chat) return false;
-  if(quotedMsg) {
-    quotedMsgOptions = quotedMsg.msgContextInfo(chat);
-  }
+  //if(!chat) return false;
+  //if(quotedMsg) {
+  //  quotedMsgOptions = quotedMsg.msgContextInfo(chat);
+  //}
 
-  const newId = WAPI.getNewMessageId(chatId);
-  let inChat = await WAPI.getchatId(chatId).catch(() => {});
-  if(inChat) {
-    chat.lastReceivedKey._serialized = inChat._serialized;
-    chat.lastReceivedKey.id = inChat.id;
-  }
-  const fromwWid = await Store.Conn.wid;
+  //const newId = WAPI.getNewMessageId(chatId);
+  //let inChat = await WAPI.getchatId(chatId).catch(() => {});
+  //if(inChat) {
+  //  chat.lastReceivedKey._serialized = inChat._serialized;
+  //  chat.lastReceivedKey.id = inChat.id;
+  //}
+  //const fromwWid = await Store.Conn.wid;
 
-  const message = {
-    id: newId,
-    ack: 0,
-    body: body,
-    from: fromwWid,
-    to: chat.id,
-    local: !0,
-    self: "out",
-    t: parseInt(new Date().getTime() / 1000),
-    isNewMsg: !0,
-    type: "chat",
-    ..quotedMsgOptions,
-  };
+  //const message = {
+  //  id: newId,
+  //  ack: 0,
+  //  body: body,
+  //  from: fromwWid,
+  //  to: chat.id,
+  //  local: !0,
+  //  self: "out",
+  //  t: parseInt(new Date().getTime() / 1000),
+  //  isNewMsg: !0,
+  //  type: "chat",
+  //  ..quotedMsgOptions,
+  //};
 
-  const res = await Promise.all(await Store.addAndSendMsgToChat(chat, message));
-  return newId._serialized;
+  //const res = await Promise.all(await Store.addAndSendMsgToChat(chat, message));
+  //return newId._serialized;
 };
 
 /**
