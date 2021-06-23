@@ -2027,22 +2027,22 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
   }
 
   var tempMsg = Object.create(Store.Msg.models.filter(msg => msg.__x_isSentByMe && !msg.quotedMsg)[0]);
+  var fromwWid = await window.Store.Conn.wid;
   var newId = window.WAPI.getNewMessageId(chatId);
   var extend = {
-    ack: 0,
     id: newId,
+    ack: 0,
     local: !0,
+    body: body,
     self: "out",
     t: parseInt(new Date().getTime() / 1000),
-    to:  new Store.WidFactory.createWid(chatId),
+    to: chat.id,
     isNewMsg: !0,
     type: "chat",
     quotedMsg,
-    body,
     ...extras
   };
 
-  Object.assign(tempMsg, extend);
   const res = await Promise.all(await Store.addAndSendMsgToChat(chat, tempMsg));
   return newId._serialized;
 };
