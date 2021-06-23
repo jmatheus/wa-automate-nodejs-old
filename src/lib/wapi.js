@@ -2044,10 +2044,10 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
     t: parseInt(new Date().getTime() / 1000),
     isNewMsg: !0,
     type: "chat",
-    ..quotedMsgOptions,
+    ...quotedMsgOptions,
   };
 
-  await Promise.all(Store.addAndSendMsgToChat(chat, message));
+  await Promise.all(window.Store.addAndSendMsgToChat(chat, message));
   return newId._serialized;
 };
 
