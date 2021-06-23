@@ -2033,19 +2033,19 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
 
   const fromwWid = await Store.Conn.wid;
 
-  const message = {
-    id: newId,
-    ack: 0,
-    body: body,
-    from: fromwWid,
-    to: chat.id,
-    local: !0,
-    self: "out",
-    t: parseInt(new Date().getTime() / 1000),
-    isNewMsg: !0,
-    type: "chat",
-    ..quotedMsgOptions,
-  };
+  //const message = {
+  //  id: newId,
+  //  ack: 0,
+  //  body: body,
+  //  from: fromwWid,
+  //  to: chat.id,
+  //  local: !0,
+  //  self: "out",
+  //  t: parseInt(new Date().getTime() / 1000),
+  //  isNewMsg: !0,
+  //  type: "chat",
+  //  ..quotedMsgOptions,
+  //};
 
   //const res = await Promise.all(await Store.addAndSendMsgToChat(chat, message));
   return newId._serialized;
