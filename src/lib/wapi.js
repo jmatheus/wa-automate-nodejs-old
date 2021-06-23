@@ -2015,9 +2015,9 @@ window.WAPI.sendVCard = async function (chatId, vcard, contactName, contactNumbe
 };
 
 window.WAPI.reply = async function (chatId, body, quotedMsg) {
-  if (typeof quotedMsg !== "object") quotedMsg = window.WAPI.getMessageById(quotedMsg, null, false);
-  const chat = await window.WAPI.sendExist(chatId);
-  let quotedMsgOptions = {};
+  //if (typeof quotedMsg !== "object") quotedMsg = window.WAPI.getMessageById(quotedMsg, null, false);
+  //const chat = await window.WAPI.sendExist(chatId);
+  //let quotedMsgOptions = {};
 
   //if(!chat) return false;
   //if(quotedMsg) {
