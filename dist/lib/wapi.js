@@ -2016,7 +2016,7 @@ window.WAPI.sendVCard = async function (chatId, vcard, contactName, contactNumbe
 
 window.WAPI.reply = async function (chatId, body, quotedMsg) {
   if (typeof quotedMsg !== "object") quotedMsg = Store.Msg.get(quotedMsg)
-  const chat = await WAPI.sendExist(chatId);
+  const chat = await window.WAPI.sendExist(chatId);
   if(!chat) return false;
   let quotedMsgOptions = {};
   if(quotedMsg) {
@@ -2024,7 +2024,7 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
   }
 
   const newId = window.WAPI.getNewMessageId(chatId);
-  let inChat = await.WAPI.getchatId(chatId).catch(() => {});
+  let inChat = await window.WAPI.getchatId(chatId).catch(() => {});
   if(inChat) {
     chat.lastReceivedKey._serialized = inChat._serialized;
     chat.lastReceivedKey.id = inChat.id;
