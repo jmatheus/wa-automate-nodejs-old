@@ -2024,12 +2024,12 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
     quotedMsgOptions = quotedMsg.msgContextInfo(chat);
   }
 
-  //const newId = await window.WAPI.getNewMessageId(chatId);
-  //let inChat = await window.WAPI.getchatId(chatId).catch(() => {});
-  //if(inChat) {
-  //  chat.lastReceivedKey._serialized = inChat._serialized;
-  //  chat.lastReceivedKey.id = inChat.id;
-  //}
+  const newId = await window.WAPI.getNewMessageId(chatId);
+  let inChat = await window.WAPI.getchatId(chatId).catch(() => {});
+  if(inChat) {
+    chat.lastReceivedKey._serialized = inChat._serialized;
+    chat.lastReceivedKey.id = inChat.id;
+  }
   //const fromwWid = await Store.Conn.wid;
 
   //const message = {
