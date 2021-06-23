@@ -2030,7 +2030,8 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
     chat.lastReceivedKey._serialized = inChat._serialized;
     chat.lastReceivedKey.id = inChat.id;
   }
-  //const fromwWid = await Store.Conn.wid;
+
+  const fromwWid = await Store.Conn.wid;
 
   //const message = {
   //  id: newId,
