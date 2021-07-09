@@ -109,20 +109,34 @@ if (!window.Store||!window.Store.Msg) {
     if (typeof webpackJsonp === 'function'){
       webpackJsonp([], {[parasite]: (x, y, z) => getStore(z)}, [parasite]); 
     } else {
-      webpackChunkbuild.push([
-        [parasite],
-        {},
-        (o, e, t) => {
-          let modules=[];
-          for(let idx in o.m) {
-            let module = o(idx);
-            modules.push(module);
+      if (Debug.VERSION >= 2.2126.10) {
+        webpackChunkwhatsapp_web_client.push([
+          [parasite],
+          {},
+          (o, e, t) => {
+            let modules=[];
+            for(let idx in o.m) {
+              let module = o(idx);
+              modules.push(module);
+            }
+            getStore(modules);
           }
-          getStore(modules);
-        }
-      ]);
+        ]);
+      } else {
+        webpackChunkbuild.push([
+          [parasite],
+          {},
+          (o, e, t) => {
+            let modules=[];
+            for(let idx in o.m) {
+              let module = o(idx);
+              modules.push(module);
+            }
+            getStore(modules);
+          }
+        ]);
+      }
     }
-
 })();
 }
 
