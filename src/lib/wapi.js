@@ -106,33 +106,20 @@ if (!window.Store||!window.Store.Msg) {
   
     const parasite = `parasite${Date.now()}`
     // webpackJsonp([], { [parasite]: (x, y, z) => getStore(z) }, [parasite]);
-    if (Debug.VERSION >= parseFloat('2.2126.10')) {
-      webpackChunkwhatsapp_web_client.push([
-        [parasite],
-        {},
-        (o, e, t) => {
-          let modules=[];
-          for(let idx in o.m) {
-            let module = o(idx);
-            modules.push(module);
-          }
-          getStore(modules);
+    if (webpackChunkbuild === undefined) { webpackChunkbuild = webpackChunkwhatsapp_web_client };
+    webpackChunkbuild.push([
+      [parasite],
+      {},
+      (o, e, t) => {
+        let modules=[];
+        for(let idx in o.m) {
+          let module = o(idx);
+          modules.push(module);
         }
-      ]);
-    } else {
-      webpackChunkbuild.push([
-        [parasite],
-        {},
-        (o, e, t) => {
-          let modules=[];
-          for(let idx in o.m) {
-            let module = o(idx);
-            modules.push(module);
-          }
-          getStore(modules);
-        }
-      ]);
-    }
+        getStore(modules);
+      }
+    ]);
+  }
 })();
 }
 
