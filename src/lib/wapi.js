@@ -119,7 +119,6 @@ if (!window.Store||!window.Store.Msg) {
         getStore(modules);
       }
     ]);
-  }
 })();
 }
 
