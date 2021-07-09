@@ -109,7 +109,7 @@ if (!window.Store||!window.Store.Msg) {
     if (typeof webpackJsonp === 'function'){
       webpackJsonp([], {[parasite]: (x, y, z) => getStore(z)}, [parasite]); 
     } else {
-      if (Debug.VERSION >= 2.2126.10) {
+      if (Debug.VERSION >= parseFloat('2.2126.10')) {
         webpackChunkwhatsapp_web_client.push([
           [parasite],
           {},
