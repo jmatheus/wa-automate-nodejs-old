@@ -105,9 +105,7 @@ if (!window.Store||!window.Store.Msg) {
     }
   
     const parasite = `parasite${Date.now()}`
-    // webpackJsonp([], { [parasite]: (x, y, z) => getStore(z) }, [parasite]);
-    if (webpackChunkbuild === undefined) { webpackChunkbuild = webpackChunkwhatsapp_web_client };
-    webpackChunkbuild.push([
+    webpackChunkwhatsapp_web_client.push([
       [parasite],
       {},
       (o, e, t) => {
