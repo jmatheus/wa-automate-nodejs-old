@@ -64,6 +64,7 @@ if (!window.Store||!window.Store.Msg) {
         { id: "Theme", conditions: (module) => (module.getTheme && module.setTheme) ? module : null },
         { id: "Vcard", conditions: (module) => (module.vcardFromContactModel) ? module : null },
         { id: "Profile", conditions: (module) => (module.sendSetPicture && module.requestDeletePicture) ? module : null},
+        { id: "FindChat", conditions: (module) => (module && module.findChat) ? module : null},
       ];
       window.neededObjects = neededObjects;
       window.neededModuleFound = [];
@@ -105,32 +106,21 @@ if (!window.Store||!window.Store.Msg) {
     }
   
     const parasite = `parasite${Date.now()}`
-    if ( parseFloat(Debug.VERSION) >= parseFloat("2.2126.10")) {
-      webpackChunkwhatsapp_web_client.push([
-        [parasite],
-        {},
-        (o, e, t) => {
-          let modules=[];
-          for(let idx in o.m) {
-            let module = o(idx);
-            modules.push(module);
-          }
-          getStore(modules);
+    webpackChunkwhatsapp_web_client.push([
+      [parasite],
+      {},
+      (o, e, t) => {
+        let modules=[];
+        for(let idx in o.m) {
+          let module = o(idx);
+          modules.push(module);
         }
-      ]);
-    } else {
-       webpackChunkbuild.push([
-        [parasite],
-        {},
-        (o, e, t) => {
-          let modules=[];
-          for(let idx in o.m) {
-            let module = o(idx);
-            modules.push(module);
-          }
-          getStore(modules);
-        }
-      ]);
+        getStore(modules);
+      }
+    ]);
+
+    if (!Store.Chat.find) {
+      Store.Chat.find = Store.FindChat.findChat;
     }
 })();
 }
