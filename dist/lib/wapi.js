@@ -63,8 +63,7 @@ if (!window.Store||!window.Store.Msg) {
         { id: "BlockList", conditions: (module) => (module.BlocklistCollection) ? module : null },
         { id: "Theme", conditions: (module) => (module.getTheme && module.setTheme) ? module : null },
         { id: "Vcard", conditions: (module) => (module.vcardFromContactModel) ? module : null },
-        { id: "Profile", conditions: (module) => (module.sendSetPicture && module.requestDeletePicture) ? module : null},
-        { id: "FindChat", conditions: (module) => (module && module.findChat) ? module : null},
+        { id: "Profile", conditions: (module) => (module.sendSetPicture && module.requestDeletePicture) ? module : null}
       ];
       window.neededObjects = neededObjects;
       window.neededModuleFound = [];
@@ -119,8 +118,9 @@ if (!window.Store||!window.Store.Msg) {
       }
     ]);
 
-    if (!Store.Chat.find) {
-      Store.Chat.find = Store.FindChat.findChat;
+    if (!Store.Chat._find) {
+      Store.Chat._findAndParse = Store.BusinessProfile._findAndParse;
+      Store.Chat._find = Store.BusinessProfile._find;
     }
 })();
 }
