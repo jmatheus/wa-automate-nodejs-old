@@ -14,10 +14,10 @@ if (!window.Store||!window.Store.Msg) {
       let neededObjects = [
         { id: "Store", conditions: (module) => (module.default && module.default.Chat && module.default.Msg) ? module.default : null},
         { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && (module.default.prototype.processFiles !== undefined||module.default.prototype.processAttachments !== undefined)) ? module.default : null },
-        //{ id: "Archive", conditions: (module) => (module.setArchive) ? module : null },
-        //{ id: "Block", conditions: (module) => (module.blockContact && module.unblockContact) ? module : null },
+        { id: "Archive", conditions: (module) => (module.setArchive) ? module : null },
+        { id: "Block", conditions: (module) => (module.blockContact && module.unblockContact) ? module : null },
         { id: "ChatUtil", conditions: (module) => (module.sendClear) ? module : null },
-        ///{ id: "GroupInvite", conditions: (module) => (module.queryGroupInviteCode) ? module : null },
+        { id: "GroupInvite", conditions: (module) => (module.queryGroupInviteCode) ? module : null },
         //{ id: "Wap", conditions: (module) => (module.createGroup) ? module : null },
         //{ id: "ServiceWorker", conditions: (module) => (module.default && module.default.killServiceWorker) ? module : null },
         { id: "State", conditions: (module) => (module.STATE && module.STREAM) ? module : null },
