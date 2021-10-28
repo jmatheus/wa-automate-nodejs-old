@@ -88,7 +88,7 @@ function popup(config) {
                                         currentQrCodes['latest'] = data;
                                     }
                                     if ((data === null || data === void 0 ? void 0 : data.includes) && (data === null || data === void 0 ? void 0 : data.includes("ready for account")))
-                                        exports.closeHttp();
+                                        (0, exports.closeHttp)();
                                     return [2];
                             }
                         });
@@ -119,14 +119,14 @@ function popup(config) {
     });
 }
 exports.popup = popup;
-exports.closeHttp = function () { return __awaiter(void 0, void 0, void 0, function () {
+var closeHttp = function () { return __awaiter(void 0, void 0, void 0, function () {
     var httpTerminator;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 if (!server)
                     return [2];
-                httpTerminator = http_terminator_1.createHttpTerminator({
+                httpTerminator = (0, http_terminator_1.createHttpTerminator)({
                     server: server,
                 });
                 return [4, httpTerminator.terminate()];
@@ -136,3 +136,4 @@ exports.closeHttp = function () { return __awaiter(void 0, void 0, void 0, funct
         }
     });
 }); };
+exports.closeHttp = closeHttp;

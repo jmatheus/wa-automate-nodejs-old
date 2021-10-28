@@ -14,60 +14,59 @@ if (!window.Store||!window.Store.Msg) {
       let neededObjects = [
         { id: "Store", conditions: (module) => (module.default && module.default.Chat && module.default.Msg) ? module.default : null},
         { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && (module.default.prototype.processFiles !== undefined||module.default.prototype.processAttachments !== undefined)) ? module.default : null },
-        { id: "MediaAnalyzer", conditions: (module) => module.checkAndRepair? module : null },
-        { id: "MediaProcess", conditions: (module) => (module.BLOB) ? module : null },
-        { id: "Archive", conditions: (module) => (module.setArchive) ? module : null },
-        { id: "Block", conditions: (module) => (module.blockContact && module.unblockContact) ? module : null },
+        //{ id: "Archive", conditions: (module) => (module.setArchive) ? module : null },
+        //{ id: "Block", conditions: (module) => (module.blockContact && module.unblockContact) ? module : null },
         { id: "ChatUtil", conditions: (module) => (module.sendClear) ? module : null },
-        { id: "GroupInvite", conditions: (module) => (module.queryGroupInviteCode) ? module : null },
-        { id: "Wap", conditions: (module) => (module.createGroup) ? module : null },
-        { id: "ServiceWorker", conditions: (module) => (module.default && module.default.killServiceWorker) ? module : null },
+        ///{ id: "GroupInvite", conditions: (module) => (module.queryGroupInviteCode) ? module : null },
+        //{ id: "Wap", conditions: (module) => (module.createGroup) ? module : null },
+        //{ id: "ServiceWorker", conditions: (module) => (module.default && module.default.killServiceWorker) ? module : null },
         { id: "State", conditions: (module) => (module.STATE && module.STREAM) ? module : null },
-        { id: "WapDelete", conditions: (module) => (module.sendConversationDelete && module.sendConversationDelete.length == 2) ? module : null },
+        //{ id: "WapDelete", conditions: (module) => (module.sendConversationDelete && module.sendConversationDelete.length == 2) ? module : null },
         { id: "Conn", conditions: (module) => (module.default && module.default.ref && module.default.refTTL) ? module.default : null },
         { id: "WapQuery", conditions: (module) =>  (module.default && module.default.queryExist) ? module.default : null },
-        { id: "CryptoLib", conditions: (module) => (module.decryptE2EMedia) ? module : null },
-        { id: "OpenChat", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.openChat) ? module.default : null },
+        //{ id: "CryptoLib", conditions: (module) => (module.decryptE2EMedia) ? module : null },
+        //{ id: "OpenChat", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.openChat) ? module.default : null },
         { id: "UserConstructor", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.isServer && module.default.prototype.isUser) ? module.default : null },
         { id: "SendTextMsgToChat", conditions: (module) => (module.sendTextMsgToChat) ? module.sendTextMsgToChat : null },
         { id: "ReadSeen", conditions: (module) => (module.sendSeen) ? module : null },
         { id: "SendSeen", conditions: (module) => (module.sendSeen) ? module.sendSeen : null },
-        { id: "pinChat", conditions: (module) => (module.setPin) ? module : null },
+        //{ id: "pinChat", conditions: (module) => (module.setPin) ? module : null },
         { id: "sendDelete", conditions: (module) => (module.sendDelete) ? module.sendDelete : null },
         { id: "addAndSendMsgToChat", conditions: (module) => (module.addAndSendMsgToChat) ? module.addAndSendMsgToChat : null },
         { id: "sendMsgToChat", conditions: (module) => (module.sendMsgToChat) ? module.sendMsgToChat : null },
-        { id: "Catalog", conditions: (module) => (module.Catalog) ? module.Catalog : null },
+        //{ id: "Catalog", conditions: (module) => (module.Catalog) ? module.Catalog : null },
         { id: "MsgKey", conditions: (module) => (module.default&&(typeof module.default.toString === "function")&&module.default.toString().includes('MsgKey error: obj is null/undefined')) ? module.default : null },
         { id: "Perfil", conditions: (module) => (module.__esModule === true && module.setPushname && !module.getComposeContents) ? module : null },
-        { id: "Parser", conditions: (module) => (module.convertToTextWithoutSpecialEmojis) ? module.default : null },
-        { id: "Builders", conditions: (module) => (module.TemplateMessage && module.HydratedFourRowTemplate) ? module : null },
+        //{ id: "Parser", conditions: (module) => (module.convertToTextWithoutSpecialEmojis) ? module.default : null },
+        //{ id: "Builders", conditions: (module) => (module.TemplateMessage && module.HydratedFourRowTemplate) ? module : null },
         { id: "Me", conditions: (module) => (module.PLATFORMS && module.Conn) ? module.default : null },
-        { id: "CallUtils", conditions: (module) => (module.sendCallEnd && module.parseCall) ? module : null },
-        { id: "Identity", conditions: (module) => (module.queryIdentity && module.updateIdentity) ? module : null },
+        //{ id: "CallUtils", conditions: (module) => (module.sendCallEnd && module.parseCall) ? module : null },
+        //{ id: "Identity", conditions: (module) => (module.queryIdentity && module.updateIdentity) ? module : null },
         { id: "MyStatus", conditions: (module) => (module.getStatus && module.setMyStatus) ? module : null },
         { id: "ChatStates", conditions: (module) => (module.sendChatStatePaused && module.sendChatStateRecording && module.sendChatStateComposing) ? module : null },
-        { id: "GroupActions", conditions: (module) => (module.sendExitGroup && module.localExitGroup) ? module : null },
-        { id: "Features", conditions: (module) => (module.FEATURE_CHANGE_EVENT && module.features) ? module : null },
-        { id: "MessageUtils", conditions: (module) => (module.storeMessages && module.appendMessage) ? module : null },
-        { id: "WebMessageInfo", conditions: (module) => (module.WebMessageInfo && module.WebFeatures) ? module.WebMessageInfo : null },
-        { id: "createMessageKey", conditions: (module) => (module.createMessageKey && module.createDeviceSentMessage) ? module.createMessageKey : null },
-        { id: "Participants", conditions: (module) => (module.addParticipants && module.removeParticipants && module.promoteParticipants && module.demoteParticipants) ? module : null },
+        //{ id: "GroupActions", conditions: (module) => (module.sendExitGroup && module.localExitGroup) ? module : null },
+        //{ id: "Features", conditions: (module) => (module.FEATURE_CHANGE_EVENT && module.features) ? module : null },
+        //{ id: "MessageUtils", conditions: (module) => (module.storeMessages && module.appendMessage) ? module : null },
+        //{ id: "WebMessageInfo", conditions: (module) => (module.WebMessageInfo && module.WebFeatures) ? module.WebMessageInfo : null },
+        //{ id: "createMessageKey", conditions: (module) => (module.createMessageKey && module.createDeviceSentMessage) ? module.createMessageKey : null },
+        //{ id: "Participants", conditions: (module) => (module.addParticipants && module.removeParticipants && module.promoteParticipants && module.demoteParticipants) ? module : null },
         { id: "WidFactory", conditions: (module) => (module.isWidlike && module.createWid && module.createWidFromWidLike) ? module : null },
         { id: "Base", conditions: (module) => (module.setSubProtocol && module.binSend && module.actionNode) ? module : null },
         { id: "Base2", conditions: (module) => (module.supportsFeatureFlags && module.parseMsgStubProto && module.binSend && module.subscribeLiveLocation) ? module : null },
         { id: "Versions", conditions: (module) => (module.loadProtoVersions && module.default["15"] && module.default["16"] && module.default["17"]) ? module : null },
-        { id: "Sticker", conditions: (module) => (module.default && module.default.Sticker) ? module.default.Sticker : null },
-        { id: "MediaUpload", conditions: (module) => (module.default && module.default.mediaUpload) ? module.default : null },
+        //{ id: "Sticker", conditions: (module) => (module.default && module.default.Sticker) ? module.default.Sticker : null },
+        //{ id: "MediaUpload", conditions: (module) => (module.default && module.default.mediaUpload) ? module.default : null },
         { id: "UploadUtils", conditions: (module) => (module.default && module.default.encryptAndUpload) ? module.default : null },
-        { id: "Cmd", conditions: (module) => (module.default && module.default.openChatFromUnread) ? module : null },
-        { id: "BlockList", conditions: (module) => (module.BlocklistCollection) ? module : null },
-        { id: "Theme", conditions: (module) => (module.getTheme && module.setTheme) ? module : null },
-        { id: "Vcard", conditions: (module) => (module.vcardFromContactModel) ? module : null },
+        //{ id: "Cmd", conditions: (module) => (module.default && module.default.openChatFromUnread) ? module : null },
+        //{ id: "BlockList", conditions: (module) => (module.BlocklistCollection) ? module : null },
+        //{ id: "Theme", conditions: (module) => (module.getTheme && module.setTheme) ? module : null },
+        //{ id: "Vcard", conditions: (module) => (module.vcardFromContactModel) ? module : null },
         { id: "Profile", conditions: (module) => (module.sendSetPicture && module.requestDeletePicture) ? module : null}
       ];
       window.neededObjects = neededObjects;
       window.neededModuleFound = [];
       for (let idx in modules) {
+        console.log(modules);
         if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
           neededObjects.forEach((needObj) => {
             if (!needObj.conditions || needObj.foundedModule)
@@ -254,11 +253,11 @@ window.WAPI.createGroup = async function (name, contactsId) {
  * @param groupId stirng, the is for the group.
  * returns Promise<void>
  */
-window.WAPI.leaveGroup = function (groupId) {
-  groupId = typeof groupId == "string" ? groupId : groupId._serialized;
-  var group = WAPI.getChat(groupId);
-  return Store.GroupActions.sendExitGroup(group)
-};
+//window.WAPI.leaveGroup = function (groupId) {
+//  groupId = typeof groupId == "string" ? groupId : groupId._serialized;
+//  var group = WAPI.getChat(groupId);
+//  return Store.GroupActions.sendExitGroup(group)
+//};
 
 
 window.WAPI.getAllContacts = function () {
@@ -475,19 +474,19 @@ window.WAPI.sendMessageWithThumb = function (thumb, url, title, description, tex
   return true;
 };
 
-window.WAPI.revokeGroupInviteLink = async function (chatId) {
-  var chat = Store.Chat.get(chatId);
-  if(!chat.isGroup) return false;
-  await Store.GroupInvite.revokeGroupInvite(chat);
-  return true;
-}
+//window.WAPI.revokeGroupInviteLink = async function (chatId) {
+//  var chat = Store.Chat.get(chatId);
+//  if(!chat.isGroup) return false;
+//  await Store.GroupInvite.revokeGroupInvite(chat);
+//  return true;
+//}
 
-window.WAPI.getGroupInviteLink = async function (chatId) {
-  var chat = Store.Chat.get(chatId);
-  if(!chat.isGroup) return false;
-  await Store.GroupInvite.queryGroupInviteCode(chat);
-  return `https://chat.whatsapp.com/${chat.inviteCode}`
-}
+//window.WAPI.getGroupInviteLink = async function (chatId) {
+//  var chat = Store.Chat.get(chatId);
+//  if(!chat.isGroup) return false;
+//  await Store.GroupInvite.queryGroupInviteCode(chat);
+//  return `https://chat.whatsapp.com/${chat.inviteCode}`
+//}
 
 window.WAPI.inviteInfo = async function(link){
   return await Store.WapQuery.groupInviteInfo(link.split('\/').pop()).then(r=>r.status===200?WAPI.quickClean(r):r.status);
@@ -1161,9 +1160,9 @@ window.WAPI.clearChat = async function (id) {
  * @param archive boolean true => archive, false => unarchive
  * @return boolean true: worked, false: didnt work (probably already in desired state)
  */
-window.WAPI.archiveChat = async function (id, archive) {
-  return await Store.Archive.setArchive(Store.Chat.get(id),archive).then(_=>true).catch(_=>false)
-}
+//window.WAPI.archiveChat = async function (id, archive) {
+//  return await Store.Archive.setArchive(Store.Chat.get(id),archive).then(_=>true).catch(_=>false)
+//}
 
 /**
  * Extracts vcards from a message
@@ -1178,23 +1177,23 @@ window.WAPI.archiveChat = async function (id, archive) {
  * ]
  * ``` or false if no valid vcards found
  */
-window.WAPI.getVCards = function(id) {
-  var msg = Store.Msg.get(id);
-  if(msg) {
-    if(msg.type=='vcard') {
-      return [
-        {
-          displayName:msg.subtype,
-          vcard:msg.body
-        }
-      ]
-    } else if (msg.type=='multi_vcard') {
-      return msg.vcardList
-    } else return false;
-  } else {
-    return false
-  }
-}
+//window.WAPI.getVCards = function(id) {
+//  var msg = Store.Msg.get(id);
+//  if(msg) {
+//    if(msg.type=='vcard') {
+//      return [
+//        {
+//          displayName:msg.subtype,
+//          vcard:msg.body
+//        }
+//      ]
+//    } else if (msg.type=='multi_vcard') {
+//      return msg.vcardList
+//    } else return false;
+//  } else {
+//    return false
+//  }
+//}
 
 window.WAPI.checkNumberStatus = async function (id) {
   try {
@@ -1507,18 +1506,18 @@ window.WAPI.getBufferedNewMessages = function () {
  * - DHTGJUfFJAV9MxOpZO1fBZ
  * @returns Promise<string | boolean> Either false if it didn't work, or the group id.
  */
-window.WAPI.joinGroupViaLink = async function(link){
-  return await Store.WapQuery.acceptGroupInvite(link.split('\/').pop()).then(res=>res.status===200?res.gid._serialized:res.status);
-  let code = link;
-  //is it a link? if not, assume it's a code, otherwise, process the link to get the code.
-  if(link.includes('chat.whatsapp.com')) {
-    if(!link.match(/chat.whatsapp.com\/([\w\d]*)/g).length) return false;
-    code = link.match(/chat.whatsapp.com\/([\w\d]*)/g)[0].replace('chat.whatsapp.com\/','');
-  }
-  const group = await Store.GroupInvite.joinGroupViaInvite(code);
-  if(!group.id) return false;
-  return group.id._serialized
-}
+//window.WAPI.joinGroupViaLink = async function(link){
+//  return await Store.WapQuery.acceptGroupInvite(link.split('\/').pop()).then(res=>res.status===200?res.gid._serialized:res.status);
+//  let code = link;
+//  //is it a link? if not, assume it's a code, otherwise, process the link to get the code.
+//  if(link.includes('chat.whatsapp.com')) {
+//    if(!link.match(/chat.whatsapp.com\/([\w\d]*)/g).length) return false;
+//    code = link.match(/chat.whatsapp.com\/([\w\d]*)/g)[0].replace('chat.whatsapp.com\/','');
+//  }
+//  const group = await Store.GroupInvite.joinGroupViaInvite(code);
+//  if(!group.id) return false;
+//  return group.id._serialized
+//}
 
 window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption, quotedMsg, waitForId, type) {
   let extras = {};
@@ -1755,14 +1754,14 @@ window.WAPI.sendVideoAsGif = async function (imgBase64, chatid, filename, captio
   });
 }
 
-window.WAPI.refreshBusinessProfileProducts = async function (){
-  await Promise.all(Store.BusinessProfile.models.map(async x=>{
-    try{
-      await Store.Catalog.findCarouselCatalog(x.id._serialized)
-    } catch(error){}
-  }));
-  return true;
-}
+//window.WAPI.refreshBusinessProfileProducts = async function (){
+//  await Promise.all(Store.BusinessProfile.models.map(async x=>{
+//    try{
+//      await Store.Catalog.findCarouselCatalog(x.id._serialized)
+//    } catch(error){}
+//  }));
+//  return true;
+//}
 
 /**
  * Find any product listings of the given number. Use this to query a catalog
@@ -1770,17 +1769,17 @@ window.WAPI.refreshBusinessProfileProducts = async function (){
  * @param id id of buseinss profile (i.e the number with @c.us)
  * @returns None
  */
-window.WAPI.getBusinessProfilesProducts = async function (id) {
-  try{
-    if(!Store.Catalog.get(id)) await Store.Catalog.findCarouselCatalog(id)
-    const catalog = Store.Catalog.get(id);
-    if (catalog.productCollection && catalog.productCollection._models.length)
-      return JSON.parse(JSON.stringify(catalog.productCollection._models));
-    else return [];
-  } catch(error){
-    return false;
-  }
-};
+//window.WAPI.getBusinessProfilesProducts = async function (id) {
+//  try{
+//    if(!Store.Catalog.get(id)) await Store.Catalog.findCarouselCatalog(id)
+//    const catalog = Store.Catalog.get(id);
+//    if (catalog.productCollection && catalog.productCollection._models.length)
+//      return JSON.parse(JSON.stringify(catalog.productCollection._models));
+//    else return [];
+//  } catch(error){
+//    return false;
+//  }
+//};
 
 
 window.WAPI.procFiles= async function(chat, blobs) {
@@ -1810,44 +1809,44 @@ window.WAPI.procFiles= async function(chat, blobs) {
  * @param productId string the id of the product within the main catalog of the aforementioned business
  * @returns 
  */
-window.WAPI.sendImageWithProduct = async function (imgBase64, chatid, caption, bizNumber, productId) {
-  await WAPI.refreshBusinessProfileProducts();
-  return await Store.Catalog.findCarouselCatalog(bizNumber).then(async cat => {
-    if (cat && cat[0]) {
-      const product = cat[0].productCollection.get(productId);
-      const temp = {
-        productMsgOptions: {
-          businessOwnerJid: product.catalogWid.toString({
-            legacy: !0
-          }),
-          productId: product.id.toString(),
-          url: product.url,
-          productImageCount: product.productImageCollection.length,
-          title: product.name,
-          description: product.description,
-          currencyCode: product.currency,
-          priceAmount1000: product.priceAmount1000,
-          type: "product"
-        },
-        caption
-      }
-
-      // var idUser = new Store.WidFactory.createWid(chatid);
-
-      return Store.Chat.find(chatid).then(async (chat) => {
-        var mediaBlob = window.WAPI.base64ImageToFile(imgBase64, "filename.jpg");
-        // var mc = new Store.MediaCollection(chat);
-        // mc.processFiles([mediaBlob], chat, 1)
-        return await window.WAPI.procFiles(chat,mediaBlob).then(async mc => {
-          var media = mc.models[0];
-          Object.entries(temp.productMsgOptions).map(([k, v]) => media.mediaPrep._mediaData[k] = v)
-          await media.mediaPrep.sendToChat(chat, temp);
-          return chat.lastReceivedKey._serialized;
-        });
-      });
-    }
-  })
-}
+//window.WAPI.sendImageWithProduct = async function (imgBase64, chatid, caption, bizNumber, productId) {
+//  await WAPI.refreshBusinessProfileProducts();
+//  return await Store.Catalog.findCarouselCatalog(bizNumber).then(async cat => {
+//    if (cat && cat[0]) {
+//      const product = cat[0].productCollection.get(productId);
+//      const temp = {
+//        productMsgOptions: {
+//          businessOwnerJid: product.catalogWid.toString({
+//            legacy: !0
+//          }),
+//          productId: product.id.toString(),
+//          url: product.url,
+//          productImageCount: product.productImageCollection.length,
+//          title: product.name,
+//          description: product.description,
+//          currencyCode: product.currency,
+//          priceAmount1000: product.priceAmount1000,
+//          type: "product"
+//        },
+//        caption
+//      }
+//
+//      // var idUser = new Store.WidFactory.createWid(chatid);
+//
+//      return Store.Chat.find(chatid).then(async (chat) => {
+//        var mediaBlob = window.WAPI.base64ImageToFile(imgBase64, "filename.jpg");
+//        // var mc = new Store.MediaCollection(chat);
+//        // mc.processFiles([mediaBlob], chat, 1)
+//        return await window.WAPI.procFiles(chat,mediaBlob).then(async mc => {
+//          var media = mc.models[0];
+//          Object.entries(temp.productMsgOptions).map(([k, v]) => media.mediaPrep._mediaData[k] = v)
+//          await media.mediaPrep.sendToChat(chat, temp);
+//          return chat.lastReceivedKey._serialized;
+//        });
+//      });
+//    }
+//  })
+//}
 
 window.WAPI.base64ImageToFile = function (b64Data, filename) {
   var arr = b64Data.split(',');
@@ -2019,40 +2018,40 @@ window.WAPI.sendLocation = async function (chatId, lat, lng, loc) {
  * @param {string} contactName The display name for the contact. CANNOT BE NULL OTHERWISE IT WILL SEND SOME RANDOM CONTACT FROM YOUR ADDRESS BOOK.
  * @param {string} contactNumber If supplied, this will be injected into the vcard (VERSION 3 ONLY FROM VCARDJS) with the WA id to make it show up with the correct buttons on WA.
  */
-window.WAPI.sendVCard = async function (chatId, vcard, contactName, contactNumber) {
-  var chat = Store.Chat.get(chatId);
-  var tempMsg = Object.create(Store.Msg.models.filter(msg => msg.__x_isSentByMe && !msg.quotedMsg)[0]);
-  var newId = window.WAPI.getNewMessageId(chatId);
-  var extend = {
-    ack: 0,
-    id: newId,
-    local: !0,
-    self: "out",
-    t: parseInt(new Date().getTime() / 1000),
-    to: chatId,
-    isNewMsg: !0,
-    type: "vcard",
-    clientUrl:undefined,
-    directPath:undefined,
-    filehash:undefined,
-    uploadhash:undefined,
-    mediaKey:undefined,
-    isQuotedMsgAvailable:false,
-    invis:false,
-    mediaKeyTimestamp:undefined,
-    mimetype:undefined,
-    height:undefined,
-    width:undefined,
-    ephemeralStartTimestamp:undefined,
-    body:contactNumber?vcard.replace('TEL;TYPE=WORK,VOICE:',`TEL;TYPE=WORK,VOICE;waid=${contactNumber}:`):vcard,
-    mediaData:undefined,
-    isQuotedMsgAvailable: false,
-    subtype: contactName
-  };
-  Object.assign(tempMsg, extend);
-  return (await Promise.all(Store.addAndSendMsgToChat(chat, tempMsg)))[1]=="success"
-};
-
+//window.WAPI.sendVCard = async function (chatId, vcard, contactName, contactNumber) {
+//  var chat = Store.Chat.get(chatId);
+//  var tempMsg = Object.create(Store.Msg.models.filter(msg => msg.__x_isSentByMe && !msg.quotedMsg)[0]);
+//  var newId = window.WAPI.getNewMessageId(chatId);
+//  var extend = {
+//    ack: 0,
+//    id: newId,
+//    local: !0,
+//    self: "out",
+//    t: parseInt(new Date().getTime() / 1000),
+//    to: chatId,
+//    isNewMsg: !0,
+//    type: "vcard",
+//    clientUrl:undefined,
+//    directPath:undefined,
+//    filehash:undefined,
+//    uploadhash:undefined,
+//    mediaKey:undefined,
+//    isQuotedMsgAvailable:false,
+//    invis:false,
+//    mediaKeyTimestamp:undefined,
+//    mimetype:undefined,
+//    height:undefined,
+//    width:undefined,
+//    ephemeralStartTimestamp:undefined,
+//    body:contactNumber?vcard.replace('TEL;TYPE=WORK,VOICE:',`TEL;TYPE=WORK,VOICE;waid=${contactNumber}:`):vcard,
+//    mediaData:undefined,
+//    isQuotedMsgAvailable: false,
+//    subtype: contactName
+//  };
+//  Object.assign(tempMsg, extend);
+//  return (await Promise.all(Store.addAndSendMsgToChat(chat, tempMsg)))[1]=="success"
+//};
+//
 window.WAPI.reply = async function (chatId, body, quotedMsg) {
   if (typeof quotedMsg !== "object") quotedMsg = await window.WAPI.getMessageById(quotedMsg, null, false);
   const chat = await window.WAPI.sendExist(chatId);
@@ -2130,80 +2129,80 @@ window.WAPI.sendPaymentRequest = async function (chatId, amount1000, currency, n
  * @param {string} chatId '000000000000@c.us'
  * @param {object|array} vcard { displayName: 'Contact Name', vcard: 'BEGIN:VCARD\nVERSION:3.0\nN:;Contact Name;;;\nEND:VCARD' } | [{ displayName: 'Contact Name 1', vcard: 'BEGIN:VCARD\nVERSION:3.0\nN:;Contact Name 1;;;\nEND:VCARD' }, { displayName: 'Contact Name 2', vcard: 'BEGIN:VCARD\nVERSION:3.0\nN:;Contact Name 2;;;\nEND:VCARD' }]
  */
-window.WAPI._sendVCard = function (chatId, vcard) {
-  var chat = Store.Chat.get(chatId);
-  var tempMsg = Object.create(Store.Msg.models.filter(msg => msg.__x_isSentByMe && !msg.quotedMsg)[0]);
-  var newId = window.WAPI.getNewMessageId(chatId);
-
-  var extend = {
-    ack: 0,
-    id: newId,
-    local: !0,
-    self: "out",
-    t: parseInt(new Date().getTime() / 1000),
-    to: chatId,
-    isNewMsg: !0,
-    isQuotedMsgAvailable:false,
-  };
-
-  if (Array.isArray(vcard)) {
-    Object.assign(extend, {
-      type: "multi_vcard",
-      vcardList: vcard
-    });
-
-    delete extend.body;
-  } else {
-    Object.assign(extend, {
-      type: "vcard",
-      subtype: vcard.displayName,
-      body: vcard.vcard
-    });
-
-    delete extend.vcardList;
-  }
-
-  Object.assign(tempMsg, extend);
-
-  Store.addAndSendMsgToChat(chat, tempMsg)
-};
+//window.WAPI._sendVCard = function (chatId, vcard) {
+//  var chat = Store.Chat.get(chatId);
+//  var tempMsg = Object.create(Store.Msg.models.filter(msg => msg.__x_isSentByMe && !msg.quotedMsg)[0]);
+//  var newId = window.WAPI.getNewMessageId(chatId);
+//
+//  var extend = {
+//    ack: 0,
+//    id: newId,
+//    local: !0,
+//    self: "out",
+//    t: parseInt(new Date().getTime() / 1000),
+//    to: chatId,
+//    isNewMsg: !0,
+//    isQuotedMsgAvailable:false,
+//  };
+//
+//  if (Array.isArray(vcard)) {
+//    Object.assign(extend, {
+//      type: "multi_vcard",
+//      vcardList: vcard
+//    });
+//
+//    delete extend.body;
+//  } else {
+//    Object.assign(extend, {
+//      type: "vcard",
+//      subtype: vcard.displayName,
+//      body: vcard.vcard
+//    });
+//
+//    delete extend.vcardList;
+//  }
+//
+//  Object.assign(tempMsg, extend);
+//
+//  Store.addAndSendMsgToChat(chat, tempMsg)
+//};
 
 /**
  * Block contact 
  * @param {string} id '000000000000@c.us'
  */
-window.WAPI.contactBlock = async function (id) {
-  const contact = window.Store.Contact.get(id);
-  if (contact !== undefined) {
-    await Store.Block.blockContact(contact)
-    return true;
-  }
-  return false;
-}
+//window.WAPI.contactBlock = async function (id) {
+//  const contact = window.Store.Contact.get(id);
+//  if (contact !== undefined) {
+//    await Store.Block.blockContact(contact)
+//    return true;
+//  }
+//  return false;
+//}
 /**
  * Unblock contact 
  * @param {string} id '000000000000@c.us'
  */
-window.WAPI.contactUnblock = async function (id) {
-  const contact = window.Store.Contact.get(id);
-  if (contact !== undefined) {
-    await Store.Block.unblockContact(contact)
-    return true;
-  }
-  return false;
-}
+//window.WAPI.contactUnblock = async function (id) {
+//  const contact = window.Store.Contact.get(id);
+//  if (contact !== undefined) {
+//    await Store.Block.unblockContact(contact)
+//    return true;
+//  }
+//  return false;
+//}
 
 /**
  * Remove participant of Group
  * @param {*} idGroup '0000000000-00000000@g.us'
  * @param {*} idParticipant '000000000000@c.us'
  */
-window.WAPI.removeParticipant = async function (idGroup, idParticipant) {
-  const chat = Store.Chat.get(idGroup);
-  const rm = chat.groupMetadata.participants.get(idParticipant);
-  await window.Store.Participants.removeParticipants(chat, [rm]);
-  return true;
-}
+//window.WAPI.removeParticipant = async function (idGroup, idParticipant) {
+//  const chat = Store.Chat.get(idGroup);
+//  const rm = chat.groupMetadata.participants.get(idParticipant);
+//  await window.Store.Participants.removeParticipants(chat, [rm]);
+//  return true;
+//}
 
 
 /**
@@ -2211,38 +2210,38 @@ window.WAPI.removeParticipant = async function (idGroup, idParticipant) {
  * @param {*} idGroup '0000000000-00000000@g.us'
  * @param {*} idParticipant '000000000000@c.us'
  */
-window.WAPI.addParticipant = async function (idGroup, idParticipant) {
-  const chat = Store.Chat.get(idGroup);
-  const add = Store.Contact.get(idParticipant);
-  await window.Store.Participants.addParticipants(chat, [add]);
-  return true;
-}
+//window.WAPI.addParticipant = async function (idGroup, idParticipant) {
+//  const chat = Store.Chat.get(idGroup);
+//  const add = Store.Contact.get(idParticipant);
+//  await window.Store.Participants.addParticipants(chat, [add]);
+//  return true;
+//}
 
 /**
  * Promote Participant to Admin in Group
  * @param {*} idGroup '0000000000-00000000@g.us'
  * @param {*} idParticipant '000000000000@c.us'
  */
-window.WAPI.promoteParticipant = async function (idGroup, idParticipant) {
-  const chat = Store.Chat.get(idGroup);
-  const promote = chat.groupMetadata.participants.get(idParticipant);
-  await window.Store.Participants.promoteParticipants(chat, [promote]);
-  return true;
-}
+//window.WAPI.promoteParticipant = async function (idGroup, idParticipant) {
+//  const chat = Store.Chat.get(idGroup);
+//  const promote = chat.groupMetadata.participants.get(idParticipant);
+//  await window.Store.Participants.promoteParticipants(chat, [promote]);
+//  return true;
+//}
 
 /**
  * Demote Admin of Group
  * @param {*} idGroup '0000000000-00000000@g.us'
  * @param {*} idParticipant '000000000000@c.us'
  */
-window.WAPI.demoteParticipant = async function (idGroup, idParticipant) {
-  await window.Store.WapQuery.demoteParticipants(idGroup, [idParticipant])
-  const chat = Store.Chat.get(idGroup);
-  const demote = chat.groupMetadata.participants.get(idParticipant);
-  await window.Store.Participants.demoteParticipants(chat, [demote])
-  return true
-
-}
+//window.WAPI.demoteParticipant = async function (idGroup, idParticipant) {
+//  await window.Store.WapQuery.demoteParticipants(idGroup, [idParticipant])
+//  const chat = Store.Chat.get(idGroup);
+//  const demote = chat.groupMetadata.participants.get(idParticipant);
+//  await window.Store.Participants.demoteParticipants(chat, [demote])
+//  return true
+//
+//}
 
 /**
  * @private
@@ -2251,22 +2250,22 @@ window.WAPI.demoteParticipant = async function (idGroup, idParticipant) {
  * @param {*} chatId '000000000000@c.us'
  * @param metadata about the image. Based on [sharp metadata](https://sharp.pixelplumbing.com/api-input#metadata)
  */
-window.WAPI._sendSticker = async function (sticker, chatId, metadata) {
-  var chat = Store.Chat.get(chatId)
-  let stick = new window.Store.Sticker.modelClass();
-  stick.__x_clientUrl = sticker.clientUrl;
-  stick.__x_filehash = sticker.filehash;
-  stick.__x_id = sticker.filehash;
-  stick.__x_uploadhash = sticker.uploadhash;
-  stick.__x_mediaKey = sticker.mediaKey;
-  stick.__x_initialized = false;
-  stick.__x_mediaData.mediaStage = 'INIT';
-  stick.mimetype = 'image/webp';
-  stick.height = (metadata && metadata.height) ?  metadata.height : 512;
-  stick.width = (metadata && metadata.width) ?  metadata.width : 512;
-  await stick.initialize();
-  return await stick.sendToChat(chat);
-};
+//window.WAPI._sendSticker = async function (sticker, chatId, metadata) {
+//  var chat = Store.Chat.get(chatId)
+//  let stick = new window.Store.Sticker.modelClass();
+//  stick.__x_clientUrl = sticker.clientUrl;
+//  stick.__x_filehash = sticker.filehash;
+//  stick.__x_id = sticker.filehash;
+//  stick.__x_uploadhash = sticker.uploadhash;
+//  stick.__x_mediaKey = sticker.mediaKey;
+//  stick.__x_initialized = false;
+//  stick.__x_mediaData.mediaStage = 'INIT';
+//  stick.mimetype = 'image/webp';
+//  stick.height = (metadata && metadata.height) ?  metadata.height : 512;
+//  stick.width = (metadata && metadata.width) ?  metadata.width : 512;
+//  await stick.initialize();
+//  return await stick.sendToChat(chat);
+//};
 
 window.WAPI.getFileHash = async (data) => {
   let buffer = await data.arrayBuffer();
@@ -2315,14 +2314,14 @@ window.WAPI.encryptAndUploadFile = async function (type, blob) {
  * @param {*} chatId '000000000000@c.us'
  * @param metadata about the image. Based on [sharp metadata](https://sharp.pixelplumbing.com/api-input#metadata)
  */
-window.WAPI.sendImageAsSticker = async function (imageBase64,chatId, metadata) {
-  let mediaBlob = await window.WAPI.base64ImageToFile(
-    'data:image/webp;base64,'+imageBase64,
-    'file.webp'
-  );
-  let encrypted = await window.WAPI.encryptAndUploadFile("sticker", mediaBlob);
-  return await window.WAPI._sendSticker(encrypted, chatId, metadata);
-};
+//window.WAPI.sendImageAsSticker = async function (imageBase64,chatId, metadata) {
+//  let mediaBlob = await window.WAPI.base64ImageToFile(
+//    'data:image/webp;base64,'+imageBase64,
+//    'file.webp'
+//  );
+//  let encrypted = await window.WAPI.encryptAndUploadFile("sticker", mediaBlob);
+//  return await window.WAPI._sendSticker(encrypted, chatId, metadata);
+//};
 
 /**
 This will dump all possible stickers into the chat. ONLY FOR TESTING. THIS IS REALLY ANNOYING!!

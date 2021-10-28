@@ -76,7 +76,7 @@ var primatives = [
     'string',
     'boolean'
 ];
-exports.generatePostmanJson = function (setup) {
+var generatePostmanJson = function (setup) {
     if (setup === void 0) { setup = {}; }
     return __awaiter(this, void 0, void 0, function () {
         var TypescriptParser, parser, parsed_1, data, parsed, x, postmanGen, pm, d, postmanWrap, res;
@@ -125,6 +125,7 @@ exports.generatePostmanJson = function (setup) {
         });
     });
 };
+exports.generatePostmanJson = generatePostmanJson;
 function escape(key, val) {
     if (typeof (val) != "string")
         return val;

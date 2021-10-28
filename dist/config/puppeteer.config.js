@@ -42,6 +42,7 @@ var puppeteerConfig = {
 };
 exports.puppeteerConfig = puppeteerConfig;
 exports.useragent = 'WhatsApp/2.2037.6 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36';
-exports.createUserAgent = function (waVersion) { return "WhatsApp/" + waVersion + " Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"; };
+var createUserAgent = function (waVersion) { return "WhatsApp/" + waVersion + " Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"; };
+exports.createUserAgent = createUserAgent;
 exports.width = puppeteerConfig.width;
 exports.height = puppeteerConfig.height;

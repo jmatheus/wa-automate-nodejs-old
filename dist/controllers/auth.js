@@ -61,9 +61,10 @@ var rxjs_1 = require("rxjs");
 var take_1 = require("rxjs/internal/operators/take");
 var events_1 = require("./events");
 var model_1 = require("../api/model");
-exports.isAuthenticated = function (waPage) { return rxjs_1.merge(exports.needsToScan(waPage), exports.isInsideChat(waPage)).pipe(take_1.take(1)).toPromise(); };
-exports.needsToScan = function (waPage) {
-    return rxjs_1.from(new Promise(function (resolve) { return __awaiter(void 0, void 0, void 0, function () {
+var isAuthenticated = function (waPage) { return (0, rxjs_1.merge)((0, exports.needsToScan)(waPage), (0, exports.isInsideChat)(waPage)).pipe((0, take_1.take)(1)).toPromise(); };
+exports.isAuthenticated = isAuthenticated;
+var needsToScan = function (waPage) {
+    return (0, rxjs_1.from)(new Promise(function (resolve) { return __awaiter(void 0, void 0, void 0, function () {
         var ident;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -90,12 +91,14 @@ exports.needsToScan = function (waPage) {
         });
     }); }));
 };
-exports.isInsideChat = function (waPage) {
-    return rxjs_1.from(waPage
+exports.needsToScan = needsToScan;
+var isInsideChat = function (waPage) {
+    return (0, rxjs_1.from)(waPage
         .waitForFunction("!!window.WA_AUTHENTICATED || (document.getElementsByClassName('app')[0] && document.getElementsByClassName('app')[0].attributes && !!document.getElementsByClassName('app')[0].attributes.tabindex) || (document.getElementsByClassName('two')[0] && document.getElementsByClassName('two')[0].attributes && !!document.getElementsByClassName('two')[0].attributes.tabindex)", { timeout: 0 })
         .then(function () { return true; }));
 };
-exports.phoneIsOutOfReach = function (waPage) { return __awaiter(void 0, void 0, void 0, function () {
+exports.isInsideChat = isInsideChat;
+var phoneIsOutOfReach = function (waPage) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4, waPage
@@ -104,6 +107,7 @@ exports.phoneIsOutOfReach = function (waPage) { return __awaiter(void 0, void 0,
         }
     });
 }); };
+exports.phoneIsOutOfReach = phoneIsOutOfReach;
 var checkIfCanAutoRefresh = function (waPage) { return waPage.evaluate(function () { if (window.Store && window.Store.State) {
     window.Store.State.default.state = "UNPAIRED";
     window.Store.State.default.run();
