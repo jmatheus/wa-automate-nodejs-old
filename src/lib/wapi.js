@@ -32,6 +32,9 @@ if (!window.Store||!window.Store.Msg) {
         { id: "SendSeen", conditions: (module) => (module.sendSeen) ? module.sendSeen : null },
         { id: "pinChat", conditions: (module) => (module.setPin) ? module : null },
         { id: "sendDelete", conditions: (module) => (module.sendDelete) ? module.sendDelete : null },
+        { id: "FeatureChecker", conditions: (module) => (module && module.getProtobufFeatureName) ? module : null },
+        { id: "GetMaybeMeUser", conditions: (module) => (module && module.getMaybeMeUser) ? module : null },
+        { id: "QueryExist", conditions: (module) => (module.queryExist) ? module : null }
         { id: "addAndSendMsgToChat", conditions: (module) => (module.addAndSendMsgToChat) ? module.addAndSendMsgToChat : null },
         { id: "sendMsgToChat", conditions: (module) => (module.sendMsgToChat) ? module.sendMsgToChat : null },
         { id: "Catalog", conditions: (module) => (module.Catalog) ? module.Catalog : null },
@@ -102,7 +105,7 @@ if (!window.Store||!window.Store.Msg) {
       if(window.Store.MediaCollection) window.Store.MediaCollection.prototype.processFiles = window.Store.MediaCollection.prototype.processFiles || window.Store.MediaCollection.prototype.processAttachments;
       return window.Store;
     }
-  
+
     const parasite = `parasite${Date.now()}`
     webpackChunkwhatsapp_web_client.push([
       [parasite],
@@ -121,7 +124,7 @@ if (!window.Store||!window.Store.Msg) {
       Store.Chat._findAndParse = Store.BusinessProfile._findAndParse;
       Store.Chat._find = Store.BusinessProfile._find;
     }
-})();
+  })();
 }
 
 window.WAPI = {};
@@ -133,6 +136,14 @@ window.WAPI._serializeRawObj = (obj) => {
   }
   return {}
 };
+
+window.WAPI.isMultiDeviceVersion = function() {
+  return Store.FeatureChecker.default.supportsFeature(Store.FeatureChecker.default.F.MD_BACKEND);
+}
+
+window.WAPI.getMyChatId = () => {
+  return Store.GetMaybeMeUser.getMaybeMeUser();
+}
 
 /**
  * Serializes a chat object
@@ -1197,7 +1208,7 @@ window.WAPI.clearChat = async function (id) {
 
 window.WAPI.checkNumberStatus = async function (id) {
   try {
-    const result = await window.Store.WapQuery.queryExist(id);
+    const result = await window.WAPI.findJidFromNumber(id);
     if (result.jid === undefined) throw 404;
     const data = window.WAPI._serializeNumberStatusObj(result);
     if (data.status == 200) data.numberExists = true
@@ -1209,6 +1220,32 @@ window.WAPI.checkNumberStatus = async function (id) {
     });
   }
 };
+
+window.WAPI.findJidFromNumber = async function (number) {
+  if (window.WAPI.isMultiDeviceVersion()) {
+    return Store.QueryExist.queryExist(WAPI.tryFixNumber(number)).then(value => {
+      return { status: 200, jid: value.wid }
+    });
+  } else {
+    if (!number.includes("@c.us"))
+      number += "@c.us";
+    return Store.WapQuery.queryExist(number);
+  }
+}
+
+window.WAPI.tryFixNumber = async function (number) {
+  let firstNumbersMe = Store.GetMaybeMeUser.getMaybeMeUser().user.substring(0, 2);
+  let firstNumbersContact = number.substring(0, 2);
+  if (firstNumbersMe === firstNumbersContact) {
+    return number.substring(2);
+  }
+  firstNumbersMe = Store.GetMaybeMeUser.getMaybeMeUser().user.substring(0, 3);
+  firstNumbersContact = number.substring(0, 3);
+  if (firstNumbersMe === firstNumbersContact) {
+    return number.substring(3);
+  }
+  return number;
+}
 
 window.WAPI.onAnyMessage = callback => window.Store.Msg.on('add', (newMessage) => {
   if (newMessage && newMessage.isNewMsg) {
