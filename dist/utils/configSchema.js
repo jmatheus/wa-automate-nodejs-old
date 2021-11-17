@@ -19,7 +19,7 @@ var defaultConfig = {
     tsconfig: "../../tsconfig.json",
     type: "ConfigObject",
 };
-var getConfigWithCase = function (config) {
+exports.getConfigWithCase = function (config) {
     if (!config)
         config = defaultConfig;
     var schema = tsj.createGenerator(config).createSchema(config.type);
@@ -46,7 +46,6 @@ var getConfigWithCase = function (config) {
         var type = _a.type, key = _a.key;
         return type && !ignoredConfigs.includes(key);
     });
-    var configWithCases = configs.map(function (o) { return (__assign({ env: "WA_" + (0, change_case_1.constantCase)(o.key), p: (0, change_case_1.paramCase)(o.key) }, o)); });
+    var configWithCases = configs.map(function (o) { return (__assign({ env: "WA_" + change_case_1.constantCase(o.key), p: change_case_1.paramCase(o.key) }, o)); });
     return configWithCases;
 };
-exports.getConfigWithCase = getConfigWithCase;

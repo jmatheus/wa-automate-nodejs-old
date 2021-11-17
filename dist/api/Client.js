@@ -76,14 +76,12 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -137,7 +135,7 @@ function getDUrl(url, optionsOverride) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4, (0, axios_1.default)(__assign(__assign({ method: "get", url: url, headers: {
+                    return [4, axios_1.default(__assign(__assign({ method: "get", url: url, headers: {
                                 'DNT': 1,
                                 'Upgrade-Insecure-Requests': 1
                             } }, optionsOverride), { responseType: 'arraybuffer' }))];
@@ -237,7 +235,7 @@ var Client = (function () {
                 switch (_b.label) {
                     case 0:
                         _a = this;
-                        return [4, (0, browser_1.injectApi)(this._page)];
+                        return [4, browser_1.injectApi(this._page)];
                     case 1:
                         _a._page = _b.sent();
                         return [2];
@@ -264,7 +262,7 @@ var Client = (function () {
                         return [4, this._page.goto(puppeteer_config_1.puppeteerConfig.WAUrl)];
                     case 1:
                         _b.sent();
-                        return [4, (0, auth_1.isAuthenticated)(this._page)];
+                        return [4, auth_1.isAuthenticated(this._page)];
                     case 2:
                         _b.sent();
                         return [4, this._reInjectWapi()];
@@ -314,7 +312,7 @@ var Client = (function () {
                         if (state !== model_1.STATE.CONNECTED)
                             throw "state: " + state;
                         _c.label = 2;
-                    case 2: return [2, (_b = this._page).evaluate.apply(_b, __spreadArray([pageFunction], args, false))];
+                    case 2: return [2, (_b = this._page).evaluate.apply(_b, __spreadArrays([pageFunction], args))];
                 }
             });
         });
@@ -647,7 +645,7 @@ var Client = (function () {
                         _a.label = 6;
                     case 6:
                         if (pid)
-                            (0, tree_kill_1.default)(pid, 'SIGKILL');
+                            tree_kill_1.default(pid, 'SIGKILL');
                         return [3, 8];
                     case 7:
                         error_3 = _a.sent();
@@ -827,7 +825,7 @@ var Client = (function () {
                     case 5:
                         if (m === false)
                             return [2, false];
-                        return [4, (0, wa_decrypt_1.decryptMedia)(m)];
+                        return [4, wa_decrypt_1.decryptMedia(m)];
                     case 6:
                         mediaData = _a.sent();
                         return [2, "data:" + m.mimetype + ";base64," + mediaData.toString('base64')];
@@ -1425,7 +1423,7 @@ var Client = (function () {
                         m = _a.sent();
                         if (!m)
                             return [2, false];
-                        return [2, __assign({ t: m.t, id: m.id }, (0, wa_decrypt_1.bleachMessage)(m))];
+                        return [2, __assign({ t: m.t, id: m.id }, wa_decrypt_1.bleachMessage(m))];
                 }
             });
         });
@@ -1440,7 +1438,7 @@ var Client = (function () {
                         m = _a.sent();
                         if (!m)
                             return [2, false];
-                        return [2, __assign({}, (0, wa_decrypt_1.bleachMessage)(m))];
+                        return [2, __assign({}, wa_decrypt_1.bleachMessage(m))];
                 }
             });
         });
@@ -1727,12 +1725,12 @@ var Client = (function () {
                         mimeInfo = base64MimeType(b64);
                         console.log("setGroupIcon -> mimeInfo", mimeInfo);
                         if (!(!mimeInfo || mimeInfo.includes("image"))) return [3, 4];
-                        return [4, (0, sharp_1.default)(buff, { failOnError: false })
+                        return [4, sharp_1.default(buff, { failOnError: false })
                                 .resize({ height: 300 })
                                 .toBuffer()];
                     case 1:
                         scaledImageBuffer = _b.sent();
-                        jpeg = (0, sharp_1.default)(scaledImageBuffer, { failOnError: false }).jpeg();
+                        jpeg = sharp_1.default(scaledImageBuffer, { failOnError: false }).jpeg();
                         _a = "data:jpeg;base64,";
                         return [4, jpeg.toBuffer()];
                     case 2:
@@ -1991,10 +1989,10 @@ var Client = (function () {
                         webpBase64 = b64;
                         metadata = { width: 512, height: 512 };
                         if (!!mimeInfo.includes('webp')) return [3, 4];
-                        return [4, (0, sharp_1.default)(buff).metadata()];
+                        return [4, sharp_1.default(buff).metadata()];
                     case 1:
                         pages = (_a.sent()).pages;
-                        webp = (0, sharp_1.default)(buff, { failOnError: false, animated: !!pages }).webp();
+                        webp = sharp_1.default(buff, { failOnError: false, animated: !!pages }).webp();
                         if (!!!pages)
                             webp = webp.resize(metadata);
                         return [4, webp.metadata()];
@@ -2208,11 +2206,11 @@ var Client = (function () {
             var _ins, _w, _webb64;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4, (0, sharp_1.default)(buff, { failOnError: false })
+                    case 0: return [4, sharp_1.default(buff, { failOnError: false })
                             .resize({ width: size.width, height: size.height })
                             .toBuffer()];
                     case 1:
-                        _ins = _a.sent(), _w = (0, sharp_1.default)(_ins, { failOnError: false }).jpeg();
+                        _ins = _a.sent(), _w = sharp_1.default(_ins, { failOnError: false }).jpeg();
                         return [4, _w.toBuffer()];
                     case 2:
                         _webb64 = (_a.sent()).toString('base64');
@@ -2260,7 +2258,7 @@ var Client = (function () {
                                 case 0: return [4, this._webhookQueue.add(function () { return __awaiter(_this, void 0, void 0, function () {
                                         return __generator(this, function (_a) {
                                             switch (_a.label) {
-                                                case 0: return [4, (0, axios_1.default)(__assign({ method: 'post', url: url, data: {
+                                                case 0: return [4, axios_1.default(__assign({ method: 'post', url: url, data: {
                                                             ts: Date.now(),
                                                             event: event,
                                                             data: _data

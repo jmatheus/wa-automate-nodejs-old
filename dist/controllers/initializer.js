@@ -130,7 +130,7 @@ function create(_sessionId, config, customUserAgent) {
                     _d.label = 2;
                 case 2:
                     if (config === null || config === void 0 ? void 0 : config.inDocker) {
-                        config = __assign(__assign({}, config), (0, tools_1.getConfigFromProcessEnv)(configWithCases));
+                        config = __assign(__assign({}, config), tools_1.getConfigFromProcessEnv(configWithCases));
                         config.chromiumArgs = (config === null || config === void 0 ? void 0 : config.chromiumArgs) || [];
                         customUserAgent = config.customUserAgent;
                     }
@@ -150,7 +150,7 @@ function create(_sessionId, config, customUserAgent) {
                         "Check out the latest changes: https://github.com/open-wa/wa-automate-nodejs#latest-changes   ",
                     ].join('\n'), { padding: 1, borderColor: 'yellow', borderStyle: 'bold' }) : prettyFont.string);
                     if (!(config === null || config === void 0 ? void 0 : config.popup)) return [3, 4];
-                    return [4, (0, popup_1.popup)(config)];
+                    return [4, popup_1.popup(config)];
                 case 3:
                     popupaddr = _d.sent();
                     console.log("You can also authenticate the session at: " + popupaddr);
@@ -166,7 +166,7 @@ function create(_sessionId, config, customUserAgent) {
                     shouldLoop = true;
                     events_1.ev.on('AUTH.**', function (isAuthenticated, sessionId) { return shouldLoop = false; });
                     spinner.start('Initializing WA');
-                    return [4, (0, browser_1.initClient)(sessionId, config, customUserAgent)];
+                    return [4, browser_1.initClient(sessionId, config, customUserAgent)];
                 case 6:
                     waPage = _d.sent();
                     spinner.succeed('Browser Launched');
@@ -193,7 +193,7 @@ function create(_sessionId, config, customUserAgent) {
                     console.table(debugInfo);
                     if (!canInjectEarly) return [3, 12];
                     spinner.start('Injecting api');
-                    return [4, (0, browser_1.injectApi)(waPage)];
+                    return [4, browser_1.injectApi(waPage)];
                 case 11:
                     waPage = _d.sent();
                     spinner.start('WAPI injected');
@@ -206,7 +206,7 @@ function create(_sessionId, config, customUserAgent) {
                 case 13:
                     spinner.start('Authenticating');
                     authRace = [];
-                    authRace.push((0, auth_1.isAuthenticated)(waPage));
+                    authRace.push(auth_1.isAuthenticated(waPage));
                     if (config === null || config === void 0 ? void 0 : config.authTimeout) {
                         authRace.push(timeout(config.authTimeout * 1000));
                     }
@@ -214,7 +214,7 @@ function create(_sessionId, config, customUserAgent) {
                 case 14:
                     authenticated = _d.sent();
                     if (!(authenticated == 'timeout')) return [3, 17];
-                    return [4, (0, auth_1.phoneIsOutOfReach)(waPage)];
+                    return [4, auth_1.phoneIsOutOfReach(waPage)];
                 case 15:
                     outOfReach = _d.sent();
                     spinner.emit(outOfReach ? 'appOffline' : 'authTimeout');
@@ -233,7 +233,7 @@ function create(_sessionId, config, customUserAgent) {
                                     if (!shouldLoop)
                                         return [2];
                                     console.log(' ');
-                                    return [4, (0, auth_1.retrieveQR)(waPage, sessionId, autoRefresh_1, throwOnError_1, qrLogSkip_1, config === null || config === void 0 ? void 0 : config.qrFormat, config === null || config === void 0 ? void 0 : config.qrQuality)];
+                                    return [4, auth_1.retrieveQR(waPage, sessionId, autoRefresh_1, throwOnError_1, qrLogSkip_1, config === null || config === void 0 ? void 0 : config.qrFormat, config === null || config === void 0 ? void 0 : config.qrQuality)];
                                 case 1:
                                     _a.sent();
                                     console.log(' ');
@@ -257,7 +257,7 @@ function create(_sessionId, config, customUserAgent) {
                     qrSpin.succeed();
                     qrLoop_1();
                     race = [];
-                    race.push((0, auth_1.isInsideChat)(waPage).toPromise());
+                    race.push(auth_1.isInsideChat(waPage).toPromise());
                     if (config === null || config === void 0 ? void 0 : config.qrTimeout) {
                         race.push(timeout(config.qrTimeout * 1000));
                     }
@@ -280,7 +280,7 @@ function create(_sessionId, config, customUserAgent) {
                 case 22:
                     pre = canInjectEarly ? 'Rei' : 'I';
                     spinner.start(pre + "njecting api");
-                    return [4, (0, browser_1.injectApi)(waPage)];
+                    return [4, browser_1.injectApi(waPage)];
                 case 23:
                     waPage = _d.sent();
                     spinner.succeed("WAPI " + pre + "njected");
@@ -339,7 +339,7 @@ function create(_sessionId, config, customUserAgent) {
                                 }
                             });
                         }); });
-                    return [4, (0, launch_checks_1.checkWAPIHash)()];
+                    return [4, launch_checks_1.checkWAPIHash()];
                 case 28:
                     pureWAPI = _d.sent();
                     if (!pureWAPI) {
@@ -350,7 +350,7 @@ function create(_sessionId, config, customUserAgent) {
                 case 29:
                     _c.NUM = _d.sent();
                     if (!((config === null || config === void 0 ? void 0 : config.skipBrokenMethodsCheck) !== true)) return [3, 31];
-                    return [4, (0, launch_checks_1.integrityCheck)(waPage, notifier, spinner, debugInfo)];
+                    return [4, launch_checks_1.integrityCheck(waPage, notifier, spinner, debugInfo)];
                 case 30:
                     _d.sent();
                     _d.label = 31;
@@ -409,7 +409,7 @@ var kill = function (p) { return __awaiter(void 0, void 0, void 0, function () {
                 _a.label = 5;
             case 5:
                 if (pid)
-                    (0, tree_kill_1.default)(pid, 'SIGKILL');
+                    tree_kill_1.default(pid, 'SIGKILL');
                 _a.label = 6;
             case 6: return [2];
         }

@@ -65,14 +65,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.injectApi = exports.initClient = void 0;
@@ -288,7 +286,7 @@ function initBrowser(sessionId, config) {
                 case 9:
                     if (config === null || config === void 0 ? void 0 : config.browserWsEndpoint)
                         config.browserWSEndpoint = config.browserWsEndpoint;
-                    args = __spreadArray(__spreadArray([], puppeteer_config_1.puppeteerConfig.chromiumArgs, true), ((config === null || config === void 0 ? void 0 : config.chromiumArgs) || []), true);
+                    args = __spreadArrays(puppeteer_config_1.puppeteerConfig.chromiumArgs, ((config === null || config === void 0 ? void 0 : config.chromiumArgs) || []));
                     if (config === null || config === void 0 ? void 0 : config.corsFix)
                         args.push('--disable-web-security');
                     if (!(config === null || config === void 0 ? void 0 : config.browserWSEndpoint)) return [3, 11];
