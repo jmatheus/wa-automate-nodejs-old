@@ -494,7 +494,7 @@ window.WAPI.isMultiDeviceVersion = function() {
 }
 
 window.WAPI.getMyChatId = () => {
-  return Store.GetMaybeMeUser.getMaybeMeUser();
+  return Store.MaybeMeUser.getMaybeMeUser();
 }
 
 /**
@@ -1047,7 +1047,7 @@ WAPI.iAmAdmin = async function(){
  * Returns an object with all of your host device details
  */
 window.WAPI.getMe = function(){
-  return window.Store.Contact.get(window.Store.Conn.wid).id;
+  return window.Store.Contact.get(window.Store.MaybeMeUser.getMaybeMeUser()).id;
 };
 
 window.WAPI.isLoggedIn = function () {
@@ -1250,7 +1250,7 @@ window.WAPI.sendMessageToID = async function (to, content) {
 window.WAPI.sendMessage = async function (to, content) {
   var chat = Store.Chat.get(to);
   const newMsgId = await window.WAPI.getNewMessageId(chat.id);
-  const fromwWid = await window.Store.Conn.wid;
+  const fromwWid = await window.Store.MaybeMeUser.getMaybeMeUser();
   const message = {
     id: newMsgId,
     ack: 0,
@@ -2572,7 +2572,7 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
     chat.lastReceivedKey.id = inChat.id;
   }
 
-  const fromwWid = await Store.Conn.wid;
+  const fromwWid = await Store.MaybeMeUser.getMaybeMeUser();
 
   const message = {
     id: newId,
