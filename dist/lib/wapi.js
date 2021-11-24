@@ -66,7 +66,7 @@ if (!window.Store||!window.Store.Msg) {
     conditions: (module) =>
       module.default && module.default.ref && module.default.refTTL
         ? module.default
-        : null
+        : (module.Conn && module.Conn.ref && module.Conn.refTTL ? module.Conn : null)
   },
   {
     id: 'WapQuery',
@@ -1239,13 +1239,58 @@ window.WAPI.sleep = function(ms) {
 window.WAPI.sendMessageToID = async function (to, content) {
   //if (firstChat == undefined) { return 'ERROR: create active chat' }
   chat = await WAPI.sendExist(to);
-  const message = content;
-  if (!chat.erro) {
+  if (chat && chat.status != 404 && chat.id) {
+    const m = { type: 'sendText', text: content };
+    const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
+    const fromwWid = await Store.MaybeMeUser.getMaybeMeUser();
+
+    let inChat = await WAPI.getchatId(chat.id).catch(() => {
+      return WAPI.scope(chat.id, true, 404, 'Error to number ' + to);
+    });
+
+    if (inChat) {
+      chat.lastReceivedKey && chat.lastReceivedKey._serialized
+        ? (chat.lastReceivedKey._serialized = inChat._serialized)
+        : '';
+      chat.lastReceivedKey && chat.lastReceivedKey.id
+        ? (chat.lastReceivedKey.id = inChat.id)
+        : '';
+    }
+
+    if (!newMsgId) {
+      return WAPI.scope(to, true, 404, 'Error to newId');
+    }
     if(chat.id._serialized !== to) { return 'ERROR: not a valid Whatsapp'; }
-    const result = await chat.sendMessage(message);
-    const m = { type: 'sendtext', text: message };
-    const To = await WAPI.getchatId(chat.id);
-    const obj = WAPI.scope(To, true, result, null);
+    const message = {
+      id: newMsgId,
+      ack: 0,
+      body: content,
+      from: fromwWid,
+      to: chat.id,
+      local: !0,
+      self: 'out',
+      t: parseInt(new Date().getTime() / 1000),
+      isNewMsg: !0,
+      type: 'chat'
+    };
+
+    try {
+      var result = (
+        await Promise.all(window.Store.addAndSendMsgToChat(chat, message))
+      )[1];
+
+      if (result === 'success' || result === 'OK') {
+        let obj = WAPI.scope(newMsgId, false, result, content);
+        Object.assign(obj, m);
+        return obj;
+      }
+    } catch (e) {
+      let obj = WAPI.scope(newMsgId, true, result, 'The message was not sent');
+      Object.assign(obj, m);
+      return obj;
+    }
+
+    let obj = WAPI.scope(newMsgId, true, result, content);
     Object.assign(obj, m);
     return obj;
   } else {
