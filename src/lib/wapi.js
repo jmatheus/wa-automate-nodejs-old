@@ -1568,7 +1568,7 @@ window.WAPI.checkNumberStatus = async function (id, conn = true) {
     }
 
     if (conn === true) {
-      const connection = window.Store.State.default.state;
+      const connection = window.Store.State.Socket.state;
       if (connection !== 'CONNECTED') {
         Object.assign(err, {
           text: 'No connection with WhatsApp',
@@ -1625,7 +1625,7 @@ window.WAPI.onAnyMessage = callback => window.Store.Msg.on('add', (newMessage) =
  * @returns {boolean}
  */
 window.WAPI.onStateChanged = function (callback) {
-  window.Store.State.default.on('change:state', ({state})=>callback(state))
+  window.Store.State.Socket.on('change:state', ({state})=>callback(state))
   return true;
 }
 
@@ -1645,7 +1645,7 @@ window.WAPI.onStateChanged = function (callback) {
  * "UNPAIRED_IDLE"
  */
 window.WAPI.getState = function (){
-  return Store.State.default.state;
+  return Store.State.Socket.state;
 }
 
 /**
@@ -2017,9 +2017,16 @@ window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type
   }
 }
 
+window.WAPI.getHost = async function() {
+  const fromwWid = await Store.MaybeMeUser.getMaybeMeUser();
+  const idUser = await WAPI.sendExist(fromwWid._serialized);
+  const infoUser = await Store.MyStatus.getStatus(idUser);
+  return await WAPI._serializeChatObj(infoUser)
+}
+
 window.WAPI.scope = function(id, erro, status, text = null, result = null) {
   const object = {
-    me: Store.Me.attributes,
+    me: WAPI.getHost(),
     to: id,
     erro: erro,
     text: text,
