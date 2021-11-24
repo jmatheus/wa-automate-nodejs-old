@@ -749,7 +749,7 @@ window.WAPI.getChat = function (id) {
   id = typeof id == "string" ? id : id._serialized;
   const found = window.Store.Chat.get(id);
   if (!found) {
-    const ConstructChat = new window.Store.UserConstructor(chatId, {
+    const ConstructChat = new window.Store.UserConstructor(id, {
       intentionallyUserPrivate: !0
     });
     found = Store.Chat.find(ConstructChat) || false;
