@@ -2501,15 +2501,18 @@ window.WAPI.forwardMessages = async function (to, messages, skipMyMessages) {
  * @param {string} chatId '000000000000@c.us'
  */
 window.WAPI.getNewMessageId = function (chatId) {
-  var newMsgId = new Store.MsgKey(Object.assign({}, Store.Msg.models[0].__x_id))
-  // .clone();
-
-  newMsgId.fromMe = true;
-  newMsgId.id = WAPI.getNewId().toUpperCase();
-  newMsgId.remote = new Store.WidFactory.createWid(chatId);
-  newMsgId._serialized = `${newMsgId.fromMe}_${newMsgId.remote}_${newMsgId.id}`
-
-  return newMsgId;
+  const chat = await WAPI.sendExist(chatId);
+  if (chat.id) {
+    const newMsgId = new Object();
+    newMsgId.fromMe = true;
+    newMsgId.id = await WAPI.getNewId().toUpperCase();
+    newMsgId.remote = new Store.WidFactory.createWid(chatId);
+    newMsgId._serialized = `${newMsgId.fromMe}_${newMsgId.remote}_${newMsgId.id}`;
+    const Msgkey = new Store.MsgKey(newMsgId);
+    return Msgkey;
+  } else {
+    return false;
+  }
 };
 
 
