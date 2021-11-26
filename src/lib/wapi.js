@@ -1300,7 +1300,7 @@ window.WAPI.sendMessageToID = async function (to, content) {
 
 window.WAPI.sendMessage = async function (to, content) {
   var chat = Store.Chat.get(to);
-  const newMsgId = await window.WAPI.getNewMessageId(chat.id);
+  const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
   const fromwWid = await window.Store.MaybeMeUser.getMaybeMeUser();
   const message = {
     id: newMsgId,
@@ -2626,7 +2626,7 @@ window.WAPI.reply = async function (chatId, body, quotedMsg) {
     quotedMsgOptions = quotedMsg.msgContextInfo(chat);
   }
 
-  const newId = await window.WAPI.getNewMessageId(chatId);
+  const newId = await window.WAPI.getNewMessageId(chat.id._serialized);
   let inChat = await window.WAPI.getchatId(chatId).catch(() => {});
   if(inChat) {
     chat.lastReceivedKey._serialized = inChat._serialized;
