@@ -692,7 +692,7 @@ var Client = (function () {
                 switch (_a.label) {
                     case 0: return [4, this.pup(function (_a) {
                             var to = _a.to, content = _a.content;
-                            if (!WAPI.getChat(to)) {
+                            if (WAPI.getchatId(to) === undefined) {
                                 return WAPI.sendMessageToID(to, content);
                             }
                             else {

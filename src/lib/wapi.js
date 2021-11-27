@@ -1300,6 +1300,7 @@ window.WAPI.sendMessageToID = async function (to, content) {
 
 window.WAPI.sendMessage = async function (to, content) {
   var chat = Store.Chat.get(to);
+  if(chat === undefined || chat.id._serialized !== to) { return 'ERROR: not a valid Whatsapp'; }
   const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
   const fromwWid = await window.Store.MaybeMeUser.getMaybeMeUser();
   const message = {

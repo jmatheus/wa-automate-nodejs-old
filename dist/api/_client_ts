@@ -245,6 +245,7 @@ declare module WAPI {
   const clearAllChats: () => Promise<boolean>;
   const cutMsgCache: () => boolean;
   const getChat: (contactId: string) => Chat;
+  const getchatId: (contactId: string) => Chat;
   const getLastSeen: (contactId: string) => Promise<number | boolean>;
   const getProfilePicFromServer: (chatId: string) => any;
   const getAllChatIds: () => Promise<ChatId[]>;
@@ -809,7 +810,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
   public async sendText(to: ChatId, content: Content) {
     let res = await this.pup(
       ({ to, content }) => {
-        if (!WAPI.getChat(to)) {
+        if (WAPI.getchatId(to) === undefined) {
           return WAPI.sendMessageToID(to, content);
         } else {
           return WAPI.sendMessage(to, content);
