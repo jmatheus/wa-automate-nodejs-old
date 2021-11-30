@@ -1292,10 +1292,8 @@ window.WAPI.sendMessageToID = async function (to, content) {
 
     let obj = WAPI.scope(newMsgId, true, result, content);
     Object.assign(obj, m);
-    console.log(to, 'sendMessageToID', obj);
     return obj;
   } else {
-    console.log(to, 'sendMessageToID', 'error');
     return 'ERROR: not a valid Whatsapp';
   }
 }
@@ -1326,7 +1324,6 @@ window.WAPI.sendMessage = async function (to, content) {
 
   await window.Store.addAndSendMsgToChat(chat, message);
 
-  console.log(to, 'sendMessage', newMsgId._serialized);
   return newMsgId._serialized;
 };
 

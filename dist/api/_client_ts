@@ -1001,15 +1001,19 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
       } else throw new Error('Cannot find file. Make sure the file reference is relative or valid DataURL')
     }
 
+    let chat = await this.pup(
+      to => WAPI.getExistentChat(to), to
+    );
+
     let res = await this.pup(
-      ({ to, file, filename, caption, type, quotedMsgId}) => {
-        if (WAPI.getExistentChat(to) === undefined) {
+      ({ chat, to, file, filename, caption, type, quotedMsgId}) => {
+        if (chat === undefined) {
           return 'ERROR: not a valid chat';
         } else {
           return WAPI.sendFile(file, to, filename, caption, type, quotedMsgId);
         }
       },
-      { to, file, filename, caption, type, quotedMsgId }
+      { chat, to, file, filename, caption, type, quotedMsgId }
     );
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
   }
@@ -1055,15 +1059,19 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
   public async reply(to: ChatId, content: Content, quotedMsgId: MessageId, sendSeen?: boolean) {
     if(sendSeen) await this.sendSeen(to);
 
+    let chat = await this.pup(
+      to => WAPI.getExistentChat(to), to
+    );
+
     let res = await this.pup(
-      ({ to, content, quotedMsgId }) => {
-        if (WAPI.getExistentChat(to) === undefined) {
+      ({ chat, to, content, quotedMsgId }) => {
+        if (chat === undefined) {
           return WAPI.sendMessageToID(to, content);
         } else {
           return WAPI.reply(to, content, quotedMsgId);
         }
       },
-      { to, content, quotedMsgId }
+      { chat, to, content, quotedMsgId }
     );
 
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
