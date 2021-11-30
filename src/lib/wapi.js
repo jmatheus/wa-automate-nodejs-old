@@ -1298,7 +1298,7 @@ window.WAPI.sendMessageToID = async function (to, content) {
   }
 }
 
-window WAPI.getExistentChat = async function (id) {
+window.WAPI.getExistentChat = async function (id) {
   if (!id) return false;
   id = typeof id == "string" ? id : id._serialized;
   return window.Store.Chat.get(id);
