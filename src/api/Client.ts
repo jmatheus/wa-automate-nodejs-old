@@ -245,6 +245,7 @@ declare module WAPI {
   const clearAllChats: () => Promise<boolean>;
   const cutMsgCache: () => boolean;
   const getChat: (contactId: string) => Chat;
+  const getExistentChat: (contactId: string) => boolean | undefined;
   const getLastSeen: (contactId: string) => Promise<number | boolean>;
   const getProfilePicFromServer: (chatId: string) => any;
   const getAllChatIds: () => Promise<ChatId[]>;
@@ -809,7 +810,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
   public async sendText(to: ChatId, content: Content) {
     let res = await this.pup(
       ({ to, content }) => {
-        if (WAPI.checkNumberStatus(to).status === 404) {
+        if (!WAPI.getExistentChat(to)) {
           return WAPI.sendMessageToID(to, content);
         } else {
           return WAPI.sendMessage(to, content);
@@ -998,7 +999,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
 
     let res = await this.pup(
       ({ to, file, filename, caption, type, quotedMsgId}) => {
-        if (WAPI.checkNumberStatus(to).status === 404) {
+        if (!WAPI.getExistentChat(to)) {
           return 'ERROR: not a valid chat';
         } else {
           return WAPI.sendFile(file, to, filename, caption, type, quotedMsgId);
@@ -1052,7 +1053,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
 
     let res = await this.pup(
       ({ to, content, quotedMsgId }) => {
-        if (WAPI.checkNumberStatus(to).status === 404) {
+        if (!WAPI.getExistentChat(to)) {
           return WAPI.sendMessageToID(to, content);
         } else {
           return WAPI.reply(to, content, quotedMsgId);

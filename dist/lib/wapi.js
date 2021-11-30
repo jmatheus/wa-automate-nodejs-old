@@ -1298,9 +1298,15 @@ window.WAPI.sendMessageToID = async function (to, content) {
   }
 }
 
+window WAPI.getExistentChat = async function (id) {
+  if (!id) return false;
+  id = typeof id == "string" ? id : id._serialized;
+  return window.Store.Chat.get(id);
+}
+
 window.WAPI.sendMessage = async function (to, content) {
-  var chat = Store.Chat.get(to);
-  if(chat === undefined || chat.id._serialized !== to) { return 'ERROR: not a valid Whatsapp'; }
+  const chat = await WAPI.getExistentChat(to);
+  if(!chat) { return 'ERROR: not a valid Whatsapp'; }
   const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
   const fromwWid = await window.Store.MaybeMeUser.getMaybeMeUser();
   const message = {
