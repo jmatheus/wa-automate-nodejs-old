@@ -808,9 +808,13 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
    * @param content text message
    */
   public async sendText(to: ChatId, content: Content) {
+    let chat = await this.pup(
+      to => WAPI.getExistentChat(to), to
+    );
+    
     let res = await this.pup(
       ({ to, content }) => {
-        if (WAPI.getExistentChat(to) === undefined) {
+        if (chat === undefined) {
           return WAPI.sendMessageToID(to, content);
         } else {
           return WAPI.sendMessage(to, content);

@@ -687,19 +687,22 @@ var Client = (function () {
     };
     Client.prototype.sendText = function (to, content) {
         return __awaiter(this, void 0, void 0, function () {
-            var res;
+            var chat, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4, this.pup(function (_a) {
-                            var to = _a.to, content = _a.content;
-                            if (WAPI.getExistentChat(to) === undefined) {
-                                return WAPI.sendMessageToID(to, content);
-                            }
-                            else {
-                                return WAPI.sendMessage(to, content);
-                            }
-                        }, { to: to, content: content })];
+                    case 0: return [4, this.pup(function (to) { return WAPI.getExistentChat(to); }, to)];
                     case 1:
+                        chat = _a.sent();
+                        return [4, this.pup(function (_a) {
+                                var to = _a.to, content = _a.content;
+                                if (chat === undefined) {
+                                    return WAPI.sendMessageToID(to, content);
+                                }
+                                else {
+                                    return WAPI.sendMessage(to, content);
+                                }
+                            }, { to: to, content: content })];
+                    case 2:
                         res = _a.sent();
                         return [2, (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find(function (e) { return e == res; }) : res)];
                 }
