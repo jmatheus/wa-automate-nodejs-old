@@ -692,7 +692,7 @@ var Client = (function () {
                 switch (_a.label) {
                     case 0: return [4, this.pup(function (_a) {
                             var to = _a.to, content = _a.content;
-                            if (!WAPI.getExistentChat(to)) {
+                            if (WAPI.getExistentChat(to) === undefined) {
                                 return WAPI.sendMessageToID(to, content);
                             }
                             else {
@@ -850,7 +850,7 @@ var Client = (function () {
                     case 2: throw new Error('Cannot find file. Make sure the file reference is relative or valid DataURL');
                     case 3: return [4, this.pup(function (_a) {
                             var to = _a.to, file = _a.file, filename = _a.filename, caption = _a.caption, type = _a.type, quotedMsgId = _a.quotedMsgId;
-                            if (!WAPI.getExistentChat(to)) {
+                            if (WAPI.getExistentChat(to) === undefined) {
                                 return 'ERROR: not a valid chat';
                             }
                             else {
@@ -898,7 +898,7 @@ var Client = (function () {
                         _a.label = 2;
                     case 2: return [4, this.pup(function (_a) {
                             var to = _a.to, content = _a.content, quotedMsgId = _a.quotedMsgId;
-                            if (!WAPI.getExistentChat(to)) {
+                            if (WAPI.getExistentChat(to) === undefined) {
                                 return WAPI.sendMessageToID(to, content);
                             }
                             else {

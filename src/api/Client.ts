@@ -810,7 +810,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
   public async sendText(to: ChatId, content: Content) {
     let res = await this.pup(
       ({ to, content }) => {
-        if (!WAPI.getExistentChat(to)) {
+        if (WAPI.getExistentChat(to) === undefined) {
           return WAPI.sendMessageToID(to, content);
         } else {
           return WAPI.sendMessage(to, content);
@@ -999,7 +999,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
 
     let res = await this.pup(
       ({ to, file, filename, caption, type, quotedMsgId}) => {
-        if (!WAPI.getExistentChat(to)) {
+        if (WAPI.getExistentChat(to) === undefined) {
           return 'ERROR: not a valid chat';
         } else {
           return WAPI.sendFile(file, to, filename, caption, type, quotedMsgId);
@@ -1053,7 +1053,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
 
     let res = await this.pup(
       ({ to, content, quotedMsgId }) => {
-        if (!WAPI.getExistentChat(to)) {
+        if (WAPI.getExistentChat(to) === undefined) {
           return WAPI.sendMessageToID(to, content);
         } else {
           return WAPI.reply(to, content, quotedMsgId);
