@@ -813,14 +813,14 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     );
     
     let res = await this.pup(
-      ({ to, content }) => {
+      ({ chat, to, content }) => {
         if (chat === undefined) {
           return WAPI.sendMessageToID(to, content);
         } else {
           return WAPI.sendMessage(to, content);
         }
       },
-      { to, content }
+      { chat, to, content }
     );
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
   }

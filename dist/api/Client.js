@@ -694,14 +694,14 @@ var Client = (function () {
                     case 1:
                         chat = _a.sent();
                         return [4, this.pup(function (_a) {
-                                var to = _a.to, content = _a.content;
+                                var chat = _a.chat, to = _a.to, content = _a.content;
                                 if (chat === undefined) {
                                     return WAPI.sendMessageToID(to, content);
                                 }
                                 else {
                                     return WAPI.sendMessage(to, content);
                                 }
-                            }, { to: to, content: content })];
+                            }, { chat: chat, to: to, content: content })];
                     case 2:
                         res = _a.sent();
                         return [2, (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find(function (e) { return e == res; }) : res)];
