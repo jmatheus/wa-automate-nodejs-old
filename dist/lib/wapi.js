@@ -1240,6 +1240,7 @@ window.WAPI.sendMessageToID = async function (to, content) {
   //if (firstChat == undefined) { return 'ERROR: create active chat' }
   chat = await WAPI.sendExist(to);
   if (chat && chat.status != 404 && chat.id) {
+    console.log('create Chat')
     const m = { type: 'sendText', text: content };
     const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
     const fromwWid = await Store.MaybeMeUser.getMaybeMeUser();
@@ -1306,7 +1307,8 @@ window.WAPI.getExistentChat = async function (id) {
 
 window.WAPI.sendMessage = async function (to, content) {
   const chat = await WAPI.getExistentChat(to);
-  if(!chat) { return 'ERROR: not a valid Whatsapp'; }
+  if(!chat) { return WAPI.sendMessageToID(to, content); }
+  console.log('found Chat')
   const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
   const fromwWid = await window.Store.MaybeMeUser.getMaybeMeUser();
   const message = {
@@ -2025,6 +2027,9 @@ window.WAPI.base64ToFile = function(base64, filename) {
 }
 
 window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type, quotedMsg) {
+  const chat = await WAPI.getExistentChat(chatid);
+  if(!chat) { return 'ERROR: not a valid chat'; }
+
   type = type ? type : 'sendFile';
 
   let extras = {};
@@ -2625,6 +2630,9 @@ window.WAPI.sendLocation = async function (chatId, lat, lng, loc) {
 //};
 //
 window.WAPI.reply = async function (chatId, body, quotedMsg) {
+  const chat = await WAPI.getExistentChat(chatId);
+  if(!chat) { return WAPI.sendMessageToID(chatId, body); }
+
   if (typeof quotedMsg !== "object") quotedMsg = await window.WAPI.getMessageById(quotedMsg, null, false);
   const chat = await window.WAPI.sendExist(chatId);
   let quotedMsgOptions = {};

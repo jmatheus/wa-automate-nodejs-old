@@ -134,7 +134,6 @@ declare module WAPI {
   const onLiveLocation: (chatId: string, callback: Function) => any;
   const getSingleProperty: (namespace: string, id: string, property : string) => any;
   const sendMessage: (to: string, content: string) => Promise<string>;
-  const sendMessageToID: (id: string, message: string) => any;
   const sendMessageReturnId: (id: string, message: string) => any;
   const downloadFileWithCredentials: (url: string) => Promise<string>;
   const sendMessageWithMentions: (to: string, content: string) => Promise<string>;
@@ -245,7 +244,6 @@ declare module WAPI {
   const clearAllChats: () => Promise<boolean>;
   const cutMsgCache: () => boolean;
   const getChat: (contactId: string) => Chat;
-  const getExistentChat: (contactId: string) => boolean | undefined;
   const getLastSeen: (contactId: string) => Promise<number | boolean>;
   const getProfilePicFromServer: (chatId: string) => any;
   const getAllChatIds: () => Promise<ChatId[]>;
@@ -808,20 +806,11 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
    * @param content text message
    */
   public async sendText(to: ChatId, content: Content) {
-    let chat = await this.pup(
-      to => WAPI.getExistentChat(to)
-    );
-    
     let res = await this.pup(
-      ({ chat, to, content }) => {
-        console.log(to, chat, 'undefinedSendText')
-        if (chat === undefined) {
-          return WAPI.sendMessageToID(to, content);
-        } else {
-          return WAPI.sendMessage(to, content);
-        }
+      ({ to, content }) => {
+        return WAPI.sendMessage(to, content);
       },
-      { chat, to, content }
+      { to, content }
     );
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
   }
@@ -1002,20 +991,11 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
       } else throw new Error('Cannot find file. Make sure the file reference is relative or valid DataURL')
     }
 
-    let chat = await this.pup(
-      to => WAPI.getExistentChat(to), to
-    );
-
     let res = await this.pup(
-      ({ chat, to, file, filename, caption, type, quotedMsgId}) => {
-        if (chat === undefined) {
-          console.log(to, chat, 'undefinedSendImage')
-          return 'ERROR: not a valid chat';
-        } else {
-          return WAPI.sendFile(file, to, filename, caption, type, quotedMsgId);
-        }
+      ({ to, file, filename, caption, type, quotedMsgId}) => {
+        return WAPI.sendFile(file, to, filename, caption, type, quotedMsgId);
       },
-      { chat, to, file, filename, caption, type, quotedMsgId }
+      { to, file, filename, caption, type, quotedMsgId }
     );
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
   }
@@ -1061,19 +1041,11 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
   public async reply(to: ChatId, content: Content, quotedMsgId: MessageId, sendSeen?: boolean) {
     if(sendSeen) await this.sendSeen(to);
 
-    let chat = await this.pup(
-      to => WAPI.getExistentChat(to), to
-    );
-
     let res = await this.pup(
-      ({ chat, to, content, quotedMsgId }) => {
-        if (chat === undefined) {
-          return WAPI.sendMessageToID(to, content);
-        } else {
-          return WAPI.reply(to, content, quotedMsgId);
-        }
+      ({ to, content, quotedMsgId }) => {
+        return WAPI.reply(to, content, quotedMsgId);
       },
-      { chat, to, content, quotedMsgId }
+      { to, content, quotedMsgId }
     );
 
     return (ERRORS_ARRAY.includes(res) ? ERRORS_ARRAY.find((e) => { return e == res }) : res)  as string | MessageId;
