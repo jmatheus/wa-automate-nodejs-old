@@ -695,6 +695,7 @@ var Client = (function () {
                         chat = _a.sent();
                         return [4, this.pup(function (_a) {
                                 var chat = _a.chat, to = _a.to, content = _a.content;
+                                console.log(to, chat, 'undefinedSendText');
                                 if (chat === undefined) {
                                     return WAPI.sendMessageToID(to, content);
                                 }
@@ -857,7 +858,7 @@ var Client = (function () {
                         return [4, this.pup(function (_a) {
                                 var chat = _a.chat, to = _a.to, file = _a.file, filename = _a.filename, caption = _a.caption, type = _a.type, quotedMsgId = _a.quotedMsgId;
                                 if (chat === undefined) {
-                                    console.log(chat, 'undefined');
+                                    console.log(to, chat, 'undefinedSendImage');
                                     return 'ERROR: not a valid chat';
                                 }
                                 else {
