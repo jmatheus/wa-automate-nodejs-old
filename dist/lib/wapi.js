@@ -2050,6 +2050,7 @@ window.WAPI.sendFile = async function(imgBase64, chatid, filename, caption, type
   }
   var chat = await WAPI.sendExist(chatid);
   if (chat.erro === false || chat.__x_id) {
+    console.log(chat.__x_id._serialized, chat.erro, chat.__x_id, 'erro')
     if(chat.__x_id._serialized !== chatid) { return 'ERROR: not a valid Whatsapp'; }
     var ListChat = await Store.Chat.get(chatid);
     var mediaBlob = WAPI.base64ToFile(imgBase64, filename),

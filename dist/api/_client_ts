@@ -1008,6 +1008,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
     let res = await this.pup(
       ({ chat, to, file, filename, caption, type, quotedMsgId}) => {
         if (chat === undefined) {
+          console.log(chat, 'undefined')
           return 'ERROR: not a valid chat';
         } else {
           return WAPI.sendFile(file, to, filename, caption, type, quotedMsgId);

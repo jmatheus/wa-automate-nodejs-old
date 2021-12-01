@@ -857,6 +857,7 @@ var Client = (function () {
                         return [4, this.pup(function (_a) {
                                 var chat = _a.chat, to = _a.to, file = _a.file, filename = _a.filename, caption = _a.caption, type = _a.type, quotedMsgId = _a.quotedMsgId;
                                 if (chat === undefined) {
+                                    console.log(chat, 'undefined');
                                     return 'ERROR: not a valid chat';
                                 }
                                 else {
