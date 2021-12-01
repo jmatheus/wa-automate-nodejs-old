@@ -809,7 +809,7 @@ public async onLiveLocation(chatId: ChatId, fn: (liveLocationChangedEvent: LiveL
    */
   public async sendText(to: ChatId, content: Content) {
     let chat = await this.pup(
-      to => WAPI.getExistentChat(to), to
+      to => WAPI.getExistentChat(to)
     );
     
     let res = await this.pup(

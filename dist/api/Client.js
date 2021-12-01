@@ -690,7 +690,7 @@ var Client = (function () {
             var chat, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4, this.pup(function (to) { return WAPI.getExistentChat(to); }, to)];
+                    case 0: return [4, this.pup(function (to) { return WAPI.getExistentChat(to); })];
                     case 1:
                         chat = _a.sent();
                         return [4, this.pup(function (_a) {
