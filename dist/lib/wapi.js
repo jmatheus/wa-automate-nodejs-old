@@ -66,7 +66,7 @@ if (!window.Store||!window.Store.Msg) {
     conditions: (module) =>
       module.default && module.default.ref && module.default.refTTL
         ? module.default
-        : (module.Conn && module.Conn.ref && module.Conn.refTTL ? module.Conn : null)
+        : null
   },
   {
     id: 'WapQuery',
@@ -167,7 +167,7 @@ if (!window.Store||!window.Store.Msg) {
   {
     id: 'Me',
     conditions: (module) =>
-      module.PLATFORMS && module.Conn ? module.default : null
+      module.PLATFORMS && module.Conn ? module.Conn : null,
   },
   {
     id: 'CallUtils',
@@ -357,6 +357,10 @@ if (!window.Store||!window.Store.Msg) {
     id: 'ws2',
     conditions: (module) =>
       module.default && module.default.destroyStorage ? module.default : null
+  },
+  {
+    id: 'Login',
+    conditions: (module) => (module.startLogout ? module : null),
   },
   {
     id: 'BlobCache',
@@ -755,7 +759,7 @@ window.WAPI.getChat = function (id) {
   let found = window.Store.Chat.get(id);
   if (!found) {
     const ConstructChat = new window.Store.UserConstructor(id, {
-      intentionallyUsePrivateConstructor: true
+      intentionallyUsePrivateConstructor: !0
     });
     found = Store.Chat.find(ConstructChat) || false;
   }
@@ -1242,8 +1246,20 @@ window.WAPI.sleep = function(ms) {
 }
 
 window.WAPI.sendMessageToID = async function (to, content) {
-  //if (firstChat == undefined) { return 'ERROR: create active chat' }
-  chat = await WAPI.sendExist(to);
+ if (typeof content != 'string' || content.length === 0) {
+    return WAPI.scope(
+      undefined,
+      true,
+      null,
+      'It is necessary to write a text!'
+    );
+  }
+  if (typeof to != 'string' || to.length === 0) {
+    return WAPI.scope(to, true, 404, 'It is necessary to number');
+  }
+
+  let chat = await WAPI.sendExist(to);
+
   if (chat && chat.status != 404 && chat.id) {
     const m = { type: 'sendText', text: content };
     const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
@@ -1265,7 +1281,9 @@ window.WAPI.sendMessageToID = async function (to, content) {
     if (!newMsgId) {
       return WAPI.scope(to, true, 404, 'Error to newId');
     }
+
     if(chat.id._serialized !== to) { return 'ERROR: not a valid Whatsapp'; }
+
     const message = {
       id: newMsgId,
       ack: 0,
@@ -2193,7 +2211,11 @@ window.WAPI.sendExist = async function(chatId, returnChat = true, Send = true) {
   }
   let ck = await window.WAPI.checkNumberStatus(chatId, false);
 
-  if (ck.status === 404 && !chatId.includes('@g.us')) {
+  if (
+    ck.status === 404 &&
+    !chatId.includes('@g.us') &&
+    !chatId.includes('@broadcast')
+  ) {
     return WAPI.scope(chatId, true, ck.status, 'The number does not exist');
   }
 
