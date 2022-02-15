@@ -3131,10 +3131,10 @@ window.Store.Msg.off('add');
 sessionStorage.removeItem('saved_msgs');
 
 window.WAPI._newMessagesListener = window.Store.Msg.on('add', (newMessage) => {
-  if (newMessage && newMessage.isNewMsg || newMessage.isSentByMe) {
+  if (newMessage && newMessage.isNewMsg) {
     if (newMessage.clientUrl == null || newMessage.clientUrl == undefined || newMessage.clientUrl == "") { newMessage.clientUrl = newMessage.deprecatedMms3Url; }
 
-    let message = window.WAPI.processMessageObj(newMessage, false, false);
+    let message = window.WAPI.processMessageObj(newMessage, true, false);
     if (message) {
       window.WAPI._newMessagesQueue.push(message);
       window.WAPI._newMessagesBuffer.push(message);
