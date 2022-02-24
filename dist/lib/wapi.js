@@ -51,7 +51,7 @@ if (!window.Store||!window.Store.Msg) {
       module.default && module.default.killServiceWorker ? module : null
   },
   {
-    id: 'State',
+    id: 'Socket',
     conditions: (module) => (module.Socket ? module : null)
   },
   {
