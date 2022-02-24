@@ -476,7 +476,7 @@ if (!window.Store||!window.Store.Msg) {
           let module = o(idx);
           modules.push(module);
         }
-        console.log(modules);
+        window.wa_modules = modules;
         getStore(modules);
       }
     ]);
