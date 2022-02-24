@@ -52,7 +52,7 @@ if (!window.Store||!window.Store.Msg) {
   },
   {
     id: 'State',
-    conditions: (module) => (module.STATE && module.STREAM ? module : null)
+    conditions: (module) => (module.STATE ? module : null)
   },
   {
     id: 'WapDelete',
@@ -431,7 +431,6 @@ if (!window.Store||!window.Store.Msg) {
       window.neededModuleFound = [];
       for (let idx in modules) {
         if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
-          console.log(modules[idx]);
           neededObjects.forEach((needObj) => {
             if (!needObj.conditions || needObj.foundedModule)
               return;
@@ -477,6 +476,7 @@ if (!window.Store||!window.Store.Msg) {
           let module = o(idx);
           modules.push(module);
         }
+        console.log(modules);
         getStore(modules);
       }
     ]);
