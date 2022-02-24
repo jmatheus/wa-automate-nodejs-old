@@ -52,7 +52,7 @@ if (!window.Store||!window.Store.Msg) {
   },
   {
     id: 'State',
-    conditions: (module) => (module.STATE ? module : null)
+    conditions: (module) => (module.STATE && module.STREAM ? module : null)
   },
   {
     id: 'WapDelete',
