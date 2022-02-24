@@ -51,7 +51,7 @@ if (!window.Store||!window.Store.Msg) {
       module.default && module.default.killServiceWorker ? module : null
   },
   {
-    id: 'Socket',
+    id: 'State',
     conditions: (module) => (module.Socket ? module : null)
   },
   {
@@ -1642,7 +1642,7 @@ window.WAPI.clearChat = async function (id) {
 window.WAPI.checkNumberStatus = async function (id, conn = true) {
    try {
     const err = { error: 404 };
-    const connection = window.Socket.state;
+    const connection = window.Store.State.Socket.state;
     const checkType = WAPI.sendCheckType(id);
     if (!!checkType && checkType.status === 404) {
       Object.assign(err, {
@@ -1744,7 +1744,7 @@ window.WAPI.onAnyMessage = callback => window.Store.Msg.on('add', (newMessage) =
  * @returns {boolean}
  */
 window.WAPI.onStateChanged = function (callback) {
-  window.Store.Socket.on('change:state', ({state})=>callback(state))
+  window.Store.State.Socket.on('change:state', ({state})=>callback(state))
   return true;
 }
 
@@ -1764,7 +1764,7 @@ window.WAPI.onStateChanged = function (callback) {
  * "UNPAIRED_IDLE"
  */
 window.WAPI.getState = function (){
-  return Store.Socket.state;
+  return Store.State.Socket.state;
 }
 
 /**
