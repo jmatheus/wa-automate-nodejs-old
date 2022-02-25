@@ -70,104 +70,38 @@ export async function initClient(sessionId?: string, config?:ConfigObject, custo
     })
   }
 
-  // if (blockAssets || blockCrashLogs || proxyAddr) {
-  //   let patterns = [];
-    
-  //   if (interceptAuthentication) {
-  //     authCompleteEv = new EvEmitter(sessionId, 'AUTH');
-  //     patterns.push({ urlPattern: '*_priority_components*' });
-  //   }
-    
-  
-  //   if (blockCrashLogs) patterns.push({ urlPattern: '*crashlogs' });
-  
-  //   if (blockAssets) {
-  //     //@ts-ignore
-  //     await waPage._client.send('Network.enable');
-  //     //@ts-ignore
-  //     waPage._client.send('Network.setBypassServiceWorker', {
-  //       bypass: true,
-  //     });
-  
-  //     patterns = [
-  //       ...patterns,
-  //       ...[
-  //         { urlPattern: '*.css' },
-  //         { urlPattern: '*.jpg' },
-  //         { urlPattern: '*.jpg*' },
-  //         { urlPattern: '*.jpeg' },
-  //         { urlPattern: '*.jpeg*' },
-  //         { urlPattern: '*.webp' },
-  //         { urlPattern: '*.png' },
-  //         { urlPattern: '*.mp3' },
-  //         { urlPattern: '*.svg' },
-  //         { urlPattern: '*.woff' },
-  //         { urlPattern: '*.pdf' },
-  //         { urlPattern: '*.zip' },
-  //         { urlPattern: '*crashlogs' },
-  //       ],
-  //     ];
-  //   }
-  
-  //     //@ts-ignore
-  //   await waPage._client.send('Network.setRequestInterception', {
-  //     patterns,
-  //   });
-  
-  //     //@ts-ignore
-  //   waPage._client.on(
-  //     'Network.requestIntercepted',
-  //     async ({ interceptionId, request }) => {
-  //       const extensions = [
-  //         '.css',
-  //         '.jpg',
-  //         '.jpeg',
-  //         '.webp',
-  //         '.mp3',
-  //         '.png',
-  //         '.svg',
-  //         '.woff',
-  //         '.pdf',
-  //         '.zip',
-  //       ];
-  
-  //       const req_extension = path.extname(request.url);
-  
-  //       if (
-  //         (blockAssets && extensions.includes(req_extension)) ||
-  //         request.url.includes('.jpg') ||
-  //         (blockCrashLogs && request.url.includes('crashlogs'))
-  //       ) {
-  //         await (waPage as any)._client.send(
-  //           'Network.continueInterceptedRequest',
-  //           {
-  //             interceptionId,
-  //             rawResponse: '',
-  //           }
-  //         );
-  //       } else {
-  //         if(proxyAddr) {
-  //           console.log("initClient -> proxyAddr", proxyAddr, request.url)
-  //           await useProxy(request, {
-  //             proxy: proxyAddr,
-  //             headers: {
-  //               ...request.headers,
-  //               referer:"https://web.whatsapp.com/",
-  //               host: "https://web.whatsapp.com"
-  //             }});
-  //         } else 
-  //         await (waPage as any)._client.send(
-  //           'Network.continueInterceptedRequest',
-  //           {
-  //             interceptionId,
-  //           }
-  //         );
+  if (config?.multidevice) {
+    const folderSession: string = path.join(
+      path.resolve(
+        process.cwd(),
+        config?.mkdirFolderToken,
+        config?.folderNameToken,
+        sessionId
+      )
+    );
 
-          
-  //       }
-  //     }
-  //   );
-  // }
+    const folderMulidevice = path.join(
+      path.resolve(
+        process.cwd(),
+        config?.mkdirFolderToken,
+        config?.folderNameToken
+      )
+    );
+
+    if (!fs.existsSync(folderMulidevice)) {
+      fs.mkdirSync(folderMulidevice, {
+        recursive: true
+      });
+    }
+
+    fs.chmodSync(folderMulidevice, '777');
+
+    config.puppeteerOptions = {
+      userDataDir: folderSession
+    };
+
+    puppeteerConfig.chromiumArgs.push(`--user-data-dir=${folderSession}`);
+  }
 
   //check if [session].json exists in __dirname
   const sessionjsonpath = (config?.sessionDataPath && config?.sessionDataPath.includes('.data.json')) ? path.join(path.resolve(process.cwd(),config?.sessionDataPath || '')) : path.join(path.resolve(process.cwd(),config?.sessionDataPath || ''), `${sessionId || 'session'}.data.json`);
@@ -242,14 +176,6 @@ async function initBrowser(sessionId?: string, config:any={}) {
   
   // if(config?.proxyServerCredentials?.address) puppeteerConfig.chromiumArgs.push(`--proxy-server=${config.proxyServerCredentials.address}`)
   if(config?.browserWsEndpoint) config.browserWSEndpoint = config.browserWsEndpoint;
-  let args = [...puppeteerConfig.chromiumArgs,...(config?.chromiumArgs||[])];
-  if(config?.corsFix) args.push('--disable-web-security');
-  const browser = (config?.browserWSEndpoint) ? await puppeteer.connect({...config}): await puppeteer.launch({
-    headless: true,
-    devtools: false,
-    args,
-    ...config
-  });
   //devtools
   if(config&&config.devtools){
     const devtools = require('puppeteer-extra-plugin-devtools')();

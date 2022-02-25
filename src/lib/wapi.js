@@ -1663,8 +1663,7 @@ window.WAPI.checkNumberStatus = async function (id, conn = true) {
       }
     }
 
-    const checkBeta = document.querySelector('._3hcUV');
-    if (checkBeta && checkBeta.innerText === 'BETA') {
+    if (WAPI.isBeta()) {
       return await Store.checkNumberBeta(id)
         .then((result) => {
           if (!!result && typeof result === 'object') {
@@ -1715,6 +1714,17 @@ window.WAPI.checkNumberStatus = async function (id, conn = true) {
     };
   }
 }
+
+window.WAPI.isBeta = async function() {
+   if (
+     !window.localStorage.getItem('WASecretBundle') &&
+     !window.localStorage.getItem('WAToken1') &&
+     !window.localStorage.getItem('WAToken2')
+   ) {
+     return true;
+   }
+   return false;
+ }
 
 window.WAPI.onAnyMessage = callback => window.Store.Msg.on('add', (newMessage) => {
   if (newMessage && newMessage.isNewMsg) {

@@ -77,6 +77,9 @@ export interface ConfigObject {
     inDocker?: boolean;
     qrQuality?: QRQuality;
     qrFormat?: QRFormat;
+    multidevice?: boolean;
+    folderNameToken?: string;
+    mkdirFolderToken?: string;
     hostNotificationLang?: NotificationLanguage;
     blockAssets?: boolean;
     keepUpdated?: boolean;

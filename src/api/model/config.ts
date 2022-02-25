@@ -330,6 +330,19 @@ export interface ConfigObject {
      * @default `png`
      */
     qrFormat ?:  QRFormat;
+
+    /** enabled multidevice
+     * @default true
+     */
+    multidevice?: boolean;
+    /** folder name when saving tokens
+     * @default 'tokens'
+     */
+    folderNameToken?: string;
+    /**
+     * folder directory tokens, just inside the venom folder, example:  { mkdirFolderToken: '/node_modules', } //will save the tokens folder in the node_modules directory
+     */
+    mkdirFolderToken?: string;
     /**
      * The language of the host notification. See: https://github.com/open-wa/wa-automate-nodejs/issues/709#issuecomment-673419088
      */

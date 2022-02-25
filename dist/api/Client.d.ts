@@ -73,6 +73,9 @@ export declare class Client {
         inDocker?: boolean;
         qrQuality?: import("./model").QRQuality;
         qrFormat?: import("./model").QRFormat;
+        multidevice?: boolean;
+        folderNameToken?: string;
+        mkdirFolderToken?: string;
         hostNotificationLang?: import("./model").NotificationLanguage;
         blockAssets?: boolean;
         keepUpdated?: boolean;

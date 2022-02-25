@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -65,13 +54,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.injectApi = exports.initClient = void 0;
 var path = __importStar(require("path"));
@@ -84,7 +66,7 @@ var browser;
 function initClient(sessionId, config, customUserAgent) {
     var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function () {
-        var waPage, cacheEnabled, blockCrashLogs, blockAssets, interceptAuthentication, proxyAddr, quickAuthed, authCompleteEv_1, sessionjsonpath, sessionjson, sd, s;
+        var waPage, cacheEnabled, blockCrashLogs, blockAssets, interceptAuthentication, proxyAddr, quickAuthed, authCompleteEv_1, folderSession, folderMulidevice, sessionjsonpath, sessionjson, sd, s;
         var _this = this;
         return __generator(this, function (_e) {
             switch (_e.label) {
@@ -170,6 +152,20 @@ function initClient(sessionId, config, customUserAgent) {
                     }); });
                     _e.label = 10;
                 case 10:
+                    if (config === null || config === void 0 ? void 0 : config.multidevice) {
+                        folderSession = path.join(path.resolve(process.cwd(), config === null || config === void 0 ? void 0 : config.mkdirFolderToken, config === null || config === void 0 ? void 0 : config.folderNameToken, sessionId));
+                        folderMulidevice = path.join(path.resolve(process.cwd(), config === null || config === void 0 ? void 0 : config.mkdirFolderToken, config === null || config === void 0 ? void 0 : config.folderNameToken));
+                        if (!fs.existsSync(folderMulidevice)) {
+                            fs.mkdirSync(folderMulidevice, {
+                                recursive: true
+                            });
+                        }
+                        fs.chmodSync(folderMulidevice, '777');
+                        config.puppeteerOptions = {
+                            userDataDir: folderSession
+                        };
+                        puppeteer_config_1.puppeteerConfig.chromiumArgs.push("--user-data-dir=" + folderSession);
+                    }
                     sessionjsonpath = ((config === null || config === void 0 ? void 0 : config.sessionDataPath) && (config === null || config === void 0 ? void 0 : config.sessionDataPath.includes('.data.json'))) ? path.join(path.resolve(process.cwd(), (config === null || config === void 0 ? void 0 : config.sessionDataPath) || '')) : path.join(path.resolve(process.cwd(), (config === null || config === void 0 ? void 0 : config.sessionDataPath) || ''), (sessionId || 'session') + ".data.json");
                     sessionjson = '';
                     sd = process.env[sessionId.toUpperCase() + "_DATA_JSON"] ? JSON.parse(process.env[sessionId.toUpperCase() + "_DATA_JSON"]) : config === null || config === void 0 ? void 0 : config.sessionData;
@@ -240,66 +236,52 @@ exports.injectApi = injectApi;
 function initBrowser(sessionId, config) {
     if (config === void 0) { config = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var storage, _savedPath, browserFetcher, browserDownloadSpinner_1, revisionInfo, error_1, args, browser, _a, devtools, tunnel;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var storage, _savedPath, browserFetcher, browserDownloadSpinner_1, revisionInfo, error_1, devtools, tunnel;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
                     if (!((config === null || config === void 0 ? void 0 : config.useChrome) && !(config === null || config === void 0 ? void 0 : config.executablePath))) return [3, 5];
                     storage = require('node-persist');
                     return [4, storage.init()];
                 case 1:
-                    _b.sent();
+                    _a.sent();
                     return [4, storage.getItem('executablePath')];
                 case 2:
-                    _savedPath = _b.sent();
+                    _savedPath = _a.sent();
                     if (!!_savedPath) return [3, 4];
                     config.executablePath = require('chrome-launcher').Launcher.getInstallations()[0];
                     return [4, storage.setItem('executablePath', config.executablePath)];
                 case 3:
-                    _b.sent();
+                    _a.sent();
                     return [3, 5];
                 case 4:
                     config.executablePath = _savedPath;
-                    _b.label = 5;
+                    _a.label = 5;
                 case 5:
                     if (!(config === null || config === void 0 ? void 0 : config.browserRevision)) return [3, 9];
                     browserFetcher = puppeteer.createBrowserFetcher();
                     browserDownloadSpinner_1 = new events_1.Spin(sessionId + '_browser', 'Browser', false, false);
-                    _b.label = 6;
+                    _a.label = 6;
                 case 6:
-                    _b.trys.push([6, 8, , 9]);
+                    _a.trys.push([6, 8, , 9]);
                     browserDownloadSpinner_1.start('Downloading browser revision: ' + config.browserRevision);
                     return [4, browserFetcher.download(config.browserRevision, function (downloadedBytes, totalBytes) {
                             browserDownloadSpinner_1.info("Downloading Browser: " + Math.round(downloadedBytes / 1000000) + "/" + Math.round(totalBytes / 1000000));
                         })];
                 case 7:
-                    revisionInfo = _b.sent();
+                    revisionInfo = _a.sent();
                     if (revisionInfo.executablePath) {
                         config.executablePath = revisionInfo.executablePath;
                     }
                     browserDownloadSpinner_1.succeed('Browser downloaded successfully');
                     return [3, 9];
                 case 8:
-                    error_1 = _b.sent();
+                    error_1 = _a.sent();
                     browserDownloadSpinner_1.succeed('Something went wrong while downloading the browser');
                     return [3, 9];
                 case 9:
                     if (config === null || config === void 0 ? void 0 : config.browserWsEndpoint)
                         config.browserWSEndpoint = config.browserWsEndpoint;
-                    args = __spreadArrays(puppeteer_config_1.puppeteerConfig.chromiumArgs, ((config === null || config === void 0 ? void 0 : config.chromiumArgs) || []));
-                    if (config === null || config === void 0 ? void 0 : config.corsFix)
-                        args.push('--disable-web-security');
-                    if (!(config === null || config === void 0 ? void 0 : config.browserWSEndpoint)) return [3, 11];
-                    return [4, puppeteer.connect(__assign({}, config))];
-                case 10:
-                    _a = _b.sent();
-                    return [3, 13];
-                case 11: return [4, puppeteer.launch(__assign({ headless: true, devtools: false, args: args }, config))];
-                case 12:
-                    _a = _b.sent();
-                    _b.label = 13;
-                case 13:
-                    browser = _a;
                     if (config && config.devtools) {
                         devtools = require('puppeteer-extra-plugin-devtools')();
                         if (config.devtools.user && config.devtools.pass)
